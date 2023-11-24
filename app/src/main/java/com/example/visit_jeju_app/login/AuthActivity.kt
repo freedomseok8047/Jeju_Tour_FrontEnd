@@ -20,6 +20,9 @@ class AuthActivity : AppCompatActivity() {
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // MyApplication.auth 초기화
+        MyApplication.auth = MyApplication.auth
+
         if(MyApplication.checkAuth()){
             Log.d("hello", "로그인 인증 됨")
             changeVisi("login")
@@ -97,7 +100,7 @@ class AuthActivity : AppCompatActivity() {
                     if(task.isSuccessful){
                         MyApplication.auth.currentUser?.sendEmailVerification()
                             //회원가입한 이메일에 인증 링크를 잘 보냈다면 수행하는 콜백함수
-                            ?.addOnCompleteListener{
+                            ?.addOnCompleteListener(this){
                                     sendTask ->
                                 if (sendTask.isSuccessful) {
                                     Toast.makeText(
@@ -106,14 +109,21 @@ class AuthActivity : AppCompatActivity() {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     changeVisi("logout")
+
+                                    // 로그인 뷰 관련 수정1
+                                } else {
+                                    Toast.makeText(
+                                        this, "메일 발송 실패",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    changeVisi("logout")
                                 }
                             }
                     } else {
-                        Toast.makeText(this,"메일발송 실패", Toast.LENGTH_SHORT).show()
-                        changeVisi("logout")
+                        // 회원 가입 실패한 경우,
+                        Toast.makeText(this, "회원가입 실패", Toast.LENGTH_SHORT).show()
                     }
                 }
-
         }
 
         //가입한 이메일, 패스워드로 로그인
