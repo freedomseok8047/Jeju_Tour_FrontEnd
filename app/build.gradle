@@ -40,6 +40,9 @@ android {
 
 dependencies {
 
+    // 파이어베이스 설정 2(ktb)
+    implementation("com.google.firebase:firebase-database-ktx:20.2.2")
+
     // 파이어베이스 설정
     implementation platform('com.google.firebase:firebase-bom:32.5.0')
     implementation 'com.google.firebase:firebase-analytics'
