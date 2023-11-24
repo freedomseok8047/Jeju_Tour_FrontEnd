@@ -1,9 +1,11 @@
 package com.example.visit_jeju_app
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(toggle)
         //화면 적용하기
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
         //버튼 클릭스 동기화 : 드로워 열어주기
         toggle.syncState()
