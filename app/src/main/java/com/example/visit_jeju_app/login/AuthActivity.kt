@@ -98,33 +98,6 @@ class AuthActivity : AppCompatActivity() {
             changeVisibility("G_signin")
         }
 
-
-//        binding.googleLoginBtn.setOnClickListener {
-//            val gso = GoogleSignInOptions
-//                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build()
-//            val signInIntent = GoogleSignIn.getClient(this, gso).signInIntent
-//            requestLauncher.launch(signInIntent)
-//        }
-
-//        binding.googleSignBtn.setOnClickListener {
-//            val gso = GoogleSignInOptions
-//                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.default_web_client_id))
-//                .requestEmail()
-//                .build()
-//            saveUser()
-//            binding.authEmailEditView.text.clear()
-//            binding.authPasswordEditView.text.clear()
-//            binding.authUsernameEditView.text.clear()
-//            binding.authAddressEditView.text.clear()
-//            binding.authTelEditView.text.clear()
-//            val signInIntent = GoogleSignIn.getClient(this, gso).signInIntent
-//            requestLauncher.launch(signInIntent)
-//        }
-
         binding.signBtn.setOnClickListener {
             //이메일,비밀번호 회원가입........................
             val username = binding.authUsernameEditView.text.toString()
