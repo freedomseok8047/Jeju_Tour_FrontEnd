@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/accommodation"
+        android:title="제주 숙박"
+        android:icon="@drawable/baseline_bed_24" />
+    <item
+        android:id="@+id/restaurant"
+        android:title="제주 맛집"
+        android:icon="@drawable/baseline_bed_24"/>
+    <item
+        android:id="@+id/festival"
+        android:title="제주 축제"
+        android:icon="@drawable/baseline_bed_24"/>
+    <item
+        android:id="@+id/tour"
+        android:title="제주 관광"
+        android:icon="@drawable/baseline_bed_24"/>
+    <item
+        android:id="@+id/shopping"
+        android:title="제주 쇼핑"
+        android:icon="@drawable/baseline_bed_24"/>
+    <item
+        android:id="@+id/community"
+        android:title="커뮤니티"
+        android:icon="@drawable/baseline_bed_24"/>
+
+</menu>
