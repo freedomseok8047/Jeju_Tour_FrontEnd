@@ -15,6 +15,7 @@ import com.example.visit_jeju_app.community.model.CommunityData
 import com.example.visit_jeju_app.community.myCheckPermission
 import com.example.visit_jeju_app.community.recycler.CommunityAdapter
 import com.example.visit_jeju_app.databinding.ActivityCommReadBinding
+import com.google.firebase.firestore.Query
 
 class CommReadActivity : AppCompatActivity() {
 
@@ -53,6 +54,7 @@ class CommReadActivity : AppCompatActivity() {
     }
     private fun makeRecyclerView(){
         MyApplication.db.collection("Communities")
+            .orderBy("date", Query.Direction.DESCENDING) // date 필드를 기준으로 내림차순 정렬
             .get()
             .addOnSuccessListener {result ->
                 val itemList = mutableListOf<CommunityData>()

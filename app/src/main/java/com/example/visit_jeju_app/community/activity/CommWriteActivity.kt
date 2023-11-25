@@ -14,6 +14,7 @@ import com.example.visit_jeju_app.MyApplication.Companion.storage
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.community.dateToString
 import com.example.visit_jeju_app.databinding.ActivityCommWriteBinding
+import com.google.firebase.Timestamp
 import java.io.File
 import java.util.Date
 
@@ -66,10 +67,13 @@ class CommWriteActivity : AppCompatActivity() {
     }
 
     private fun saveStore() {
+        // 현재 날짜와 시간을 Timestamp 형태로 변환
+        val timestamp = Timestamp(Date())
+
         val data = mapOf(
             "title" to binding.title.text.toString(),
             "content" to binding.addEditView.text.toString(),
-            "date" to dateToString(Date())
+            "date" to timestamp // Timestamp 형태로 저장
         )
         db.collection("Communities")
             .add(data)
