@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.visit_jeju_app.community.activity.CommDetailActivity
 import com.example.visit_jeju_app.community.model.CommunityData
 import com.example.visit_jeju_app.databinding.CommunityItemBinding
+import com.google.firebase.Timestamp
+import java.text.SimpleDateFormat
 
 
 class CommunityViewHolder(val binding: CommunityItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -30,7 +32,11 @@ class CommunityAdapter(val context: Context, val itemList: MutableList<Community
         holder.binding.run {
             itemTitleView.text=data.title
             itemContentView.text=data.content
-            itemDateView.text=data.date
+
+            // 파이어베이스에 저장된 timestamp형의 데이터를 불러와서
+            // activity_comm_read.xml에 최신순으로 나타나도록하는 관련코드
+            // Timestamp를 문자열로 변환하여 표시
+            itemDateView.text = timestampToString(data.date!!)
         }
 
         holder.itemView.setOnClickListener {
@@ -42,5 +48,10 @@ class CommunityAdapter(val context: Context, val itemList: MutableList<Community
             intent.putExtra("Comment", data.comment)
             context.startActivity(intent)
         }
+    }
+
+    // Timestamp를 문자열로 변환하는 함수
+    private fun timestampToString(timestamp: Timestamp): String {
+        return SimpleDateFormat("yyyy-MM-dd HH:mm").format(timestamp.toDate())
     }
 }

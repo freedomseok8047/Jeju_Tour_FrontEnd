@@ -15,7 +15,9 @@ import com.example.visit_jeju_app.community.model.CommunityData
 import com.example.visit_jeju_app.community.myCheckPermission
 import com.example.visit_jeju_app.community.recycler.CommunityAdapter
 import com.example.visit_jeju_app.databinding.ActivityCommReadBinding
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
+import java.text.SimpleDateFormat
 
 class CommReadActivity : AppCompatActivity() {
 
@@ -79,5 +81,11 @@ class CommReadActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    // 파이어베이스에 저장된 timestamp형의 데이터를 불러와서
+    // activity_comm_read.xml에 최신순으로 나타나도록하는 관련코드
+    // Timestamp를 문자열로 변환하는 함수
+    private fun timestampToString(timestamp: Timestamp): String {
+        return SimpleDateFormat("yyyy-MM-dd HH:mm").format(timestamp.toDate())
+    }
 
 }
