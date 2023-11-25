@@ -4,7 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.R
@@ -17,10 +19,29 @@ import com.example.visit_jeju_app.databinding.ActivityCommReadBinding
 class CommReadActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityCommReadBinding
+
+    //액션버튼 토글
+    lateinit var toggle: ActionBarDrawerToggle
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCommReadBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
+
+        //드로워화면 액션버튼 클릭 시 드로워 화면 나오게 하기
+        toggle =
+            ActionBarDrawerToggle(this@CommReadActivity, binding.drawerLayout,R.string.open, R.string.close)
+
+        binding.drawerLayout.addDrawerListener(toggle)
+        //화면 적용하기
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
+        //버튼 클릭스 동기화 : 드로워 열어주기
+        toggle.syncState()
+
 
         myCheckPermission(this)
         makeRecyclerView()
@@ -31,7 +52,7 @@ class CommReadActivity : AppCompatActivity() {
 
     }
     private fun makeRecyclerView(){
-        MyApplication.db.collection("Boards")
+        MyApplication.db.collection("Communities")
             .get()
             .addOnSuccessListener {result ->
                 val itemList = mutableListOf<CommunityData>()
@@ -40,13 +61,21 @@ class CommReadActivity : AppCompatActivity() {
                     item.docId=document.id
                     itemList.add(item)
                 }
-                binding.boardRecyclerView.layoutManager = LinearLayoutManager(this)
-                binding.boardRecyclerView.adapter = CommunityAdapter(this, itemList)
+                binding.communityRecyclerView.layoutManager = LinearLayoutManager(this)
+                binding.communityRecyclerView.adapter = CommunityAdapter(this, itemList)
             }
             .addOnFailureListener{exception ->
-                Log.d("kkang", "error.. getting document..", exception)
+                Log.d("lhs", "error.. getting document..", exception)
                 Toast.makeText(this, "서버 데이터 획득 실패", Toast.LENGTH_SHORT).show()
             }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 
 }

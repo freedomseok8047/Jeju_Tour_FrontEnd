@@ -31,7 +31,7 @@ class CommDetailActivity : AppCompatActivity() {
         binding.CommunityDate.text = date
         binding.CommunityContent.text = content
 
-        var commentlist = mutableListOf<comment>()
+        var commentList = mutableListOf<comment>()
         var count = 0
         if (docId != null) {
             MyApplication.db.collection("Communities").document(docId).collection("Comments")
@@ -39,15 +39,12 @@ class CommDetailActivity : AppCompatActivity() {
                 .addOnSuccessListener { result ->
                     val itemList = mutableListOf<CommunityData>()
                     for (document in result) {
-                        //val item = document.toObject(BoardData::class.java)
-                        //item.comment=document.id
-                        //itemList.add(item)
-                        commentlist.add(comment(document.data.get("comment").toString(), document.data.get("timestamp").toString()))
+                        commentList.add(comment(document.data.get("comment").toString(), document.data.get("timestamp").toString()))
                         count++
                         if(result.size() == count) {
-                            Log.d("test", "$commentlist")
+                            Log.d("lhs", "$commentList")
                             binding.commentRecyclerView.layoutManager = LinearLayoutManager(this)
-                            binding.commentRecyclerView.adapter = CommentAdapter(this, commentlist)
+                            binding.commentRecyclerView.adapter = CommentAdapter(this, commentList)
                         }
                     }
 

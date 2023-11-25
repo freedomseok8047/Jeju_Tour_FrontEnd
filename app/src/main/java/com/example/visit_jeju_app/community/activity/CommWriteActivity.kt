@@ -71,13 +71,13 @@ class CommWriteActivity : AppCompatActivity() {
             "content" to binding.addEditView.text.toString(),
             "date" to dateToString(Date())
         )
-        db.collection("Boards")
+        db.collection("Communities")
             .add(data)
             .addOnSuccessListener {
                 uploadImage(it.id)
             }
             .addOnFailureListener {
-                Toast.makeText(this, "error!!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "오류가 발생했습니다!!", Toast.LENGTH_SHORT).show()
             }
         finish()
     }
@@ -90,11 +90,11 @@ class CommWriteActivity : AppCompatActivity() {
         val file = Uri.fromFile(File(filePath))
         imgRef.putFile(file)
             .addOnSuccessListener {
-                Toast.makeText(this, "upload ok", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "업로드 성공했습니다", Toast.LENGTH_SHORT).show()
                 finish()
             }
             .addOnFailureListener {
-                Toast.makeText(this, "upload fail", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "업로드 실패했습니다", Toast.LENGTH_SHORT).show()
 
             }
     }

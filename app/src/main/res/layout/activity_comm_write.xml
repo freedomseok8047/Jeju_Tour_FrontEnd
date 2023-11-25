@@ -29,15 +29,15 @@
 
     <Button
         android:id="@+id/upload"
-        android:layout_width="110dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="UPLOAD" />
+        android:text="파일 업로드" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="252dp"
-        android:src="@drawable/upload"
+        android:src="@drawable/imageupload"
         android:scaleType="centerCrop"
         />
 
