@@ -11,6 +11,7 @@ import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.community.model.CommunityData
 import com.example.visit_jeju_app.community.recycler.CommentAdapter
 import com.example.visit_jeju_app.databinding.ActivityCommDetailBinding
+import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 
 class CommDetailActivity : AppCompatActivity() {
@@ -106,4 +107,17 @@ class CommDetailActivity : AppCompatActivity() {
             overridePendingTransition(0, 0) //인텐트 효과 없애기
         }
     }
+
+    // 파이어베이스에 저장된 timestamp형인 date를 불러올 수 있도록
+    // activity_comm_detail.xml 내 android:id="@+id/CommunityDate"인 textview에 timestamp형인 date를 설정
+    private fun setCommunityDate(timestamp: Timestamp) {
+        binding.CommunityDate.text = timestampToString(timestamp)
+    }
+
+    // Timestamp를 문자열로 변환하는 함수
+    private fun timestampToString(timestamp: Timestamp): String {
+        return SimpleDateFormat("yyyy-MM-dd HH:mm").format(timestamp.toDate())
+    }
+
+
 }

@@ -81,11 +81,12 @@ class CommReadActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    // 없애도 되는 코드
     // 파이어베이스에 저장된 timestamp형의 데이터를 불러와서
     // activity_comm_read.xml에 최신순으로 나타나도록하는 관련코드
     // Timestamp를 문자열로 변환하는 함수
-    private fun timestampToString(timestamp: Timestamp): String {
-        return SimpleDateFormat("yyyy-MM-dd HH:mm").format(timestamp.toDate())
-    }
+//    private fun timestampToString(timestamp: Timestamp): String {
+//        return SimpleDateFormat("yyyy-MM-dd HH:mm").format(timestamp.toDate())
+//    }
 
 }

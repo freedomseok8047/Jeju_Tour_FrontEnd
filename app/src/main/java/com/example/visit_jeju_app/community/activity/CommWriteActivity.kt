@@ -67,13 +67,15 @@ class CommWriteActivity : AppCompatActivity() {
     }
 
     private fun saveStore() {
-        // 현재 날짜와 시간을 Timestamp 형태로 변환
-        val timestamp = Timestamp(Date())
+        // 현재 날짜와 시간을 문자열로 변환
+        val timestampString = dateToString(Date())
 
         val data = mapOf(
             "title" to binding.title.text.toString(),
             "content" to binding.addEditView.text.toString(),
-            "date" to timestamp // Timestamp 형태로 저장
+
+            // timestamp형이 아닌 string이면서 "yyyy-MM-dd HH:mm"포맷으로 파이어베이스 저장 및 조회 관련 코드
+            "date" to timestampString // 문자열로 저장
         )
         db.collection("Communities")
             .add(data)

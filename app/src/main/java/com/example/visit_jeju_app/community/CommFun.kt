@@ -31,7 +31,8 @@ fun myCheckPermission(activity: AppCompatActivity) {
     }
 }
 
+// timestamp형이 아닌 string이면서 "yyyy-MM-dd HH:mm"포맷으로 파이어베이스 저장 및 조회 관련 코드
 fun dateToString(date: Date): String {
-    val format = SimpleDateFormat("yyyy-MM-dd")
-    return format.format(date)
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+    return dateFormat.format(date)
 }

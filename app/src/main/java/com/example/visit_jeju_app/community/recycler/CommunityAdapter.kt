@@ -36,7 +36,8 @@ class CommunityAdapter(val context: Context, val itemList: MutableList<Community
             // 파이어베이스에 저장된 timestamp형의 데이터를 불러와서
             // activity_comm_read.xml에 최신순으로 나타나도록하는 관련코드
             // Timestamp를 문자열로 변환하여 표시
-            itemDateView.text = timestampToString(data.date!!)
+            // timestamp형이 아닌 string이면서 "yyyy-MM-dd HH:mm"포맷으로 파이어베이스 저장 및 조회 관련 코드
+            itemDateView.text = data.date
         }
 
         holder.itemView.setOnClickListener {
