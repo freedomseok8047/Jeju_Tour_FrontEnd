@@ -60,10 +60,25 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="내용" />
+
+            <EditText
+                android:id="@+id/regContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#eeeeee"
+                android:padding="16dp"
+                android:text="내용입니다." />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/CommunityModify"
                     android:layout_width="wrap_content"
@@ -75,17 +90,10 @@
                     android:id="@+id/CommunityCancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:padding="16dp"
                     android:text="취소" />
             </LinearLayout>
-
-            <EditText
-                android:id="@+id/regContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#eeeeee"
-                android:padding="16dp"
-                android:text="내용입니다." />
 
         </LinearLayout>
 
