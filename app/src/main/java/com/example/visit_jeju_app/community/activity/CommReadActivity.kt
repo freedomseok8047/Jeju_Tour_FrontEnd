@@ -28,6 +28,7 @@ class CommReadActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
 
     // crud된 파이어베이스 데이터가 activiy_comm_read.xml 뷰에 자동반영되도록 하는 코드
+    // Firebase에서 데이터가 업데이트될 때 RecyclerView에 자동으로 반영되도록 하는 코드
     lateinit var communityAdapter: CommunityAdapter
     lateinit var listenerRegistration: ListenerRegistration
 
@@ -85,7 +86,9 @@ class CommReadActivity : AppCompatActivity() {
                     item.docId = document.id
                     itemList.add(item)
                 }
-                binding.communityRecyclerView.adapter = CommunityAdapter(this, itemList)
+                // crud된 파이어베이스 자료 가져올 때 최신순으로 내림차순 정렬되는 코드
+                communityAdapter.updateData(itemList)
+//                binding.communityRecyclerView.adapter = CommunityAdapter(this, itemList)
             }
     }
 //            .addOnFailureListener{exception ->
