@@ -11,8 +11,8 @@ interface NaverNetworkService {
     //    @GET("/naveropenapi.apigw.ntruss.com/")
     @GET("/map-reversegeocode/v2/gc")
     @Headers(
-        "X-NCP-APIGW-API-KEY-ID: 426fftzyvu",
-        "X-NCP-APIGW-API-KEY: EbRpqWC1Aehm3Nv2UmftiLQNqLgIIUGjyRNFaVPV"
+        "X-NCP-APIGW-API-KEY-ID: vbc859zh6w",
+        "X-NCP-APIGW-API-KEY: lGcWpHIuHuMbE7V795uQlqCIxT4X0wT2IcaDvkhX"
     )
     fun reverseGeocode(
         @Query("coords") coords: String?,

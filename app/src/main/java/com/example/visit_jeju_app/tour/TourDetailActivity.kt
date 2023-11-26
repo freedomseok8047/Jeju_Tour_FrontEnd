@@ -36,11 +36,16 @@ class TourDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView = findViewById<View>(R.id.map_view) as com.naver.maps.map.MapView
         mapView!!.onCreate(savedInstanceState)
         mapView!!.getMapAsync(this@TourDetailActivity)
+
     }
 
     override fun onMapReady(naverMap: NaverMap) {
         val networkService = (applicationContext as MyApplication).networkService
         val mapListCall = networkService.GetTourList()
+
+        val uiSettings = Companion.naverMap?.uiSettings
+        uiSettings?.isCompassEnabled = true
+        uiSettings?.isLocationButtonEnabled = true
 
         mapListCall.enqueue(object : Callback<List<TourModel>> {
             override fun onResponse(
