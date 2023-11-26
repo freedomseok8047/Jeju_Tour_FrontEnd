@@ -15,8 +15,10 @@ import java.text.SimpleDateFormat
 class CommunityViewHolder(val binding: CommunityItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
 }
+// crud된 파이어베이스 데이터가 activiy_comm_read.xml 뷰에 자동반영되도록 하는 코드
+class CommunityAdapter(val context: Context, private var itemList: MutableList<CommunityData>) :
+    RecyclerView.Adapter<CommunityViewHolder>() {
 
-class CommunityAdapter(val context: Context, val itemList: MutableList<CommunityData>): RecyclerView.Adapter<CommunityViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommunityViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return CommunityViewHolder(CommunityItemBinding.inflate(layoutInflater))
@@ -27,7 +29,8 @@ class CommunityAdapter(val context: Context, val itemList: MutableList<Community
     }
 
     override fun onBindViewHolder(holder: CommunityViewHolder, position: Int) {
-        val data = itemList.get(position)
+        // crud된 파이어베이스 데이터가 activiy_comm_read.xml 뷰에 자동반영되도록 하는 코드
+        val data = itemList[position]
 
         holder.binding.run {
             itemTitleView.text=data.title
@@ -51,8 +54,15 @@ class CommunityAdapter(val context: Context, val itemList: MutableList<Community
         }
     }
 
-    // Timestamp를 문자열로 변환하는 함수
-    private fun timestampToString(timestamp: Timestamp): String {
-        return SimpleDateFormat("yyyy-MM-dd HH:mm").format(timestamp.toDate())
+    // crud된 파이어베이스 데이터가 activiy_comm_read.xml 뷰에 자동반영되도록 하는 코드
+    fun updateData(newItemList: MutableList<CommunityData>) {
+        itemList = newItemList
+        notifyDataSetChanged()
     }
+
+
+//    // Timestamp를 문자열로 변환하는 함수
+//    private fun timestampToString(timestamp: Timestamp): String {
+//        return SimpleDateFormat("yyyy-MM-dd HH:mm").format(timestamp.toDate())
+//    }
 }
