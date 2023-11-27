@@ -40,7 +40,10 @@ android {
 
 dependencies {
 
-    // 파이어베이스 설정 2(ktb)
+    // ok http3 연결
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+    // 파이어베이스 설정
     implementation("com.google.firebase:firebase-database-ktx:20.2.2")
 
     // 파이어베이스 설정
