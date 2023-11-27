@@ -41,7 +41,7 @@ class TourActivity : AppCompatActivity() {
     lateinit var mLastLocation: Location // 위치 값을 가지고 있는 객체
     private lateinit var handler: Handler
     private var lastUpdateTimestamp = 0L
-    private val updateDelayMillis = 40000
+    private val updateDelayMillis = 10000
     //리사이클러 뷰 업데이트 딜레이 업데이트 주기 생성
 
     lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
