@@ -16,7 +16,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.visit_jeju_app.chat.ChatActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
 import com.example.visit_jeju_app.main.adapter.ImageSliderAdapter
-import com.example.visit_jeju_app.mainAdapter.RecyclerView
+import com.example.visit_jeju_app.main.adapter.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

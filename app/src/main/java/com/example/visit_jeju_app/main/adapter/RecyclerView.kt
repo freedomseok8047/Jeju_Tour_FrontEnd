@@ -1,4 +1,4 @@
-package com.example.visit_jeju_app.mainAdapter
+package com.example.visit_jeju_app.main.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
