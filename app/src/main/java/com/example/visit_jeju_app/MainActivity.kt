@@ -1,6 +1,8 @@
 package com.example.visit_jeju_app
 
-import ImageSliderAdapter
+
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -11,14 +13,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.visit_jeju_app.chat.ChatActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
+import com.example.visit_jeju_app.main.adapter.ImageSliderAdapter
 import com.example.visit_jeju_app.mainAdapter.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
     //액션버튼 토글
     lateinit var toggle: ActionBarDrawerToggle
+
+    //lateinit var viewPager_aespa: ViewPager2
+    lateinit var viewPager_mainVisual: ViewPager2
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,9 +116,61 @@ class MainActivity : AppCompatActivity() {
         val imageSliderAdapter = ImageSliderAdapter(images)
         viewPager.adapter = imageSliderAdapter*/
 
+        viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+        viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+        viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+
+
+
+
+
+        // Bottom Navigation link
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.home -> {
+                    // 홈 아이템 클릭 처리
+                    val intent = Intent(this@MainActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.chat -> {
+                    val intent = Intent(this@MainActivity, ChatActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.youtube -> {
+                    openWebPage("https://www.youtube.com/c/visitjeju")
+                    true
+                }
+                R.id.instagram -> {
+                    openWebPage("https://www.instagram.com/visitjeju.kr")
+                    true
+                }
+                else -> false
+            }
+        }
 
 
     } //onCreate
+
+    // 뷰 페이저에 들어갈 아이템
+    private fun getMainvisual(): ArrayList<Int> {
+        return arrayListOf<Int>(
+            R.drawable.jeju_apec01,
+            R.drawable.jeju_apec02,
+            R.drawable.jeju_apec03,
+            R.drawable.jeju_apec04)
+    }
+
+
+    private fun openWebPage(url: String) {
+        val webpage = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {

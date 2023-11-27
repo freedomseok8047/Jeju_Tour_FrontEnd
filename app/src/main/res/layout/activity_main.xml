@@ -68,11 +68,12 @@
 
                 <!-- 메인 비쥬얼 슬라이더 -->
                 <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewPager"
+                    android:id="@+id/viewPager_mainVisual"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="match_parent"/>
+                <!-- //메인 비쥬얼 슬라이더 -->
 
-                    android:layout_below="@id/viewRecyclerHotel" />
+
 
 
                 <!-- 키 데이터 리사이클러 뷰 -->

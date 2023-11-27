@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.visit_jeju_app.R
 
 // 메인 비쥬얼 슬라이드 어뎁터
-class ImageSliderAdapter(private val images: List<Int>) : RecyclerView.Adapter<ImageSliderAdapter.ImageViewHolder>() {
+class ImageSliderAdapter2(private val images: List<Int>) : RecyclerView.Adapter<ImageSliderAdapter2.ImageViewHolder>() {
 
     inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageView: ImageView = itemView.findViewById(R.id.imageView)

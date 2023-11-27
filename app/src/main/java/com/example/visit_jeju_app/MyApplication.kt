@@ -9,6 +9,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MyApplication : MultiDexApplication() {
     companion object {
@@ -49,4 +51,14 @@ class MyApplication : MultiDexApplication() {
         db = FirebaseFirestore.getInstance()
         rdb = Firebase.database.reference
     }
+
+    val retrofit: Retrofit
+        get() = Retrofit.Builder()
+            .baseUrl("http://10.100.103.43:8083/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+//    var networkService: NetworkServiceDoNm = retrofit.create(NetworkServiceDoNm::class.java)
+
+
 }
