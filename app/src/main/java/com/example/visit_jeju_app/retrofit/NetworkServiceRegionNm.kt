@@ -10,8 +10,8 @@ import retrofit2.http.Path
 interface NetworkServiceRegionNm {
     @GET("tour/tourList/{itemsRegion2CdValue}")
     fun getList(
-        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Long
-    ): Call<List<tourRegionNmList>>
+        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
+    ): Call<List<TourList>>
 
 //    @GET("res/resList/{itemsRegion2CdValue}")
 //    fun getList(
