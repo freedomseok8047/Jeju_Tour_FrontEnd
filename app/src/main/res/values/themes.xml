@@ -6,4 +6,10 @@
     </style>
 
     <style name="Theme.Visit_Jeju_App" parent="Base.Theme.Visit_Jeju_App" />
+
+    <style name="DrawerStyle" parent="Base.Theme.Visit_Jeju_App">
+        <item name="color">#EA4A17</item>
+    </style>
+
+
 </resources>
