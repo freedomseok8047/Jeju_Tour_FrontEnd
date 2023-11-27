@@ -1,12 +1,15 @@
 package com.example.visit_jeju_app
 
 import androidx.multidex.MultiDexApplication
+import com.example.visit_jeju_app.retrofit.NetworkServiceRegionNm
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MyApplication : MultiDexApplication() {
     companion object {
@@ -45,4 +48,20 @@ class MyApplication : MultiDexApplication() {
         storage = Firebase.storage
         db = FirebaseFirestore.getInstance()
     }
+    val retrofit: Retrofit
+        get() = Retrofit.Builder()
+            .baseUrl("http://10.100.104.32:8083/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+    var networkService = retrofit.create(NetworkServiceRegionNm::class.java)
+
 }
+
+val naver: Retrofit
+    get() = Retrofit.Builder()
+        .baseUrl("https://naveropenapi.apigw.ntruss.com/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+var networkService: NetworkServiceRegionNm = naver.create(NetworkServiceRegionNm::class.java)
