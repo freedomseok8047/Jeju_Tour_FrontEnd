@@ -72,10 +72,19 @@ class CommDetailActivity : AppCompatActivity() {
             if (docId != null) {
                 MyApplication.db.collection("Communities").document(docId)
                     .delete()
-                val intent = intent //인텐트
-                startActivity(intent) //액티비티 열기
-                overridePendingTransition(0, 0) //인텐트 효과 없애기
-                finish() //인텐트 효과 없애기
+
+                    // detail 뷰에서 '삭제' 버튼 클릭 시, read 뷰로 이동하도록 설정 코드
+                    .addOnSuccessListener {
+                        // 삭제 성공 시 CommReadActivity로 이동
+                        val intent = Intent(this, CommReadActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                    .addOnFailureListener {
+                        // 삭제 실패 시 메시지 출력
+                        Log.e("CommDetailActivity", "Error deleting document", it)
+                        // 원하는 에러 처리 로직을 여기에 추가할 수 있습니다.
+                    }
             }
         }
 
