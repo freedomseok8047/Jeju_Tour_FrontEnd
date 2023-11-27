@@ -1,5 +1,7 @@
 package com.example.visit_jeju_app.retrofit
 
+import com.example.visit_jeju_app.accommodation.model.AccomList
+import com.example.visit_jeju_app.restaurant.model.ResList
 import com.example.visit_jeju_app.tour.model.TourList
 import com.example.visit_jeju_app.tour.model.TourModel
 import com.example.visit_jeju_app.tour.model.tourRegionNmList
@@ -26,6 +28,11 @@ interface NetworkServiceRegionNm {
     @GET("tour/tourAllList")
     fun GetTourList(): Call<List<TourList>>
 
+    @GET("accom/accomAllList")
+    fun GetAccomList(): Call<List<AccomList>>
+
+    @GET("res/resAllList")
+    fun GetResList(): Call<List<ResList>>
 //    @GET("res/resAllList")
 //    fun GetResList(): Call<List<ResList>>
 //
