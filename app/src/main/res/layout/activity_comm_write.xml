@@ -15,7 +15,108 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="제목"/>
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:fontFamily="@font/sans_medium"
+        android:text="제주관광 커뮤니티"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_gravity="center"
+        android:textStyle="italic"
+        android:fontFamily="@font/sans_medium"
+        android:text="다양한 사람들과 자유롭게 정보를 공유해봐요"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/sans_medium"
+        android:text="🗂️ 카테고리 선택"/>
+
+    <RadioGroup
+        android:id="@+id/categoryRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioTour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:text="관광지"
+            android:textSize="10sp"/>
+
+        <RadioButton
+            android:id="@+id/radioRestaurant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:text="음식점"
+            android:textSize="10sp"/>
+
+        <RadioButton
+            android:id="@+id/radioAccommodation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:text="숙박"
+            android:textSize="10sp"/>
+
+        <RadioButton
+            android:id="@+id/radioShopping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:text="쇼핑"
+            android:textSize="10sp"/>
+
+        <RadioButton
+            android:id="@+id/radioFestival"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:text="축제"
+            android:textSize="10sp"/>
+
+        <RadioButton
+            android:id="@+id/radioOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:fontFamily="@font/sans_medium"
+            android:text="기타"
+            android:textSize="10sp"/>
+
+    </RadioGroup>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/sans_medium"
+        android:text="🔍 장소검색"/>
+
+    <TextView
+        android:id="@+id/spotSearchView"
+        android:layout_width="200dp"
+        android:padding="16dp"
+        android:background="#eeeeee"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sans_medium"
+        android:hint="장소를 선택해주세요." />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/sans_medium"
+        android:text="📜🖊️ 글작성"/>
 
     <EditText
         android:id="@+id/title"
@@ -24,41 +125,86 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="@font/sans_medium"
         android:hint="제목을 입력하세요."
-        />
-
-    <Button
-        android:id="@+id/upload"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:text="파일 업로드" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="252dp"
-        android:src="@drawable/imageupload"
-        android:scaleType="centerCrop"
         />
 
     <EditText
         android:id="@+id/addEditView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         android:layout_weight="1"
+        android:layout_marginTop="10dp"
         android:background="#eeeeee"
         android:hint="내용을 입력하세요."
         android:padding="16dp"
+        android:fontFamily="@font/sans_medium"
         android:scrollbars="vertical" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/sans_medium"
+        android:text="🖼️ 사진첨부"/>
+
+    <Button
+        android:id="@+id/upload"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="사진 업로드"
+        android:background="#00BCD4"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="252dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/imageupload1"
+        android:scaleType="centerCrop"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/sans_medium"
+        android:text="🔒 작성자명 비공개"/>
+
+    <RadioGroup
+        android:id="@+id/writerRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <RadioButton
+        android:id="@+id/radioUsed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sans_medium"
+        android:text="사용함" />
+
+    <RadioButton
+        android:id="@+id/radioNotused"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/sans_medium"
+        android:text="사용안함" />
+
+    </RadioGroup>
 
     <Button
         android:id="@+id/postbtn"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="등록하기"
-        android:textColor="#FFFFFF"
-        android:background="#C62828"/>
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/sans_medium"
+        android:text="작성완료"
+        android:background="#00BCD4"/>
 
 </LinearLayout>
     </ScrollView>
