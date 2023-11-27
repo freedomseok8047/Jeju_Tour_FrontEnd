@@ -11,6 +11,7 @@ import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.community.model.CommunityData
 import com.example.visit_jeju_app.community.recycler.CommentAdapter
 import com.example.visit_jeju_app.databinding.ActivityCommDetailBinding
+import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 
 class CommDetailActivity : AppCompatActivity() {
@@ -31,7 +32,7 @@ class CommDetailActivity : AppCompatActivity() {
         binding.CommunityDate.text = date
         binding.CommunityContent.text = content
 
-        var commentlist = mutableListOf<comment>()
+        var commentList = mutableListOf<comment>()
         var count = 0
         if (docId != null) {
             MyApplication.db.collection("Communities").document(docId).collection("Comments")
@@ -39,15 +40,12 @@ class CommDetailActivity : AppCompatActivity() {
                 .addOnSuccessListener { result ->
                     val itemList = mutableListOf<CommunityData>()
                     for (document in result) {
-                        //val item = document.toObject(BoardData::class.java)
-                        //item.comment=document.id
-                        //itemList.add(item)
-                        commentlist.add(comment(document.data.get("comment").toString(), document.data.get("timestamp").toString()))
+                        commentList.add(comment(document.data.get("comment").toString(), document.data.get("timestamp").toString()))
                         count++
                         if(result.size() == count) {
-                            Log.d("test", "$commentlist")
+                            Log.d("lhs", "$commentList")
                             binding.commentRecyclerView.layoutManager = LinearLayoutManager(this)
-                            binding.commentRecyclerView.adapter = CommentAdapter(this, commentlist)
+                            binding.commentRecyclerView.adapter = CommentAdapter(this, commentList)
                         }
                     }
 
@@ -109,4 +107,17 @@ class CommDetailActivity : AppCompatActivity() {
             overridePendingTransition(0, 0) //인텐트 효과 없애기
         }
     }
+
+    // 파이어베이스에 저장된 timestamp형인 date를 불러올 수 있도록
+    // activity_comm_detail.xml 내 android:id="@+id/CommunityDate"인 textview에 timestamp형인 date를 설정
+    private fun setCommunityDate(timestamp: Timestamp) {
+        binding.CommunityDate.text = timestampToString(timestamp)
+    }
+
+    // Timestamp를 문자열로 변환하는 함수
+    private fun timestampToString(timestamp: Timestamp): String {
+        return SimpleDateFormat("yyyy-MM-dd HH:mm").format(timestamp.toDate())
+    }
+
+
 }

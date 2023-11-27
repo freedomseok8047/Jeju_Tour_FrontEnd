@@ -25,20 +25,24 @@ class CommUpdateActivity : AppCompatActivity() {
         binding.regTitle.setText(title)
         binding.regContent.setText(content)
 
+        // 내용 수정한 부분을 파이어베이스에 반영하는 코드
         // 수정
         binding.CommunityModify.setOnClickListener {
-            val data = mapOf(
-                "title" to binding.regTitle.text.toString(),
-                "content" to binding.regTitle.text.toString(),
-                "date" to dateToString(Date())
-            )
-            if (docId != null) {
-                MyApplication.db.collection("Communities").document(docId).update(data)
+            val updatedTitle = binding.regTitle.text.toString()
+            val updatedContent = binding.regContent.text.toString()
+
+            // 제목 또는 내용이 수정되었는지 확인
+            if (updatedTitle != title || updatedContent != content) {
+                val data = mapOf(
+                    "title" to updatedTitle,
+                    "content" to updatedContent,
+                    "date" to dateToString(Date())
+                )
+                if (docId != null) {
+                    MyApplication.db.collection("Communities").document(docId).update(data)
+                }
             }
-            overridePendingTransition(0, 0) //인텐트 효과 없애기
-            val intent = intent //인텐트
-            startActivity(intent) //액티비티 열기
-            overridePendingTransition(0, 0) //인텐트 효과 없애기
+
             finish()
         }
 

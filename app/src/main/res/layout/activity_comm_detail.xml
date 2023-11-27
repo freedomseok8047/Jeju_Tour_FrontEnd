@@ -36,6 +36,7 @@
                     android:background="#eeeeee"
                     android:padding="16dp"
                     android:text="제목입니다." />
+
             </LinearLayout>
 
             <LinearLayout
@@ -60,32 +61,24 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/CommunityModify"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:text="수정" />
+                    android:text="사진" />
 
-                <Button
-                    android:id="@+id/CommunityDelete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="삭제" />
             </LinearLayout>
-
 
             <ImageView
                 android:id="@+id/ImageView"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/upload" />
+                android:src="@drawable/imageupload" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -100,6 +93,31 @@
                 android:background="#eeeeee"
                 android:padding="16dp"
                 android:text="내용입니다." />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/CommunityModify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:background="#00BCD4"
+                    android:text="수정"
+                    android:textColor="#FFFFFF"/>
+
+                <Button
+                    android:id="@+id/CommunityDelete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:padding="16dp"
+                    android:background="#00BCD4"
+                    android:text="삭제"
+                    android:textColor="#FFFFFF"/>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -134,7 +152,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="8dp"
-                    android:text="등록하기" />
+                    android:background="#00BCD4"
+                    android:text="게시물 등록"
+                    android:textColor="#FFFFFF"/>
             </LinearLayout>
 
         </LinearLayout>
