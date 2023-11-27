@@ -5,26 +5,61 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBarDrawerToggle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.visit_jeju_app.MainActivity
 import com.example.visit_jeju_app.MyApplication.Companion.db
 import com.example.visit_jeju_app.MyApplication.Companion.storage
 import com.example.visit_jeju_app.R
+import com.example.visit_jeju_app.chat.ChatActivity
 import com.example.visit_jeju_app.community.dateToString
 import com.example.visit_jeju_app.databinding.ActivityCommWriteBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Timestamp
 import java.io.File
 import java.util.Date
 
 class CommWriteActivity : AppCompatActivity() {
     lateinit var binding : ActivityCommWriteBinding
+
+    // 공통 메인 레이아웃 적용 코드
+    //액션버튼 토글
+    lateinit var toggle: ActionBarDrawerToggle
+
     lateinit var filePath: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCommWriteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 공통 메인 레이아웃 적용 코드
+        setSupportActionBar(binding.toolbar)
+        //드로워화면 액션버튼 클릭 시 드로워 화면 나오게 하기
+        toggle =
+            ActionBarDrawerToggle(this@CommWriteActivity, binding.drawerLayout,R.string.open, R.string.close)
+
+        binding.drawerLayout.addDrawerListener(toggle)
+        //화면 적용하기
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //버튼 클릭스 동기화 : 드로워 열어주기
+        toggle.syncState()
+        // NavigationView 메뉴 아이템 클릭 리스너 설정
+        binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.community -> {
+                    // '커뮤니티' 메뉴 아이템 클릭 시 CommReadActivity로 이동
+                    startActivity(Intent(this, CommReadActivity::class.java))
+                    true
+                }
+                // 다른 메뉴 아이템에 대한 처리 추가
+
+                else -> false
+            }
+        }
 
         binding.postbtn.setOnClickListener {
             saveStore()
@@ -44,7 +79,7 @@ class CommWriteActivity : AppCompatActivity() {
 
         }
 
-    }
+    }//onCreate
 
     private val requestLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()

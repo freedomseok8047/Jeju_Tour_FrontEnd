@@ -128,5 +128,9 @@ class CommDetailActivity : AppCompatActivity() {
         return SimpleDateFormat("yyyy-MM-dd HH:mm").format(timestamp.toDate())
     }
 
+    // 사진 변경한 내용을 디테일 뷰와 수정 뷰 둘다 바로 반영하는 코드
+    companion object {
+        private const val UPDATE_REQUEST_CODE = 123
+    }
 
 }
