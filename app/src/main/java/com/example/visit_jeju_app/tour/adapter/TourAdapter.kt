@@ -12,10 +12,11 @@ import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.databinding.ItemTourBinding
 import com.example.visit_jeju_app.tour.TourActivity
 import com.example.visit_jeju_app.tour.TourDetailActivity
+import com.example.visit_jeju_app.tour.model.TourList
 import com.example.visit_jeju_app.tour.model.TourModel
 
 class TourViewHolder(val binding: ItemTourBinding): RecyclerView.ViewHolder(binding.root)
-class TourAdapter(val context: TourActivity, val datas:List<TourModel>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class TourAdapter(val context: TourActivity, val datas:List<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0

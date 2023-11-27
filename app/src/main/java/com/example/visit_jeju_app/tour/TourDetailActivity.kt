@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.databinding.ActivityTourDetailBinding
+import com.example.visit_jeju_app.tour.model.TourList
 import com.example.visit_jeju_app.tour.model.TourModel
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.NaverMap
@@ -73,10 +74,10 @@ class TourDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         uiSettings?.isCompassEnabled = true
         uiSettings?.isLocationButtonEnabled = true
 
-        mapListCall.enqueue(object : Callback<List<TourModel>> {
+        mapListCall.enqueue(object : Callback<List<TourList>> {
             override fun onResponse(
-                call: Call<List<TourModel>>,
-                response: Response<List<TourModel>>
+                call: Call<List<TourList>>,
+                response: Response<List<TourList>>
 
             ) {
                 var tourModel = response.body()
@@ -109,7 +110,7 @@ class TourDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
             }
 
-            override fun onFailure(call: Call<List<TourModel>>, t: Throwable) {
+            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
                 call.cancel()
             }
 
