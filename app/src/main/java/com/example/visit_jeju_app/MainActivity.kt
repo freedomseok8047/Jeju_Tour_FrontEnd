@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.community.activity.CommReadActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.visit_jeju_app.chat.ChatActivity
@@ -66,8 +67,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-    } //onCreate
         // 리사이클러 뷰 붙이기
         val datasHotel = mutableListOf<String>()
         for(i in 1..5) {
