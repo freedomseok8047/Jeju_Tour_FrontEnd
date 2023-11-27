@@ -1,8 +1,12 @@
 package com.example.visit_jeju_app.tour
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.bumptech.glide.Glide
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.databinding.ActivityTourDetailBinding
@@ -19,18 +23,40 @@ import retrofit2.Response
 class TourDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private var mapView: com.naver.maps.map.MapView? = null
     lateinit var binding: ActivityTourDetailBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?,) {
         binding= ActivityTourDetailBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.name.text = intent.getStringExtra("name")
-        binding.addr1.text = intent.getStringExtra("addr1")
-        binding.addr2.text = intent.getStringExtra("addr2")
-        binding.agencyname.text = intent.getStringExtra("agencyname")
-        binding.tel.text = intent.getStringExtra("tel")
-        binding.convenience.text = intent.getStringExtra("convenience")
-        var tel : String? = intent.getStringExtra("tel")
+        binding.name.text = intent.getStringExtra("itemsTitle")
+        binding.addr1.text = intent.getStringExtra("itemsAddress")
+        binding.addr2.text = intent.getStringExtra("itemsRoadAddress")
+        binding.regionlable.text = intent.getStringExtra("itemsRegion2CdLabel")
+        binding.info.text = intent.getStringExtra("itemsIntroduction")
+        binding.tel.text = intent.getStringExtra("itemsPhoneNo")
+        binding.convenience.text = intent.getStringExtra("itemsAllTag")
+        var itemsPhoneNo : String? = intent.getStringExtra("itemsPhoneNo")
+
+        val imageUrl = intent.getStringExtra("itemsRepPhotoPhotoidImgPath")
+        Glide.with(this)
+            .load(imageUrl)
+            .override(450,350)
+            .into(binding.itemImage)
+
+        // 전화 버튼
+//        binding.callBtn.setOnClickListener {
+//            var telNumber = "itemsPhoneNo:${itemsPhoneNo}"
+//            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(telNumber))
+//            startActivity(intent)
+//        }
+        binding.callBtn.setOnClickListener {
+            // 전화번호 가져오기
+            val phoneNumber = intent.getStringExtra("itemsPhoneNo")
+            // 전화 다이얼 화면으로 이동
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
+            startActivity(intent)
+        }
+
 
         //네이버 지도
         mapView = findViewById<View>(R.id.map_view) as com.naver.maps.map.MapView
@@ -76,7 +102,7 @@ class TourDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 val cameraPosition = CameraPosition( // 카메라 위치 변경
                     LatLng(lat,lnt),  // 위치 지정
-                    20.3 // 줌 레벨
+                    10.0 // 줌 레벨
                 )
                 naverMap.cameraPosition = cameraPosition
 

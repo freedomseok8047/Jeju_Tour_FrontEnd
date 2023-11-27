@@ -10,9 +10,11 @@
     >
     <ImageView
         android:id="@+id/thumbNailPhoto"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginLeft="20dp"
+        android:src="@drawable/user_basic"
+        android:scaleType="centerCrop"
         />
 
     <LinearLayout

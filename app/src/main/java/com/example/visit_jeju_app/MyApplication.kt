@@ -54,7 +54,7 @@ class MyApplication : MultiDexApplication() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-    var networkService: NetworkServiceRegionNm = retrofit.create(NetworkServiceRegionNm::class.java)
+    var networkService = retrofit.create(NetworkServiceRegionNm::class.java)
 
 }
 

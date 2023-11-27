@@ -1,28 +1,16 @@
 package com.example.visit_jeju_app.tour
 
-import android.content.Context
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationRequest
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.databinding.ActivityTourBinding
 import com.example.visit_jeju_app.tour.adapter.TourAdapter
-import com.example.visit_jeju_app.tour.model.TourListModel
 import com.example.visit_jeju_app.tour.model.TourModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
 import retrofit2.Call
@@ -54,6 +42,9 @@ class TourActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         handler = Handler(Looper.getMainLooper())
+
+        Log.d("ljs","oncreate")
+
 
 
 //        mLocationRequest = LocationRequest.create().apply {
@@ -99,8 +90,10 @@ class TourActivity : AppCompatActivity() {
             override fun onResponse(
                 call: Call<List<TourModel>>,
                 response: Response<List<TourModel>>
+
             ) {
                 val tourModel = response.body()
+                Log.d("ljs","tourModel 값 : ${tourModel}")
 //
 //                val centerLatitude = mLastLocation.latitude
 //                val centerLongitude = mLastLocation.longitude
@@ -134,12 +127,14 @@ class TourActivity : AppCompatActivity() {
 //
 //                lastUpdateTimestamp = currentTime
 
-                val layoutManager = LinearLayoutManager(
-                    this@TourActivity)
+                val layoutManager = LinearLayoutManager(this@TourActivity)
+
+                binding.recyclerView.layoutManager = layoutManager
+
                 binding.recyclerView.adapter =
                     TourAdapter(this@TourActivity,tourModel)
 
-                binding.recyclerView.layoutManager = layoutManager
+
 
                 binding.recyclerView.addItemDecoration(
                     DividerItemDecoration(this@TourActivity, LinearLayoutManager.VERTICAL)

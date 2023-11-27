@@ -1,6 +1,7 @@
 package com.example.visit_jeju_app.tour.adapter
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -18,6 +19,7 @@ class TourAdapter(val context: TourActivity, val datas:List<TourModel>?): Recycl
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
+        Log.d("ljs","datas?.size: ${datas?.size}")
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
@@ -29,36 +31,38 @@ class TourAdapter(val context: TourActivity, val datas:List<TourModel>?): Recycl
         holder.binding.root.animation = animation
 
         //add......................................
-        val model = datas!![position]
-        binding.name.text = model.itemsTitle
-        binding.addr1.text = model.itemsAddress
-        binding.addr2.text = model.itemsRoadAddress
-        binding.tel.text = model.itemsPhoneNo
+        val model = datas?.get(position)
+        binding.name.text = model?.itemsTitle
+        binding.addr1.text = model?.itemsAddress
+        binding.addr2.text = model?.itemsRoadAddress
+        binding.tel.text = model?.itemsPhoneNo
+        Log.d("ljs","model?.itemsTitle: ${model?.itemsTitle}")
 
         // glide 통해서, 이미지 를 직접 가져와서 처리하는 부분.
         //방법2)
         Glide.with(context)
             //load 실제 URL 주소 직접 넣기.
             .load(model?.itemsRepPhotoPhotoidThumbnailPath)
-            .override(120,120)
+            .override(150,150)
             .into(binding.thumbNailPhoto)
 
 
         //클릭시 관광지 상세정보 페이지에 정보넘기기
         holder.binding.root.setOnClickListener {
             val intent = Intent(holder.binding.root?.context, TourDetailActivity::class.java)
-            intent.putExtra("itemsLatitude", model.itemsLatitude)
-            intent.putExtra("itemsLongitude", model.itemsLongitude)
-            intent.putExtra("itemsTitle", model.itemsTitle)
-            intent.putExtra("itemsContentsCdLabel", model.itemsContentsCdLabel)
-            intent.putExtra("itemsRegion1CdLabel", model.itemsRegion1CdLabel)
-            intent.putExtra("itemsRegion2CdLabel", model.itemsRegion2CdLabel)
-            intent.putExtra("itemsRegion2CdValue", model.itemsRegion2CdValue)
-            intent.putExtra("itemsAddress", model.itemsAddress)
-            intent.putExtra("itemsRoadAddress", model.itemsRoadAddress)
-            intent.putExtra("itemsIntroduction", model.itemsIntroduction)
-            intent.putExtra("itemsAllTag", model.itemsAllTag)
-            intent.putExtra("itemsRepPhotoPhotoidImgPath", model.itemsRepPhotoPhotoidImgPath)
+            intent.putExtra("itemsLatitude", model?.itemsLatitude)
+            intent.putExtra("itemsLongitude", model?.itemsLongitude)
+            intent.putExtra("itemsTitle", model?.itemsTitle)
+            intent.putExtra("itemsContentsCdLabel", model?.itemsContentsCdLabel)
+            intent.putExtra("itemsRegion1CdLabel", model?.itemsRegion1CdLabel)
+            intent.putExtra("itemsRegion2CdLabel", model?.itemsRegion2CdLabel)
+            intent.putExtra("itemsRegion2CdValue", model?.itemsRegion2CdValue)
+            intent.putExtra("itemsAddress", model?.itemsAddress)
+            intent.putExtra("itemsRoadAddress", model?.itemsRoadAddress)
+            intent.putExtra("itemsIntroduction", model?.itemsIntroduction)
+            intent.putExtra("itemsAllTag", model?.itemsAllTag)
+            intent.putExtra("itemsPhoneNo", model?.itemsPhoneNo)
+            intent.putExtra("itemsRepPhotoPhotoidImgPath", model?.itemsRepPhotoPhotoidImgPath)
 
             ContextCompat.startActivity(holder.binding.root.context, intent, null)
         }
