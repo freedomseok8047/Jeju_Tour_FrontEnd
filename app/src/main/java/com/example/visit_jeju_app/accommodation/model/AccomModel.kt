@@ -16,8 +16,8 @@ import com.google.gson.annotations.SerializedName
 //    o6 "itemsRegion2CdValue": 12,
 //    o5 "itemsRegion2CdLabel": "애월",
 //    "itemsRegion2CdRefId": "region1>12",
-//    o7 "itemsAddress": "제주특별자치도 제주시 애월읍 하귀1리 157-6",
-//    o8 "itemsRoadAddress": "제주특별자치도 제주시 애월읍 하귀9길 34",
+//    o7 "itemsAddaccoms": "제주특별자치도 제주시 애월읍 하귀1리 157-6",
+//    o8 "itemsRoadAddaccoms": "제주특별자치도 제주시 애월읍 하귀9길 34",
 //    "itemsTag": "애견미용실,반려동물,반려동물동반입장,혼저옵서개,반려동물공간_기타",
 //    12 "itemsIntroduction": "몽story는 반려동물에게 최고의 서비스를 제공하는 장소다.",
 //    o9 "itemsLatitude": 33.4840605,
@@ -48,11 +48,11 @@ class AccomModel{
     // o6 "itemsRegion2CdValue": 12,
     var itemsRegion2CdValue: Int? = null
 
-    // o7 "itemsAddress": "제주특별자치도 제주시 애월읍 하귀1리 157-6",
-    var itemsAddress: String? = null
+    // o7 "itemsAddaccoms": "제주특별자치도 제주시 애월읍 하귀1리 157-6",
+    var itemsAddaccoms: String? = null
 
-    // o8 "itemsRoadAddress": "제주특별자치도 제주시 애월읍 하귀9길 34",
-    var itemsRoadAddress: String? = null
+    // o8 "itemsRoadAddaccoms": "제주특별자치도 제주시 애월읍 하귀9길 34",
+    var itemsRoadAddaccoms: String? = null
 
     // o9 "itemsLatitude": 33.4840605,
     var itemsLatitude: Double? = null

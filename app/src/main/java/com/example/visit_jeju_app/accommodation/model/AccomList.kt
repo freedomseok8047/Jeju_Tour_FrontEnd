@@ -27,13 +27,13 @@ data class AccomList(
     @SerializedName("itemsRegion2CdValue")
     var itemsRegion2CdValue: Int? = null,
 
-    // o7 "itemsAddress": "제주특별자치도 제주시 애월읍 하귀1리 157-6",
-    @SerializedName("itemsAddress")
-    var itemsAddress: String? = null,
+    // o7 "itemsAddaccoms": "제주특별자치도 제주시 애월읍 하귀1리 157-6",
+    @SerializedName("itemsAddaccoms")
+    var itemsAddaccoms: String? = null,
 
-    // o8 "itemsRoadAddress": "제주특별자치도 제주시 애월읍 하귀9길 34",
-    @SerializedName("itemsRoadAddress")
-    var itemsRoadAddress: String? = null,
+    // o8 "itemsRoadAddaccoms": "제주특별자치도 제주시 애월읍 하귀9길 34",
+    @SerializedName("itemsRoadAddaccoms")
+    var itemsRoadAddaccoms: String? = null,
 
     // o9 "itemsLatitude": 33.4840605,
     @SerializedName("itemsLatitude")

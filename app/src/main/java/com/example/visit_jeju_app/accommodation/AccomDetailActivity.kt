@@ -29,8 +29,8 @@ class AccomDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         binding.name.text = intent.getStringExtra("itemsTitle")
-        binding.addr1.text = intent.getStringExtra("itemsAddress")
-        binding.addr2.text = intent.getStringExtra("itemsRoadAddress")
+        binding.addr1.text = intent.getStringExtra("itemsAddaccoms")
+        binding.addr2.text = intent.getStringExtra("itemsRoadAddaccoms")
         binding.regionlable.text = intent.getStringExtra("itemsRegion2CdLabel")
         binding.info.text = intent.getStringExtra("itemsIntroduction")
         binding.tel.text = intent.getStringExtra("itemsPhoneNo")
@@ -76,10 +76,10 @@ class AccomDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         mapListCall.enqueue(object : Callback<List<AccomList>> {
             override fun onResponse(
                 call: Call<List<AccomList>>,
-                response: Response<List<AccomList>>
+                accomponse: Response<List<AccomList>>
 
             ) {
-                var accomModel = response.body()
+                var accomModel = accomponse.body()
 
                 // 마커 객체 생성
                 val marker = Marker()

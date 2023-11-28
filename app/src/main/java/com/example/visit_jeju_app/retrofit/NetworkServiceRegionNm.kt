@@ -3,8 +3,6 @@ package com.example.visit_jeju_app.retrofit
 import com.example.visit_jeju_app.accommodation.model.AccomList
 import com.example.visit_jeju_app.restaurant.model.ResList
 import com.example.visit_jeju_app.tour.model.TourList
-import com.example.visit_jeju_app.tour.model.TourModel
-import com.example.visit_jeju_app.tour.model.tourRegionNmList
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -12,13 +10,21 @@ import retrofit2.http.Path
 interface NetworkServiceRegionNm {
     @GET("tour/tourList/{itemsRegion2CdValue}")
     fun getList(
-        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Long
-    ): Call<List<tourRegionNmList>>
+        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
+    ): Call<List<TourList>>
 
-//    @GET("res/resList/{itemsRegion2CdValue}")
-//    fun getList(
-//        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Long
-//    ): Call<List<resRegionNmList>>
+    @GET("res/resList/{itemsRegion2CdValue}")
+    fun getResList(
+        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
+    ): Call<List<ResList>>
+
+    @GET("accom/accomList/{itemsRegion2CdValue}")
+    fun getAccomList(
+        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
+    ): Call<List<AccomList>>
+
+
+
 //    @GET("accom/accomList/{itemsRegion2CdValue}")
 //    fun getList(
 //        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Long
