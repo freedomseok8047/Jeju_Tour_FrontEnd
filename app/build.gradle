@@ -40,6 +40,8 @@ android {
 
 dependencies {
 
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
     // ok http3 연결
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 

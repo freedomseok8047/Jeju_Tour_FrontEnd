@@ -1,6 +1,5 @@
 package com.example.visit_jeju_app.tour
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +10,6 @@ import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.databinding.ActivityTourDetailBinding
 import com.example.visit_jeju_app.tour.model.TourList
-import com.example.visit_jeju_app.tour.model.TourModel
 import com.naver.maps.map.CameraPosition
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback

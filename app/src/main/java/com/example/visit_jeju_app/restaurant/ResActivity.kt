@@ -1,6 +1,7 @@
 package com.example.visit_jeju_app.restaurant
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
@@ -13,10 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.camp.campingapp.model.NaverReverseGeocodeResponse
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.databinding.ActivityResBinding
-import com.example.visit_jeju_app.retrofit.NaverNetworkService
 import com.example.visit_jeju_app.restaurant.adapter.ResAdapter
 import com.example.visit_jeju_app.restaurant.model.ResList
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -24,14 +23,9 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
-import com.google.android.gms.location.Priority
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class ResActivity : AppCompatActivity() {
@@ -40,7 +34,7 @@ class ResActivity : AppCompatActivity() {
     lateinit var mLastLocation: Location // 위치 값을 가지고 있는 객체
     private lateinit var handler: Handler
     private var lastUpdateTimestamp = 0L
-    private val updateDelayMillis = 10000
+    private val updateDelayMillis = 40000
     //리사이클러 뷰 업데이트 딜레이 업데이트 주기 생성
 
     lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
@@ -70,6 +64,12 @@ class ResActivity : AppCompatActivity() {
         if (checkPermissionForLocation(this)) {
             startLocationUpdates()
 
+        }
+
+        // 추가
+        binding.pageChange.setOnClickListener {
+            val intent = Intent(this@ResActivity, ResRegionNmActivity::class.java)
+            startActivity(intent)
         }
     }//oncreate
 
