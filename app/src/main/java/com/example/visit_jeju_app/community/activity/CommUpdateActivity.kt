@@ -33,8 +33,6 @@ class CommUpdateActivity : AppCompatActivity() {
         val content = intent.getStringExtra("CommunityContent")
         val date = intent.getStringExtra("CommunityDate")
 
-        // 수정 뷰에서 사진 변경할 시, 파이어베이스에 기존 사진에서 변경 반영하는 관련 코드
-        val imageUrl = intent.getStringExtra("CommunityImageUrl") // 추가된 부분
 
         binding.CommunityDate.text = date
         binding.regTitle.setText(title)

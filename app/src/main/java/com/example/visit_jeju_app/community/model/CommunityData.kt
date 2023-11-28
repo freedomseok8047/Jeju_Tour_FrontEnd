@@ -12,5 +12,7 @@ class CommunityData {
     var date: String? = null
     var comment: String? = null
 
+    // 카테고리를 파이어베이스에 저장하는 코드
+    var category: String? = null // 추가된 라인
 
 }

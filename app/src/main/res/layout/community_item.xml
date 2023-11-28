@@ -15,52 +15,90 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/itemEmailView"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:fontFamily="@font/sans_medium"
+            android:text="카테고리" />
+
+        <TextView
+            android:id="@+id/itemCategoryView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#212121"
-            android:textSize="14sp" />
+            android:layout_weight="1"
+            android:textColor="#FF9800"
+            />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:fontFamily="@font/sans_medium"
+            android:text="작성일" />
 
         <TextView
             android:id="@+id/itemDateView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:textColor="#727272"
-            android:textSize="12sp"
-            android:text="date"
+            android:layout_weight="1"
             />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/itemTitleView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="10dp"
-        android:lineSpacingExtra="2dp"
         android:paddingLeft="10dp"
-        android:textColor="#212121"
-        android:textSize="14sp"
-        android:text="title"
+        android:paddingTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:fontFamily="@font/sans_medium"
+            android:text="제목" />
+
+        <TextView
+        android:id="@+id/itemTitleView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:layout_weight="1"
         />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:fontFamily="@font/sans_medium"
+            android:text="내용" />
 
     <TextView
         android:id="@+id/itemContentView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="10dp"
-        android:lineSpacingExtra="2dp"
-        android:paddingLeft="10dp"
-        android:textColor="#212121"
-        android:textSize="14sp"
-        android:text="content"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_weight="1"
         />
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
