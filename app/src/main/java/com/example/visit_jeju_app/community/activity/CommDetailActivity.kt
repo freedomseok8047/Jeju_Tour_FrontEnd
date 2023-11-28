@@ -65,6 +65,9 @@ class CommDetailActivity : AppCompatActivity() {
         val content = intent.getStringExtra("CommunityContent")
         val date = intent.getStringExtra("CommunityDate")
 
+        // 디테일 뷰 중 작성자에 해당 커뮤니티 작성 이메일 불러오는 코드
+        val email = intent.getStringExtra("CommunityWriterEmail")
+
         binding.CommunityTitle.text = title
         binding.CommunityDate.text = date
         binding.CommunityContent.text = content
