@@ -8,6 +8,7 @@ import com.example.visit_jeju_app.tour.model.tourRegionNmList
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface NetworkServiceRegionNm {
     @GET("tour/tourList/{itemsRegion2CdValue}")
@@ -44,6 +45,13 @@ interface NetworkServiceRegionNm {
 //
 //    @GET("fes/fesAllList")
 //    fun GetFesList(): Call<List<FesList>>
+
+
+    @GET("tour/{lat}/{lnt}")
+    fun GetTourGPS(
+        @Query("lat") lat : Double?,
+        @Query("lnt") lnt : Double?
+    ): Call<List<TourList>>
 
 
 

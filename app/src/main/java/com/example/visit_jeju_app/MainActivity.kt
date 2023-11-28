@@ -90,20 +90,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 제주 숙박
-        val horizontalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        //val linearLayoutManager = LinearLayoutManager(this)
+//        val horizontalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        //val linearLayoutManager = LinearLayoutManager(this)
+//
+//        // 리사이클러 뷰 속성 옵션에 출력 옵션 붙이기
+//        binding.viewRecyclerHotel.layoutManager = horizontalLayoutManager
+//        // 리사이클러뷰 속성 옵션에 데이터를 붙이기 , 어댑터 를 연결한다.
+//        val customAdapter1 = RecyclerView(datasHotel)
+//        binding.viewRecyclerHotel.adapter = customAdapter1
 
-        // 리사이클러 뷰 속성 옵션에 출력 옵션 붙이기
-        binding.viewRecyclerHotel.layoutManager = horizontalLayoutManager
-        // 리사이클러뷰 속성 옵션에 데이터를 붙이기 , 어댑터 를 연결한다.
-        val customAdapter1 = RecyclerView(datasHotel)
-        binding.viewRecyclerHotel.adapter = customAdapter1
-
-       // 제주 맛집
-        val restaurantLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.viewRecyclerRestaurant.layoutManager = restaurantLayoutManager
-        val customAdapter2 = RecyclerView(datasRestaurant)
-        binding.viewRecyclerRestaurant.adapter = customAdapter2
+//       // 제주 맛집
+//        val restaurantLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        binding.viewRecyclerRestaurant.layoutManager = restaurantLayoutManager
+//        val customAdapter2 = RecyclerView(datasRestaurant)
+//        binding.viewRecyclerRestaurant.adapter = customAdapter2
 
         // 제주 투어
         val tourLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -111,17 +111,17 @@ class MainActivity : AppCompatActivity() {
         val customAdapter3 = RecyclerView(datasTour)
         binding.viewRecyclerTour.adapter = customAdapter3
 
-        // 제주 축제
-        val festivalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.viewRecyclerFestival.layoutManager = festivalLayoutManager
-        val customAdapter4 = RecyclerView(datasFestival)
-        binding.viewRecyclerFestival.adapter = customAdapter4
+//        // 제주 축제
+//        val festivalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        binding.viewRecyclerFestival.layoutManager = festivalLayoutManager
+//        val customAdapter4 = RecyclerView(datasFestival)
+//        binding.viewRecyclerFestival.adapter = customAdapter4
 
-        // 제주 쇼핑
-        val shoppingLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.viewRecyclerShopping.layoutManager = shoppingLayoutManager
-        val customAdapter5 = RecyclerView(datasShopping)
-        binding.viewRecyclerShopping.adapter = customAdapter5
+//        // 제주 쇼핑
+//        val shoppingLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        binding.viewRecyclerShopping.layoutManager = shoppingLayoutManager
+//        val customAdapter5 = RecyclerView(datasShopping)
+//        binding.viewRecyclerShopping.adapter = customAdapter5
 
 
 
