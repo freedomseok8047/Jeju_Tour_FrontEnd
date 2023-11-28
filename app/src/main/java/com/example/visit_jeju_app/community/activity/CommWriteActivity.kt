@@ -143,7 +143,8 @@ class CommWriteActivity : AppCompatActivity() {
             "date" to timestampString, // 문자열로 저장
 
             // 디테일 뷰 중 작성자에 해당 커뮤니티 작성 이메일 불러오는 코드
-            "writerEmail" to userEmail, // 사용자 이메일 추가
+            // (사용안함 선택 시, 이메일이 아닌 "비공개" 문자열이 파이어베이스에 저장)
+            "writerEmail" to if (binding.radioNotused.isChecked) "비공개" else userEmail, // 사용자 이메일 추가
             "status" to status
 
         )
