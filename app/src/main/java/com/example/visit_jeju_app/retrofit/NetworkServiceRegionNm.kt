@@ -1,7 +1,9 @@
 package com.example.visit_jeju_app.retrofit
 
 import com.example.visit_jeju_app.accommodation.model.AccomList
+import com.example.visit_jeju_app.festival.model.FesList
 import com.example.visit_jeju_app.restaurant.model.ResList
+import com.example.visit_jeju_app.shopping.model.ShopList
 import com.example.visit_jeju_app.tour.model.TourList
 import retrofit2.Call
 import retrofit2.http.GET
@@ -23,12 +25,15 @@ interface NetworkServiceRegionNm {
         @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
     ): Call<List<AccomList>>
 
+    @GET("shop/shopList/{itemsRegion2CdValue}")
+    fun getShopList(
+        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
+    ): Call<List<ShopList>>
 
-
-//    @GET("accom/accomList/{itemsRegion2CdValue}")
-//    fun getList(
-//        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Long
-//    ): Call<List<accomRegionNmList>>
+    @GET("fes/fesList/{itemsRegion2CdValue}")
+    fun getFesList(
+        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
+    ): Call<List<FesList>>
 
 
     @GET("tour/tourAllList")
@@ -39,14 +44,12 @@ interface NetworkServiceRegionNm {
 
     @GET("res/resAllList")
     fun GetResList(): Call<List<ResList>>
-//    @GET("res/resAllList")
-//    fun GetResList(): Call<List<ResList>>
-//
-//    @GET("accom/accomAllList")
-//    fun GetAccomList(): Call<List<AccomList>>
-//
-//    @GET("shop/shopAllList")
-//    fun GetShopList(): Call<List<ShopList>>
+
+    @GET("shop/shopAllList")
+    fun GetShopList(): Call<List<ShopList>>
+
+    @GET("fes/fesAllList")
+    fun GetFesList(): Call<List<FesList>>
 //
 //    @GET("fes/fesAllList")
 //    fun GetFesList(): Call<List<FesList>>
