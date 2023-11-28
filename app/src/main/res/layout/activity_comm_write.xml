@@ -10,12 +10,6 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <!-- Appbar
-    <include
-        layout="@layout/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-     //Appbar -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -138,15 +132,6 @@
             android:textSize="10sp"/>
 
     </RadioGroup>
-
-    <TextView
-        android:id="@+id/spotSearchView"
-        android:layout_width="200dp"
-        android:padding="16dp"
-        android:background="#eeeeee"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/sans_medium"
-        android:hint="장소를 선택해주세요." />
 
     <TextView
         android:layout_width="wrap_content"

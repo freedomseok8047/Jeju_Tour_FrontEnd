@@ -1,16 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:fillViewport="true">
+        android:layout_height="match_parent">
+
+        <!-- 앱바 구성 (툴바 포함) -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!-- tool bar -->
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black">
+
+                <!--툴바 뷰 생성 -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- ScrollView로 감싼 LinearLayout -->
+        <!--    앱바에 LinearLayout 태그 내 내용이 가려지는 부분 해결-->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,9 +60,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/sans_medium"
                     android:text="제목" />
 
                 <TextView
@@ -35,7 +74,9 @@
                     android:layout_weight="1"
                     android:background="#eeeeee"
                     android:padding="16dp"
-                    android:text="제목입니다." />
+                    android:textStyle="bold"
+                    android:fontFamily="@font/sans_medium"
+                     />
 
             </LinearLayout>
 
@@ -45,54 +86,80 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:padding="16dp"
-                    android:text="작성일" />
+                    android:text="작성자"
+                    android:fontFamily="@font/sans_medium"
+                    android:textSize="8sp"/>
+
+                <TextView
+                    android:id="@+id/CommunityWriter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:background="#eeeeee"
+                    android:padding="16dp"
+                    android:fontFamily="@font/sans_medium"
+                    android:textSize="8sp"/>
+
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:padding="16dp"
+                    android:text="작성일"
+                    android:fontFamily="@font/sans_medium"
+                    android:textSize="8sp"/>
 
                 <TextView
                     android:id="@+id/CommunityDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:background="#eeeeee"
                     android:padding="16dp"
-                    android:text="작성일입니다." />
+                    android:fontFamily="@font/sans_medium"
+                    android:textSize="8sp" />
+
             </LinearLayout>
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:padding="16dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/sans_medium"
+                android:text="내용" />
 
-                <TextView
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="사진" />
+            <TextView
+                android:id="@+id/CommunityContent"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_weight="1"
+                android:layout_marginTop="10dp"
+                android:background="#eeeeee"
+                android:padding="16dp"
+                android:fontFamily="@font/sans_medium"
+                android:scrollbars="vertical" /> />
 
-            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/sans_medium"
+                android:text="사진" />
 
             <ImageView
                 android:id="@+id/ImageView"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/imageupload" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="내용" />
-
-            <TextView
-                android:id="@+id/CommunityContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#eeeeee"
-                android:padding="16dp"
-                android:text="내용입니다." />
+                android:src="@drawable/imageupload1" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -103,6 +170,7 @@
                     android:id="@+id/CommunityModify"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:padding="16dp"
                     android:background="#00BCD4"
                     android:text="수정"
@@ -112,6 +180,7 @@
                     android:id="@+id/CommunityDelete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:padding="16dp"
                     android:background="#00BCD4"
@@ -123,6 +192,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/sans_medium"
                 android:text="댓글" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -153,7 +224,7 @@
                     android:layout_height="match_parent"
                     android:padding="8dp"
                     android:background="#00BCD4"
-                    android:text="게시물 등록"
+                    android:text="댓글 등록"
                     android:textColor="#FFFFFF"/>
             </LinearLayout>
 
@@ -161,4 +232,16 @@
 
     </LinearLayout>
 
-</ScrollView>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!-- Navigation View -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/main_drawer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navi_header"
+        app:menu="@menu/drawer_menu" />
+    <!-- //Navigation View -->
+
+</androidx.drawerlayout.widget.DrawerLayout>

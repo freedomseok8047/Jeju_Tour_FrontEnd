@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.visit_jeju_app.MyApplication
@@ -17,11 +18,47 @@ import java.text.SimpleDateFormat
 class CommDetailActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityCommDetailBinding
+
+    // 공통 메인 레이아웃 적용 코드
+    //액션버튼 토글
+    lateinit var toggle: ActionBarDrawerToggle
+
     data class comment(val comment : String, val time : String)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCommDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 공통 메인 레이아웃 적용 코드
+        setSupportActionBar(binding.toolbar)
+        //드로워화면 액션버튼 클릭 시 드로워 화면 나오게 하기
+        toggle =
+            ActionBarDrawerToggle(
+                this,
+                binding.drawerLayout,
+                binding.toolbar,  // 세 번째 매개변수로 툴바 전달
+                R.string.open,
+                R.string.close
+            )
+
+        binding.drawerLayout.addDrawerListener(toggle)
+        //화면 적용하기
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //버튼 클릭스 동기화 : 드로워 열어주기
+        toggle.syncState()
+        // NavigationView 메뉴 아이템 클릭 리스너 설정
+        binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.community -> {
+                    // '커뮤니티' 메뉴 아이템 클릭 시 CommReadActivity로 이동
+                    startActivity(Intent(this, CommReadActivity::class.java))
+                    true
+                }
+                // 다른 메뉴 아이템에 대한 처리 추가
+
+                else -> false
+            }
+        }
 
         val docId = intent.getStringExtra("DocId")
         val title = intent.getStringExtra("CommunityTitle")

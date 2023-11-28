@@ -31,6 +31,8 @@ class CommWriteActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
 
     lateinit var filePath: String
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCommWriteBinding.inflate(layoutInflater)
