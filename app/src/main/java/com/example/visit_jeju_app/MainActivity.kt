@@ -251,14 +251,14 @@ class MainActivity : AppCompatActivity() {
 
 
     // 백엔드 서버로 위치 데이터 전송 -----------------------------------------------------------------------
-    private fun sendLocationToServer(lat: Double, lon: Double) {
+    private fun sendLocationToServer(lat: Double, lnt: Double) {
         val retrofit = Retrofit.Builder()
             .baseUrl("http://10.100.104.32:8083/") // 백엔드 서버의 URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val service = retrofit.create(NetworkServiceRegionNm::class.java)
-        val call = service.getTourGPS(lat, lon)
+        val call = service.getTourGPS(lat, lnt )
 
         call.enqueue(object : Callback<List<TourList>> {
             override fun onResponse(call: Call<List<TourList>>, response: Response<List<TourList>>) {
