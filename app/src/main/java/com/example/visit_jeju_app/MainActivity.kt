@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.visit_jeju_app.chat.ChatActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
+import com.example.visit_jeju_app.login.AuthActivity
 import com.example.visit_jeju_app.main.adapter.ImageSliderAdapter
 import com.example.visit_jeju_app.main.adapter.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -38,6 +41,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val headerView = binding.mainDrawerView.getHeaderView(0)
+        val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
+        val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
+
+        headerLogoutBtn.setOnClickListener {
+            // 로그아웃 로직
+            MyApplication.auth.signOut()
+            MyApplication.email = null
+            // 로그아웃 후 처리 (예: 로그인 화면으로 이동)
+            val intent = Intent(this, AuthActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        val userEmail = intent.getStringExtra("USER_EMAIL") ?: "No Email"
+        headerUserEmail.text = userEmail
 
 
         setSupportActionBar(binding.toolbar)
