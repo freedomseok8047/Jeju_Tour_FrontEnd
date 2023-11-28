@@ -45,34 +45,59 @@ class ChatMainActivity : AppCompatActivity() {
 
         binding.userRecyclerView.adapter = adapter
 
-        //특정 유저만 가져오게 하기
-//        val targetUsername = "ktb" // 가져올 사용자의 username
-//
-//        rdb.child("user").orderByChild("username").equalTo(targetUsername)
-//            .addListenerForSingleValueEvent(object : ValueEventListener {
 
-        //사용자 정보 가져오기
-        rdb.child("user").addListenerForSingleValueEvent(object : ValueEventListener {
-            @SuppressLint("RestrictedApi")
-            override fun onDataChange(snapshot: DataSnapshot) {
-                userList.clear()
+        // 채팅 화면에 나올 유저 뷰
 
-                for (userSnapshot in snapshot.children) {
-                    // 특정 username에 해당하는 사용자 정보를 가져옵니다.
-                    val currentUser = userSnapshot.getValue(User::class.java)
+        // 해당 이메일의 유저로 로그인을 하면 필터링이 됨.
+        val allowedEmails = listOf("xoqls081215@gmail.com", "")
+        val currentUser = auth.currentUser
 
-                    if (currentUser != null) {
-                        userList.add(currentUser)
+        if (currentUser != null && allowedEmails.contains(currentUser.email)) {
+            // 두 사용자 이름을 리스트로 만들고 각 사용자에 대해 쿼리를 실행합니다.
+            val targetUsernames = listOf("rlkjsdl", "")
+            for (username in targetUsernames) {
+                rdb.child("user").orderByChild("username").equalTo(username)
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                        @SuppressLint("RestrictedApi")
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            for (userSnapshot in snapshot.children) {
+                                val user = userSnapshot.getValue(User::class.java)
+                                if (user != null) {
+                                    userList.add(user)
+                                }
+                            }
+                            adapter.notifyDataSetChanged()
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            // 에러 처리를 수행합니다.
+                        }
+                    })
+            }
+        }else{
+            // 전체 유저가 나오게 함
+            rdb.child("user").addListenerForSingleValueEvent(object : ValueEventListener {
+                    @SuppressLint("RestrictedApi")
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        userList.clear()
+
+                        for (userSnapshot in snapshot.children) {
+                            // 특정 username에 해당하는 사용자 정보를 가져옵니다.
+                            val user = userSnapshot.getValue(User::class.java)
+
+                            if (user != null) {
+                                userList.add(user)
+                            }
+                        }
+
+                        adapter.notifyDataSetChanged()
                     }
-                }
 
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // 에러 처리를 수행합니다.
-            }
-        })
+                    override fun onCancelled(error: DatabaseError) {
+                        // 에러 처리를 수행합니다.
+                    }
+                })
+        }
 
     } //onCreate
 }

@@ -21,11 +21,11 @@ class CommDeleteActivity : AppCompatActivity() {
             deleteDatabase(DocId)
 
 
-            Toast.makeText(this, "게시글 삭제 완료", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "게시물 삭제 완료", Toast.LENGTH_SHORT).show()
 
         } else {
             Log.e("CommDeleteActivity", "Error")
-            Toast.makeText(this, "게시글 삭제 실패", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "게시물 삭제 실패", Toast.LENGTH_SHORT).show()
         }
     }
 
