@@ -138,13 +138,6 @@
             android:textSize="10sp"/>
 
     </RadioGroup>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:textStyle="bold"
-        android:fontFamily="@font/sans_medium"
-        android:text="🔍 장소검색"/>
 
     <TextView
         android:id="@+id/spotSearchView"

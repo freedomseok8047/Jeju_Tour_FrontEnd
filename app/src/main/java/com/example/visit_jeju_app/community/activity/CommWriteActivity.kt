@@ -40,7 +40,13 @@ class CommWriteActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         //드로워화면 액션버튼 클릭 시 드로워 화면 나오게 하기
         toggle =
-            ActionBarDrawerToggle(this@CommWriteActivity, binding.drawerLayout,R.string.open, R.string.close)
+            ActionBarDrawerToggle(
+                this,
+                binding.drawerLayout,
+                binding.toolbar,  // 세 번째 매개변수로 툴바 전달
+                R.string.open,
+                R.string.close
+            )
 
         binding.drawerLayout.addDrawerListener(toggle)
         //화면 적용하기
