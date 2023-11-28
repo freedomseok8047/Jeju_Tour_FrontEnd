@@ -194,7 +194,7 @@
         android:padding="16dp"
         android:textStyle="bold"
         android:fontFamily="@font/sans_medium"
-        android:text="🔒 작성자명 비공개"/>
+        android:text="🔒 작성자명 공개 체크"/>
 
     <RadioGroup
         android:id="@+id/writerRadioGroup"
@@ -207,7 +207,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/sans_medium"
-        android:text="사용함" />
+        android:text="동의" />
 
     <RadioButton
         android:id="@+id/radioNotused"
@@ -215,7 +215,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:fontFamily="@font/sans_medium"
-        android:text="사용안함" />
+        android:text="비동의" />
 
     </RadioGroup>
 
