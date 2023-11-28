@@ -71,8 +71,8 @@ class MainActivity : AppCompatActivity() {
         dataListFromAccomActivity = mutableListOf<AccomList>()
         dataListFromResActivity = mutableListOf<ResList>()
         dataListFromTourActivity = mutableListOf<TourList>()
-        //dataListFromFesActivity = mutableListOf<FesList>()
-        //dataListFromShopActivity = mutableListOf<ShopList>()
+        dataListFromFesActivity = mutableListOf<FesList>()
+        dataListFromShopActivity = mutableListOf<ShopList>()
 
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
