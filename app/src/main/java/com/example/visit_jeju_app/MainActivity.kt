@@ -18,12 +18,25 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.visit_jeju_app.accommodation.adapter.AccomAdapter_Main
+import com.example.visit_jeju_app.accommodation.model.AccomList
 import com.example.visit_jeju_app.chat.ChatActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
+import com.example.visit_jeju_app.festival.adapter.FesAdapter_Main
+import com.example.visit_jeju_app.festival.model.FesList
 import com.example.visit_jeju_app.login.AuthActivity
 import com.example.visit_jeju_app.main.adapter.ImageSliderAdapter
 import com.example.visit_jeju_app.main.adapter.RecyclerView
+import com.example.visit_jeju_app.restaurant.adapter.ResAdapter_Main
+import com.example.visit_jeju_app.restaurant.model.ResList
+import com.example.visit_jeju_app.shopping.adapter.ShopAdapter_Main
+import com.example.visit_jeju_app.shopping.model.ShopList
+import com.example.visit_jeju_app.tour.adapter.TourAdapter_Main
+import com.example.visit_jeju_app.tour.model.TourList
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,8 +45,20 @@ class MainActivity : AppCompatActivity() {
     //액션버튼 토글
     lateinit var toggle: ActionBarDrawerToggle
 
-    //lateinit var viewPager_aespa: ViewPager2
+    // 메인 비주얼
     lateinit var viewPager_mainVisual: ViewPager2
+
+    // 통신으로 받아온 투어 정보 담는 리스트 , 전역으로 설정, 각 어느 곳에서든 사용가능.
+    // 제주 숙박
+    lateinit var dataListFromAccomActivity: MutableList<AccomList>
+    // 제주 맛집
+    lateinit var dataListFromResActivity: MutableList<ResList>
+    // 제주 투어
+    lateinit var dataListFromTourActivity: MutableList<TourList>
+    // 제주 축제
+    lateinit var dataListFromFesActivity: MutableList<FesList>
+    // 제주 쇼핑
+    lateinit var dataListFromShopActivity: MutableList<ShopList>
 
 
 
@@ -41,6 +66,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 각 가테고리별 넘어온 데이터 담을 리스트 초기화, 할당.
+        dataListFromAccomActivity = mutableListOf<AccomList>()
+        dataListFromResActivity = mutableListOf<ResList>()
+        dataListFromTourActivity = mutableListOf<TourList>()
+        //dataListFromFesActivity = mutableListOf<FesList>()
+        //dataListFromShopActivity = mutableListOf<ShopList>()
 
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
@@ -87,61 +119,166 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // 리사이클러 뷰 붙이기
-        val datasHotel = mutableListOf<String>()
-        for(i in 1..5) {
-            datasHotel.add("제주 숙박 : $i")
-        }
-        val datasRestaurant = mutableListOf<String>()
-        for(i in 1..5) {
-            datasRestaurant.add("제주 맛집 : $i")
-        }
-        val datasTour = mutableListOf<String>()
-        for(i in 1..5) {
-            datasTour.add("제주 투어 : $i")
-        }
-        val datasFestival = mutableListOf<String>()
-        for(i in 1..5) {
-            datasFestival.add("제주 축제 : $i")
-        }
-        val datasShopping = mutableListOf<String>()
-        for(i in 1..5) {
-            datasShopping.add("제주 쇼핑 : $i")
-        }
+
+// ========== 각 카테고리 별 데이터 불러오기 ========== //
+
+        val networkService = (applicationContext as MyApplication).networkService
 
         // 제주 숙박
-        val horizontalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        //val linearLayoutManager = LinearLayoutManager(this)
+        val accomListCall = networkService.GetAccomList()
 
-        // 리사이클러 뷰 속성 옵션에 출력 옵션 붙이기
-        binding.viewRecyclerHotel.layoutManager = horizontalLayoutManager
-        // 리사이클러뷰 속성 옵션에 데이터를 붙이기 , 어댑터 를 연결한다.
-        val customAdapter1 = RecyclerView(datasHotel)
-        binding.viewRecyclerHotel.adapter = customAdapter1
+        accomListCall.enqueue(object : Callback<List<AccomList>> {
+            override fun onResponse(
+                call: Call<List<AccomList>>,
+                accomponse: Response<List<AccomList>>
 
-       // 제주 맛집
-        val restaurantLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.viewRecyclerRestaurant.layoutManager = restaurantLayoutManager
-        val customAdapter2 = RecyclerView(datasRestaurant)
-        binding.viewRecyclerRestaurant.adapter = customAdapter2
+            ) {
+                val accomList = accomponse.body()
+
+                Log.d("ljs","accomModel 값 : ${accomList}")
+
+                //데이터 받기 확인 후, 리스트에 담기.
+                accomList?.get(0)?.let { dataListFromAccomActivity.add(it) }
+                accomList?.get(1)?.let { dataListFromAccomActivity.add(it) }
+                accomList?.get(2)?.let { dataListFromAccomActivity.add(it) }
+                accomList?.get(3)?.let { dataListFromAccomActivity.add(it) }
+                accomList?.get(4)?.let { dataListFromAccomActivity.add(it) }
+                Log.d("lsy","test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromAccomActivity?.size}")
+                val accomLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                binding.viewRecyclerAccom.layoutManager = accomLayoutManager
+                binding.viewRecyclerAccom.adapter = AccomAdapter_Main(this@MainActivity,dataListFromAccomActivity)
+            }
+
+            override fun onFailure(call: Call<List<AccomList>>, t: Throwable) {
+                Log.d("lsy", "fail")
+                call.cancel()
+            }
+        })
+
+        // 제주 맛집
+        val resListCall = networkService.GetResList()
+
+        resListCall.enqueue(object : Callback<List<ResList>> {
+            override fun onResponse(
+                call: Call<List<ResList>>,
+                response: Response<List<ResList>>
+
+            ) {
+                val resList = response.body()
+
+                Log.d("ljs","resModel 값 : ${resList}")
+
+                //데이터 받기 확인 후, 리스트에 담기.
+                resList?.get(0)?.let { dataListFromResActivity.add(it) }
+                resList?.get(1)?.let { dataListFromResActivity.add(it) }
+                resList?.get(2)?.let { dataListFromResActivity.add(it) }
+                resList?.get(3)?.let { dataListFromResActivity.add(it) }
+                resList?.get(4)?.let { dataListFromResActivity.add(it) }
+                Log.d("lsy","test 값 추가 후 확인 : dataListFromResActivity 길이 값 : ${dataListFromResActivity?.size}")
+                val resLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                binding.viewRecyclerRestaurant.layoutManager = resLayoutManager
+                binding.viewRecyclerRestaurant.adapter = ResAdapter_Main(this@MainActivity,dataListFromResActivity)
+            }
+
+            override fun onFailure(call: Call<List<ResList>>, t: Throwable) {
+                Log.d("lsy", "fail")
+                call.cancel()
+            }
+        })
+
 
         // 제주 투어
-        val tourLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.viewRecyclerTour.layoutManager = tourLayoutManager
-        val customAdapter3 = RecyclerView(datasTour)
-        binding.viewRecyclerTour.adapter = customAdapter3
+        val tourListCall = networkService.GetTourList()
+
+        tourListCall.enqueue(object : Callback<List<TourList>> {
+            override fun onResponse(
+                call: Call<List<TourList>>,
+                response: Response<List<TourList>>
+
+            ) {
+                val tourList = response.body()
+
+                Log.d("lsy","tourModel 값 : ${tourList}")
+
+                //데이터 받기 확인 후, 리스트에 담기.
+                tourList?.get(0)?.let { dataListFromTourActivity.add(it) }
+                tourList?.get(1)?.let { dataListFromTourActivity.add(it) }
+                tourList?.get(2)?.let { dataListFromTourActivity.add(it) }
+                tourList?.get(3)?.let { dataListFromTourActivity.add(it) }
+                tourList?.get(4)?.let { dataListFromTourActivity.add(it) }
+                Log.d("lsy","test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromTourActivity?.size}")
+                val tourLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                binding.viewRecyclerTour.layoutManager = tourLayoutManager
+                binding.viewRecyclerTour.adapter = TourAdapter_Main(this@MainActivity,dataListFromTourActivity)
+            }
+
+            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+                Log.d("lsy", "fail")
+                call.cancel()
+            }
+        })
 
         // 제주 축제
-        val festivalLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.viewRecyclerFestival.layoutManager = festivalLayoutManager
-        val customAdapter4 = RecyclerView(datasFestival)
-        binding.viewRecyclerFestival.adapter = customAdapter4
+        val fesListCall = networkService.GetFesList()
+
+        fesListCall.enqueue(object : Callback<List<FesList>> {
+            override fun onResponse(
+                call: Call<List<FesList>>,
+                response: Response<List<FesList>>
+
+            ) {
+                val fesList = response.body()
+
+                Log.d("ljs","fesModel 값 : ${fesList}")
+
+                //데이터 받기 확인 후, 리스트에 담기.
+                fesList?.get(0)?.let { dataListFromFesActivity.add(it) }
+                fesList?.get(1)?.let { dataListFromFesActivity.add(it) }
+                fesList?.get(2)?.let { dataListFromFesActivity.add(it) }
+                fesList?.get(3)?.let { dataListFromFesActivity.add(it) }
+                fesList?.get(4)?.let { dataListFromFesActivity.add(it) }
+                Log.d("lsy","test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromFesActivity?.size}")
+                val fesLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                binding.viewRecyclerFestival.layoutManager = fesLayoutManager
+                binding.viewRecyclerFestival.adapter = FesAdapter_Main(this@MainActivity,dataListFromFesActivity)
+            }
+
+            override fun onFailure(call: Call<List<FesList>>, t: Throwable) {
+                Log.d("lsy", "fail")
+                call.cancel()
+            }
+        })
 
         // 제주 쇼핑
-        val shoppingLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.viewRecyclerShopping.layoutManager = shoppingLayoutManager
-        val customAdapter5 = RecyclerView(datasShopping)
-        binding.viewRecyclerShopping.adapter = customAdapter5
+        val shopListCall = networkService.GetShopList()
+
+        shopListCall.enqueue(object : Callback<List<ShopList>> {
+            override fun onResponse(
+                call: Call<List<ShopList>>,
+                response: Response<List<ShopList>>
+
+            ) {
+                val shopList = response.body()
+
+                Log.d("ljs","shopModel 값 : ${shopList}")
+
+                //데이터 받기 확인 후, 리스트에 담기.
+                shopList?.get(0)?.let { dataListFromShopActivity.add(it) }
+                shopList?.get(1)?.let { dataListFromShopActivity.add(it) }
+                shopList?.get(2)?.let { dataListFromShopActivity.add(it) }
+                shopList?.get(3)?.let { dataListFromShopActivity.add(it) }
+                shopList?.get(4)?.let { dataListFromShopActivity.add(it) }
+                Log.d("lsy","test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromShopActivity?.size}")
+                val shopLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                binding.viewRecyclerShopping.layoutManager = shopLayoutManager
+                binding.viewRecyclerShopping.adapter = ShopAdapter_Main(this@MainActivity,dataListFromShopActivity)
+            }
+
+            override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
+                Log.d("lsy", "fail")
+                call.cancel()
+            }
+        })
 
 
 
