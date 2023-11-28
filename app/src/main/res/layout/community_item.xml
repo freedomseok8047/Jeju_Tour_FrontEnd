@@ -15,18 +15,19 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:fontFamily="@font/sans_medium"
-            android:text="카테고리" />
+            android:text="🗂️ 카테고리" />
 
         <TextView
             android:id="@+id/itemCategoryView"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="#FF9800"
+            android:background="#FF9800"
+            android:textColor="@color/white"
+            android:textAlignment="center"
             />
 
     </LinearLayout>
@@ -39,11 +40,11 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:fontFamily="@font/sans_medium"
-            android:text="작성일" />
+            android:text="📅 작성일" />
 
         <TextView
             android:id="@+id/itemDateView"
@@ -62,11 +63,11 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:fontFamily="@font/sans_medium"
-            android:text="제목" />
+            android:text="📔 제목" />
 
         <TextView
         android:id="@+id/itemTitleView"
@@ -85,11 +86,11 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:fontFamily="@font/sans_medium"
-            android:text="내용" />
+            android:text="📖 내용" />
 
     <TextView
         android:id="@+id/itemContentView"
