@@ -37,7 +37,7 @@ class TourActivity : AppCompatActivity() {
     private val updateDelayMillis = 40000
     //리사이클러 뷰 업데이트 딜레이 업데이트 주기 생성
 
-    lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
+    lateinit var mLocationRequest: com.google.android.gms.location.LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
 
     private var mapX : String = ""
