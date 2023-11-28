@@ -14,6 +14,23 @@ import java.text.SimpleDateFormat
 
 class CommunityViewHolder(val binding: CommunityItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
+    // 수정 뷰에서 사진 변경할 시, 파이어베이스에 기존 사진에서 변경 반영하는 관련 코드
+    // 추가된 부분
+    fun bind(data: CommunityData) {
+        binding.apply {
+            itemTitleView.text = data.title
+            itemContentView.text = data.content
+            itemDateView.text = data.date
+
+            // 추가된 부분
+            data.imageUrl?.let {
+                // 이미지가 있다면 Glide를 사용하여 이미지 로딩
+                // 예시 코드, Glide 라이브러리를 사용하려면 해당 라이브러리를 프로젝트에 추가해야 합니다.
+                // Glide.with(itemView.context).load(it).into(itemImageView)
+            }
+        }
+    }
+
 }
 // crud된 파이어베이스 데이터가 activiy_comm_read.xml 뷰에 자동반영되도록 하는 코드
 class CommunityAdapter(val context: Context, private var itemList: MutableList<CommunityData>) :
@@ -32,16 +49,19 @@ class CommunityAdapter(val context: Context, private var itemList: MutableList<C
         // crud된 파이어베이스 데이터가 activiy_comm_read.xml 뷰에 자동반영되도록 하는 코드
         val data = itemList[position]
 
-        holder.binding.run {
-            itemTitleView.text=data.title
-            itemContentView.text=data.content
+        // 수정 뷰에서 사진 변경할 시, 파이어베이스에 기존 사진에서 변경 반영하는 관련 코드
+        holder.bind(data)
 
-            // 파이어베이스에 저장된 timestamp형의 데이터를 불러와서
-            // activity_comm_read.xml에 최신순으로 나타나도록하는 관련코드
-            // Timestamp를 문자열로 변환하여 표시
-            // timestamp형이 아닌 string이면서 "yyyy-MM-dd HH:mm"포맷으로 파이어베이스 저장 및 조회 관련 코드
-            itemDateView.text = data.date
-        }
+//        holder.binding.run {
+//            itemTitleView.text=data.title
+//            itemContentView.text=data.content
+//
+//            // 파이어베이스에 저장된 timestamp형의 데이터를 불러와서
+//            // activity_comm_read.xml에 최신순으로 나타나도록하는 관련코드
+//            // Timestamp를 문자열로 변환하여 표시
+//            // timestamp형이 아닌 string이면서 "yyyy-MM-dd HH:mm"포맷으로 파이어베이스 저장 및 조회 관련 코드
+//            itemDateView.text = data.date
+//        }
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, CommDetailActivity::class.java)

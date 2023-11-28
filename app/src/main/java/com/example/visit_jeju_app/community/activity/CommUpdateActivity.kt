@@ -19,7 +19,7 @@ class CommUpdateActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityCommUpdateBinding
 
-    // "사진 변경" 버튼 클릭하여 사진 변경 후 "수정" 버튼 클릭하면 파이어베이스에 변경된 사진으로 반영하는 코드
+    // 수정 뷰에서 사진 변경할 시, 파이어베이스에 기존 사진에서 변경 반영하는 관련 코드
     private var selectedImageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,9 +31,18 @@ class CommUpdateActivity : AppCompatActivity() {
         val content = intent.getStringExtra("CommunityContent")
         val date = intent.getStringExtra("CommunityDate")
 
+        // 수정 뷰에서 사진 변경할 시, 파이어베이스에 기존 사진에서 변경 반영하는 관련 코드
+        val imageUrl = intent.getStringExtra("CommunityImageUrl") // 추가된 부분
+
         binding.CommunityDate.text = date
         binding.regTitle.setText(title)
         binding.regContent.setText(content)
+
+        // 수정 뷰에서 사진 변경할 시, 파이어베이스에 기존 사진에서 변경 반영하는 관련 코드
+        // 이미지 로딩 코드 (Glide 라이브러리 사용)
+        imageUrl?.let {
+            Glide.with(this).load(it).into(binding.regImageUpdateView)
+        }
 
         // "사진 변경" 버튼 클릭 시 갤러리에서 사진을 선택할 수 있도록 하는 코드
         binding.regImageUpdateBtn.setOnClickListener {
@@ -70,12 +79,13 @@ class CommUpdateActivity : AppCompatActivity() {
                         // 이미지 업로드 실패
                         // 실패 처리 로직 추가
                     }
+                // "사진 변경" 버튼 클릭하여 사진 변경 후 "수정" 버튼 클릭하면 파이어베이스에 변경된 사진으로 반영하는 코드
             } else {
                 // 이미지가 선택되지 않은 경우에는 데이터 업데이트만 진행
-                updateData(docId, updatedTitle, updatedContent, null)
+                updateData(docId, updatedTitle, updatedContent, imageUrl)
 
                 // 사진 변경한 내용을 디테일 뷰와 수정 뷰 둘다 바로 반영하는 코드
-                setResultAndFinish(updatedTitle, updatedContent, null)
+                setResultAndFinish(updatedTitle, updatedContent, imageUrl)
             }
         }
 

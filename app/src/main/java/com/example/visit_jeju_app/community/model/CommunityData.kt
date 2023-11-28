@@ -12,4 +12,7 @@ class CommunityData {
     var date: String? = null
     var comment: String? = null
 
+    // 수정 뷰에서 사진 변경할 시, 파이어베이스에 기존 사진에서 변경 반영하는 관련 코드
+    var imageUrl: String? = null // 추가된 부분
+
 }
