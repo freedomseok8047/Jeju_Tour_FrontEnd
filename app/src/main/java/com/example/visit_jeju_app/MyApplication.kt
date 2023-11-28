@@ -4,6 +4,8 @@ import androidx.multidex.MultiDexApplication
 import com.example.visit_jeju_app.retrofit.NetworkServiceRegionNm
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
@@ -18,6 +20,7 @@ class MyApplication : MultiDexApplication() {
         //static과 비슷, 해당 클래스 명으로 멤버에 접근 가능
         //인증기능에 접근하는 인스턴스가 필요
         lateinit var  auth : FirebaseAuth
+        lateinit var rdb: DatabaseReference
         //인증할 이메일
         var email : String? = null
 
@@ -47,6 +50,7 @@ class MyApplication : MultiDexApplication() {
         auth = Firebase.auth
         storage = Firebase.storage
         db = FirebaseFirestore.getInstance()
+        rdb = Firebase.database.reference
     }
     val retrofit: Retrofit
         get() = Retrofit.Builder()

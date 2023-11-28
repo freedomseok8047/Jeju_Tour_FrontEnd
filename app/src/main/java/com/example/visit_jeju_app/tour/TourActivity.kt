@@ -1,6 +1,7 @@
 package com.example.visit_jeju_app.tour
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
@@ -71,6 +72,11 @@ class TourActivity : AppCompatActivity() {
         if (checkPermissionForLocation(this)) {
             startLocationUpdates()
 
+        }
+
+        binding.pageChange.setOnClickListener {
+            val intent = Intent(this@TourActivity, TourRegionNmActivity::class.java)
+            startActivity(intent)
         }
     }//oncreate
 

@@ -36,7 +36,6 @@ class TourDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.info.text = intent.getStringExtra("itemsIntroduction")
         binding.tel.text = intent.getStringExtra("itemsPhoneNo")
         binding.convenience.text = intent.getStringExtra("itemsAllTag")
-        var itemsPhoneNo : String? = intent.getStringExtra("itemsPhoneNo")
 
         val imageUrl = intent.getStringExtra("itemsRepPhotoPhotoidImgPath")
         Glide.with(this)
@@ -45,11 +44,6 @@ class TourDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             .into(binding.itemImage)
 
         // 전화 버튼
-//        binding.callBtn.setOnClickListener {
-//            var telNumber = "itemsPhoneNo:${itemsPhoneNo}"
-//            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(telNumber))
-//            startActivity(intent)
-//        }
         binding.callBtn.setOnClickListener {
             // 전화번호 가져오기
             val phoneNumber = intent.getStringExtra("itemsPhoneNo")
@@ -64,7 +58,7 @@ class TourDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView!!.onCreate(savedInstanceState)
         mapView!!.getMapAsync(this@TourDetailActivity)
 
-    }
+    }//onCreate
 
     override fun onMapReady(naverMap: NaverMap) {
         val networkService = (applicationContext as MyApplication).networkService
@@ -80,7 +74,7 @@ class TourDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 response: Response<List<TourList>>
 
             ) {
-                var tourModel = response.body()
+                var TourList = response.body()
 
                 // 마커 객체 생성
                 val marker = Marker()

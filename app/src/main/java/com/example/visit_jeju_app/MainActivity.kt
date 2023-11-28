@@ -1,9 +1,12 @@
 package com.example.visit_jeju_app
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.visit_jeju_app.chat.ChatMainActivity
+import com.example.visit_jeju_app.community.activity.CommReadActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +34,22 @@ class MainActivity : AppCompatActivity() {
         //버튼 클릭스 동기화 : 드로워 열어주기
         toggle.syncState()
 
-    }
+        // NavigationView 메뉴 아이템 클릭 리스너 설정
+        binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.community -> {
+                    // '커뮤니티' 메뉴 아이템 클릭 시 CommReadActivity로 이동
+                    startActivity(Intent(this, CommReadActivity::class.java))
+                    true
+                }
+                // 다른 메뉴 아이템에 대한 처리 추가
+
+                else -> false
+            }
+        }
+
+
+    } //onCreate
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {

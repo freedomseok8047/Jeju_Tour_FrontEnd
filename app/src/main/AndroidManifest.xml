@@ -24,16 +24,46 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".tour.regionNmDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".tour.TourRegionNmActivity"
+            android:exported="true" />
+        <activity
             android:name=".tour.TourDetailActivity"
             android:exported="true" />
         <activity
             android:name=".tour.TourActivity"
             android:exported="true" />
         <activity
+            android:name=".community.activity.CommDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".community.activity.CommWriteActivity"
+            android:exported="true" />
+        <activity
+            android:name=".community.activity.CommUpdateActivity"
+            android:exported="true" />
+        <activity
+            android:name=".community.activity.CommReadActivity"
+            android:exported="true" />
+        <activity
+            android:name=".community.activity.CommDeleteActivity"
+            android:exported="true" />
+        <activity
             android:name=".login.AuthActivity"
             android:exported="true" />
         <activity
+            android:name=".chat.ChatMainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".chat.ChatActivity"
+            android:exported="true" />
+        <activity
             android:name=".IntroActivity"
+            android:exported="true" />
+        <activity
+            android:name=".gpt.GptActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
@@ -48,7 +78,6 @@
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="vbc859zh6w" />
-
     </application>
 
 </manifest>
