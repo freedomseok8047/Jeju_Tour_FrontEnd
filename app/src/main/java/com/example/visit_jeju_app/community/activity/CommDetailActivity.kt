@@ -13,6 +13,7 @@ import com.example.visit_jeju_app.community.model.CommunityData
 import com.example.visit_jeju_app.community.recycler.CommentAdapter
 import com.example.visit_jeju_app.databinding.ActivityCommDetailBinding
 import com.google.firebase.Timestamp
+import org.w3c.dom.Comment
 import java.text.SimpleDateFormat
 
 class CommDetailActivity : AppCompatActivity() {
@@ -46,6 +47,7 @@ class CommDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         //버튼 클릭스 동기화 : 드로워 열어주기
         toggle.syncState()
+
         // NavigationView 메뉴 아이템 클릭 리스너 설정
         binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -64,9 +66,6 @@ class CommDetailActivity : AppCompatActivity() {
         val title = intent.getStringExtra("CommunityTitle")
         val content = intent.getStringExtra("CommunityContent")
         val date = intent.getStringExtra("CommunityDate")
-
-        // 디테일 뷰 중 작성자에 해당 커뮤니티 작성 이메일 불러오는 코드
-        val email = intent.getStringExtra("CommunityWriterEmail")
 
         binding.CommunityTitle.text = title
         binding.CommunityDate.text = date
@@ -92,6 +91,23 @@ class CommDetailActivity : AppCompatActivity() {
                 }
         }
 
+        // 파이어베이스 writeEmail 필드에 저장된 데이터를 "작성자" 부분에 불러오는 코드
+        if (docId != null) {
+            MyApplication.db.collection("Communities").document(docId)
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+                        val writerEmail = documentSnapshot.getString("writerEmail")
+                        Log.d("CommDetailActivity", "Writer Email: $writerEmail")
+                        binding.CommunityWriter.text = writerEmail
+                    } else {
+                        Log.d("CommDetailActivity", "해당 문서가 없습니다")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("CommDetailActivity", "데이터 가져오기 실패: ", exception)
+                }
+        }
 
 
         // 수정
