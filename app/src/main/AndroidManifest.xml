@@ -24,6 +24,30 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".festival.FesRegionNmActivity"
+            android:exported="true" />
+        <activity
+            android:name=".festival.FesDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".festival.FesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".festival.regionNmDetailFesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".shopping.ShopRegionNmActivity"
+            android:exported="true" />
+        <activity
+            android:name=".shopping.ShopDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".shopping.ShopActivity"
+            android:exported="true" />
+        <activity
+            android:name=".shopping.regionNmDetailShopActivity"
+            android:exported="true" />
+        <activity
             android:name=".accommodation.AccomRegionNmActivity"
             android:exported="true" />
         <activity
@@ -85,20 +109,19 @@
             android:exported="true" />
         <activity
             android:name=".IntroActivity"
-            android:exported="true" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".gpt.GptActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
-
+            android:exported="true" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
