@@ -47,8 +47,8 @@ interface NetworkServiceRegionNm {
 //    fun GetFesList(): Call<List<FesList>>
 
 
-    @GET("tour/{lat}/{lnt}")
-    fun GetTourGPS(
+    @GET("tour/tourByGPS")
+    fun getTourGPS(
         @Query("lat") lat : Double?,
         @Query("lnt") lnt : Double?
     ): Call<List<TourList>>

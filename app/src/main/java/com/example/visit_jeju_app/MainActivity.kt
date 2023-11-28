@@ -1,7 +1,9 @@
 package com.example.visit_jeju_app
 
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.community.activity.CommReadActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
@@ -20,10 +23,29 @@ import com.example.visit_jeju_app.chat.ChatActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
 import com.example.visit_jeju_app.main.adapter.ImageSliderAdapter
 import com.example.visit_jeju_app.main.adapter.RecyclerView
+import com.example.visit_jeju_app.retrofit.NetworkServiceRegionNm
+import com.example.visit_jeju_app.tour.model.TourList
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MainActivity : AppCompatActivity() {
+
+    // 위치 정보 받아오기 위한 변수 선언 -------------------------------------
+    lateinit var fusedLocationClient: FusedLocationProviderClient
+    lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
+    // -----------------------------------------------------------
+
     lateinit var binding: ActivityMainBinding
 
     //액션버튼 토글
@@ -39,6 +61,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 위치 받아오기 위해 추가 ---------------------------------------------------------
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        createLocationRequest()
+        createLocationCallback()
+        //---------------------------------------------------------
 
         setSupportActionBar(binding.toolbar)
 
@@ -170,6 +197,93 @@ class MainActivity : AppCompatActivity() {
 
 
     } //onCreate
+
+    // 위치 데이터 획득 추가 ---------------------------------------------------------
+    private fun createLocationRequest() {
+        locationRequest = LocationRequest.create()?.apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }!!
+    }
+
+    private fun createLocationCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    // 여기서 위치 정보를 사용하세요.
+                    sendLocationToServer(location.latitude, location.longitude)
+                }
+            }
+        }
+    }
+    // -----------------------------------------------------------------------------
+
+
+    // 위치 정보 업데이트 ---------------------------------------------------------------------
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
+    }
+
+    private fun startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+    }
+    //-----------------------------------------------------------------------------------------
+
+
+    // 백엔드 서버로 위치 데이터 전송 -----------------------------------------------------------------------
+    private fun sendLocationToServer(lat: Double, lon: Double) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.100.104.32:8083/") // 백엔드 서버의 URL
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val service = retrofit.create(NetworkServiceRegionNm::class.java)
+        val call = service.getTourGPS(lat, lon)
+
+        call.enqueue(object : Callback<List<TourList>> {
+            override fun onResponse(call: Call<List<TourList>>, response: Response<List<TourList>>) {
+                // 서버로부터 응답을 받았을 때의 처리
+            }
+
+            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+                // 통신 실패 시 처리
+            }
+        })
+    }
+
+    //--------------------------------------------------------------------------------------------
+
+    // 위치 정보 업데이트 중지 -------------------------------------------------------------------------
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+    //-------------------------------------------------------------------------------------------
+
 
     // 뷰 페이저에 들어갈 아이템
     private fun getMainvisual(): ArrayList<Int> {
