@@ -101,6 +101,7 @@ class AuthActivity : AppCompatActivity() {
                             changeVisibility("login")
                             Toast.makeText(baseContext, "로그인 성공.", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this@AuthActivity, MainActivity::class.java)
+                            intent.putExtra("USER_EMAIL", MyApplication.email)
                             startActivity(intent)
                         }else {
                             Toast.makeText(baseContext, "전송된 메일로 이메일 인증이 되지 않았습니다.", Toast.LENGTH_SHORT).show()
