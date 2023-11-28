@@ -22,6 +22,7 @@
             android:orientation="vertical"
             tools:ignore="MissingConstraints">
 
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,6 +58,7 @@
                 tools:ignore="MissingConstraints"
                 />
 
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -67,7 +69,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/slide_layout"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="450dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,6 +92,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
 
             <!--  하단 버튼 1 줄  -->
             <LinearLayout
@@ -193,6 +196,7 @@
                         android:textSize="15dp" />
                 </LinearLayout>
             </LinearLayout>
+
 
             <!--  하단 버튼 2 줄  -->
             <LinearLayout
@@ -399,6 +403,20 @@
                         android:textSize="15dp" />
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/pageChange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="내가 있는 곳, 위치별로 보기!"/>
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 

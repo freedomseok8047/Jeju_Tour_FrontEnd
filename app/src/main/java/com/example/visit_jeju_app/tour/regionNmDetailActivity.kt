@@ -100,7 +100,7 @@ class regionNmDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 marker.setMap(naverMap)
 
                 val cameraPosition = CameraPosition( // 카메라 위치 변경
-                    LatLng(lnt, lat),  // 위치 지정
+                    LatLng(lat, lnt),  // 위치 지정
                     10.0 // 줌 레벨
                 )
                 naverMap.cameraPosition = cameraPosition

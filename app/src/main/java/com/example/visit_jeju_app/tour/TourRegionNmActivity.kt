@@ -1,5 +1,6 @@
 package com.example.visit_jeju_app.tour
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -89,6 +90,11 @@ class TourRegionNmActivity : AppCompatActivity() {
         binding.regionNm12.setOnClickListener {
             getTourNmList(22)
             binding.whereBtn.text = "대정"
+        }
+
+        binding.pageChange.setOnClickListener {
+            val intent = Intent(this@TourRegionNmActivity,TourActivity::class.java)
+            startActivity(intent)
         }
 
         // ==========================================================================================

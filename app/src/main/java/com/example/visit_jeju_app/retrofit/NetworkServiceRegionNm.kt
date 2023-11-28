@@ -15,11 +15,11 @@ interface NetworkServiceRegionNm {
 
 //    @GET("res/resList/{itemsRegion2CdValue}")
 //    fun getList(
-//        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Long
+//        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
 //    ): Call<List<resRegionNmList>>
 //    @GET("accom/accomList/{itemsRegion2CdValue}")
 //    fun getList(
-//        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Long
+//        @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
 //    ): Call<List<accomRegionNmList>>
 
 
