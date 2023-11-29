@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -22,6 +23,19 @@ class CommUpdateActivity : AppCompatActivity() {
     lateinit var binding : ActivityCommUpdateBinding
 
     lateinit var filePath: String
+
+    // 이미지와 내용이 모두 변경되는 경우, 이미지만 변경되는 경우, 내용만 변경되는 경우인 총 3가지 경우로
+    // 나누어서 파이어베이스의 스토어와 스토리지에 변경된 내용으로 저장되도록 하는 코드
+    private var docId: String? = null
+
+    private val requestLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.data?.let { uri ->
+                    handleImageSelection(uri)
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,35 +65,8 @@ class CommUpdateActivity : AppCompatActivity() {
 
         }
 
-
-        // 내용 수정한 부분을 파이어베이스에 반영하는 코드
-        // 수정
-        binding.CommunityModify.setOnClickListener {
-            val updatedTitle = binding.regTitle.text.toString()
-            val updatedContent = binding.regContent.text.toString()
-
-
-            // 제목 또는 내용이 수정되었는지 확인
-            if (updatedTitle != title || updatedContent != content) {
-                val data = mapOf(
-                    "title" to updatedTitle,
-                    "content" to updatedContent,
-                    "date" to dateToString(Date())
-                )
-                if (docId != null) {
-                    MyApplication.db.collection("Communities").document(docId).update(data)
-                }
-            }
-
-            finish()
-        }
-
-        // 수정 취소
-        binding.CommunityCancel.setOnClickListener {
-            finish()
-        }
-
-
+        // 이미지와 내용이 모두 변경되는 경우, 이미지만 변경되는 경우, 내용만 변경되는 경우인 총 3가지 경우로
+        // 나누어서 파이어베이스의 스토어와 스토리지에 변경된 내용으로 저장되도록 하는 코드
         // 파이어베이스에 등록된 디테일 뷰와 동일한 사진 가져오는 관련 코드
         // 등록한 이미지 가져 오기
         val imgRef = MyApplication.storage.reference.child("images/${docId}.jpg")
@@ -90,29 +77,90 @@ class CommUpdateActivity : AppCompatActivity() {
                     .into(binding.regImageUpdateView)
             }
         }
-    }
 
-    private val requestLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode === android.app.Activity.RESULT_OK) {
-            Glide
-                .with(applicationContext)
-                .load(it.data?.data)
-                .apply(RequestOptions().override(250, 200))
-                .centerCrop()
-                .into(binding.regImageUpdateView)
-            val cursor = contentResolver.query(
-                it.data?.data as Uri,
-                arrayOf<String>(MediaStore.Images.Media.DATA), null, null, null
-            )
-            cursor?.moveToFirst().let {
-                filePath = cursor?.getString(0) as String
+
+        // 내용 수정한 부분을 파이어베이스에 반영하는 코드
+        // 수정
+        binding.CommunityModify.setOnClickListener {
+            val updatedTitle = binding.regTitle.text.toString()
+            val updatedContent = binding.regContent.text.toString()
+
+            // 이미지와 내용이 모두 변경되는 경우, 이미지만 변경되는 경우, 내용만 변경되는 경우인 총 3가지 경우로
+            // 나누어서 파이어베이스의 스토어와 스토리지에 변경된 내용으로 저장되도록 하는 코드
+                if (filePath.isNotBlank()) {
+                    // 이미지가 변경된 경우
+                    uploadImageAndData(docId, updatedTitle, updatedContent)
+                } else if (updatedTitle != title || updatedContent != content) {
+                    // 내용만 변경된 경우
+                    updateDataOnly(docId, updatedTitle, updatedContent)
+                } else {
+                    // 변경된 내용이 없는 경우
+                    finish()
+                }
             }
+
+        // 수정 취소
+        binding.CommunityCancel.setOnClickListener {
+            finish()
         }
     }
 
 
+    // 이미지와 내용이 모두 변경되는 경우, 이미지만 변경되는 경우, 내용만 변경되는 경우인 총 3가지 경우로
+    // 나누어서 파이어베이스의 스토어와 스토리지에 변경된 내용으로 저장되도록 하는 코드
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.setDataAndType(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            "image/*"
+        )
+        requestLauncher.launch(intent)
+    }
 
+    private fun handleImageSelection(uri: Uri) {
+        Glide.with(applicationContext)
+            .load(uri)
+            .into(binding.regImageUpdateView)
+
+        filePath = uri.toString()
+    }
+
+
+
+
+    // 이미지와 내용이 모두 변경되는 경우, 이미지만 변경되는 경우, 내용만 변경되는 경우인 총 3가지 경우로
+    // 나누어서 파이어베이스의 스토어와 스토리지에 변경된 내용으로 저장되도록 하는 코드
+    private fun uploadImageAndData(docId: String?, title: String, content: String) {
+        if (docId != null) {
+            // 이미지 업로드
+            val imageRef = MyApplication.storage.reference.child("images/${docId}.jpg")
+            val uploadTask = imageRef.putFile(Uri.parse(filePath))
+
+            uploadTask.addOnSuccessListener {
+                // 이미지 업로드 성공 시 데이터 업데이트
+                val data = mapOf(
+                    "title" to title,
+                    "content" to content,
+                    "date" to dateToString(Date())
+                )
+                MyApplication.db.collection("Communities").document(docId).update(data)
+                finish()
+            }.addOnFailureListener {
+                // 이미지 업로드 실패 시 처리 (예: Toast 메시지 출력 등)
+            }
+        }
+    }
+
+    private fun updateDataOnly(docId: String?, title: String, content: String) {
+        if (docId != null) {
+            val data = mapOf(
+                "title" to title,
+                "content" to content,
+                "date" to dateToString(Date())
+            )
+            MyApplication.db.collection("Communities").document(docId).update(data)
+            finish()
+        }
+    }
     }
 
