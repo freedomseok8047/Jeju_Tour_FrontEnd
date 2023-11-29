@@ -338,7 +338,7 @@ class MainActivity : AppCompatActivity() {
         // 현재 위치 백에 보내서, 데이터 받아오기.
         // http://10.100.104.32:8083/tour/tourList/tourByGPS?lat=33.4&lnt=126.2
 
-        val networkService = (applicationContext as MyApplication).networkService
+
         val tourGPSCall = networkService.getTourGPS(lat,lnt)
 
         tourGPSCall.enqueue(object : Callback<List<TourList>> {
