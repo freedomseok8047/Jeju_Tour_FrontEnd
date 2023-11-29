@@ -11,11 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.databinding.ItemShopBinding
+import com.example.visit_jeju_app.databinding.MainItemBinding
 import com.example.visit_jeju_app.shopping.ShopActivity
 import com.example.visit_jeju_app.shopping.ShopDetailActivity
 import com.example.visit_jeju_app.shopping.model.ShopList
 
-class ShopViewHolder2(val binding: ItemShopBinding): RecyclerView.ViewHolder(binding.root)
+class ShopViewHolder2(val binding: MainItemBinding): RecyclerView.ViewHolder(binding.root)
 class ShopAdapter_Main(val context: Context, val datas:MutableList<ShopList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
@@ -24,7 +25,7 @@ class ShopAdapter_Main(val context: Context, val datas:MutableList<ShopList>?): 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
-            = ShopViewHolder2(ItemShopBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            = ShopViewHolder2(MainItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as ShopViewHolder2).binding
@@ -34,7 +35,6 @@ class ShopAdapter_Main(val context: Context, val datas:MutableList<ShopList>?): 
         //add......................................
         val model = datas?.get(position)
         binding.name.text = model?.itemsTitle
-        binding.addr1.text = model?.itemsAddress
         binding.addr2.text = model?.itemsRoadAddress
         binding.tel.text = model?.itemsPhoneNo
         Log.d("ljs","model?.itemsTitle: ${model?.itemsTitle}")
