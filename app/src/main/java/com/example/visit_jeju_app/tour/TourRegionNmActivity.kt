@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.visit_jeju_app.MyApplication
+import com.example.visit_jeju_app.R
+import com.example.visit_jeju_app.databinding.ActivityTourBinding
 import com.example.visit_jeju_app.databinding.ActivityTourRegionNmBinding
 import com.example.visit_jeju_app.tour.adapter.RegionNmAdapter
 import com.example.visit_jeju_app.tour.model.TourList

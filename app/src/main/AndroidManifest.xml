@@ -78,6 +78,12 @@
             android:name=".accommodation.AccomActivity"
             android:exported="true" />
         <activity
+            android:name=".tour.regionNmDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".tour.TourRegionNmActivity"
+            android:exported="true" />
+        <activity
             android:name=".tour.TourDetailActivity"
             android:exported="true" />
         <activity

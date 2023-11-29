@@ -14,18 +14,26 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.camp.campingapp.model.NaverReverseGeocodeResponse
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.databinding.ActivityTourBinding
+import com.example.visit_jeju_app.retrofit.NaverNetworkService
 import com.example.visit_jeju_app.tour.adapter.TourAdapter
 import com.example.visit_jeju_app.tour.model.TourList
+import com.example.visit_jeju_app.tour.model.TourModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.Priority
+import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class TourActivity : AppCompatActivity() {
@@ -40,9 +48,9 @@ class TourActivity : AppCompatActivity() {
     lateinit var mLocationRequest: com.google.android.gms.location.LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
 
-    private var mapX : String = ""
-    private var mapY : String= ""
-    private var coords: String = ""
+//    private var mapX : String = ""
+//    private var mapY : String= ""
+//    private var coords: String = ""
 
 
     lateinit var binding: ActivityTourBinding
@@ -66,7 +74,6 @@ class TourActivity : AppCompatActivity() {
 
         }
 
-        // 추가
         binding.pageChange.setOnClickListener {
             val intent = Intent(this@TourActivity, TourRegionNmActivity::class.java)
             startActivity(intent)
