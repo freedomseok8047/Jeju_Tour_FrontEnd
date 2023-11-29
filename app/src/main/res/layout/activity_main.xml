@@ -15,11 +15,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
      //Appbar -->
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        android:layout_height="match_parent">
 
+        <!-- Bottom Navigation View -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:menu="@menu/bottom_navigation_menu" />
+        <!-- //Bottom Navigation View -->
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <!-- 앱바 구성 (툴바 포함) -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
@@ -32,19 +43,119 @@
                 android:layout_height="wrap_content"
                 android:background="@color/black"
                 >
-
                 <!--툴바 뷰 생성 -->
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    app:layout_scrollFlags="scroll|enterAlways"
                     app:layout_collapseMode="pin"
                     />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
-
         </com.google.android.material.appbar.AppBarLayout>
+        <!-- //앱바 구성 (툴바 포함) -->
+
+        <ScrollView
+            android:id="@+id/scroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!-- 메인 비쥬얼 슬라이더 -->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager_mainVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+                <!-- //메인 비쥬얼 슬라이더 -->
+
+
+
+
+                <!-- 키 데이터 리사이클러 뷰 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <!--리사이클러뷰 연동 -->
+                    <!--제주 숙박 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:text="제주 숙박"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="30dp" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/viewRecyclerHotel"
+                        android:layout_width="match_parent"
+                        android:layout_height="320dp" />
+
+                    <!--제주 맛집 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:text="제주 맛집"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="30dp" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/viewRecyclerRestaurant"
+                        android:layout_width="match_parent"
+                        android:layout_height="320dp" />
+
+                    <!--제주 투어 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:text="제주 투어"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="30dp" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/viewRecyclerTour"
+                        android:layout_width="match_parent"
+                        android:layout_height="320dp" />
+
+                    <!--제주 축제 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:text="제주 축제"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="30dp" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/viewRecyclerFestival"
+                        android:layout_width="match_parent"
+                        android:layout_height="320dp" />
+
+                    <!--제주 쇼핑 -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:text="제주 쇼핑"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="30dp" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/viewRecyclerShopping"
+                        android:layout_width="match_parent"
+                        android:layout_height="320dp" />
+                </LinearLayout>
+                <!-- //키 데이터 리사이클러 뷰 -->
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </RelativeLayout>
 
     <!-- Navigation View -->
     <com.google.android.material.navigation.NavigationView
@@ -55,9 +166,6 @@
         app:headerLayout="@layout/navi_header"
         app:menu="@menu/drawer_menu"/>
     <!-- //Navigation View -->
-
-
-
 
 
 
