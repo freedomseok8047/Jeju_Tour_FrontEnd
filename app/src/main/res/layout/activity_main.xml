@@ -9,12 +9,7 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <!-- Appbar
-    <include
-        layout="@layout/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-     //Appbar -->
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -32,6 +27,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <!-- 앱바 구성 (툴바 포함) -->
+            <!-- Appbar
+            <include layout="@layout/appbar"/>
+            //Appbar -->
+
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
             android:layout_width="match_parent"
@@ -50,6 +49,7 @@
                     android:layout_height="?attr/actionBarSize"
                     app:layout_scrollFlags="scroll|enterAlways"
                     app:layout_collapseMode="pin"
+                    style="@style/ToolBarCss"
                     />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -94,10 +94,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="제주 숙박"
-                            android:textSize="26sp"
+                            android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            style="@style/mainTitleStyle"/>
 
                         <TextView
                             android:id="@+id/mainItemMoreBtn1"
@@ -116,7 +117,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewRecyclerAccom"
                         android:layout_width="match_parent"
-                        android:layout_height="320dp" />
+                        android:layout_height="wrap_content" />
 
                     <!-- 제주 맛집 타이틀 -->
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -128,11 +129,11 @@
                             android:id="@+id/mainItemTitle2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="26sp"
                             android:text="제주 맛집"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            style="@style/mainTitleStyle"/>
 
                         <TextView
                             android:id="@+id/mainItemMoreBtn2"
@@ -151,7 +152,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewRecyclerRestaurant"
                         android:layout_width="match_parent"
-                        android:layout_height="320dp" />
+                        android:layout_height="wrap_content" />
 
                     <!-- 제주 투어 타이틀 -->
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -163,11 +164,11 @@
                             android:id="@+id/mainItemTitle3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="26sp"
                             android:text="제주 투어"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            style="@style/mainTitleStyle"/>
 
                         <TextView
                             android:id="@+id/mainItemMoreBtn3"
@@ -186,7 +187,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewRecyclerTour"
                         android:layout_width="match_parent"
-                        android:layout_height="320dp" />
+                        android:layout_height="wrap_content" />
 
                     <!-- 제주 축제 타이틀 -->
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -198,11 +199,11 @@
                             android:id="@+id/mainItemTitle4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="26sp"
                             android:text="제주 축제"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            style="@style/mainTitleStyle"/>
 
                         <TextView
                             android:id="@+id/mainItemMoreBtn4"
@@ -221,7 +222,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewRecyclerFestival"
                         android:layout_width="match_parent"
-                        android:layout_height="320dp" />
+                        android:layout_height="wrap_content" />
 
                     <!-- 제주 쇼핑 타이틀 -->
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -233,11 +234,11 @@
                             android:id="@+id/mainItemTitle5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="26sp"
                             android:text="제주 쇼핑"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            style="@style/mainTitleStyle"/>
 
                         <TextView
                             android:id="@+id/mainItemMoreBtn5"
@@ -256,7 +257,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewRecyclerShopping"
                         android:layout_width="match_parent"
-                        android:layout_height="320dp" />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
