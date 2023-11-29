@@ -150,11 +150,11 @@ class MainActivity : AppCompatActivity() {
 
 
         // 메인 카테고리 더보기 링크
-        val moreAccomTextView: TextView = findViewById(R.id.mainItemTitle1)
-        val moreRestaurantTextView: TextView = findViewById(R.id.mainItemTitle2)
-        val moreTourTextView: TextView = findViewById(R.id.mainItemTitle3)
-        val moreFestivalTextView: TextView = findViewById(R.id.mainItemTitle4)
-        val moreShoppingTextView: TextView = findViewById(R.id.mainItemTitle5)
+        val moreAccomTextView: TextView = findViewById(R.id.mainItemMoreBtn1)
+        val moreRestaurantTextView: TextView = findViewById(R.id.mainItemMoreBtn2)
+        val moreTourTextView: TextView = findViewById(R.id.mainItemMoreBtn3)
+        val moreFestivalTextView: TextView = findViewById(R.id.mainItemMoreBtn4)
+        val moreShoppingTextView: TextView = findViewById(R.id.mainItemMoreBtn5)
 
         // 각 "더보기" 텍스트 뷰에 클릭 리스너를 추가
         moreAccomTextView.setOnClickListener {

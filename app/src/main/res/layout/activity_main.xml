@@ -80,34 +80,36 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="60dp">
+                    android:layout_marginBottom="60dp"
+                    android:paddingLeft="10dp">
 
                     <!-- 제주 숙박 타이틀 -->
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp">
+                        android:layout_marginLeft="14dp">
 
                         <TextView
                             android:id="@+id/mainItemTitle1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="26sp"
                             android:text="제주 숙박"
+                            android:textSize="26sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toBottomOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
+                            android:id="@+id/mainItemMoreBtn1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="196dp"
                             android:text="더보기"
                             android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="@id/mainItemTitle1"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/mainItemTitle1"
-                            app:layout_constraintTop_toTopOf="@id/mainItemTitle1" />
+                            app:layout_constraintHorizontal_bias="0.85"
+                            app:layout_constraintStart_toEndOf="@+id/mainItemTitle1"
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- RecyclerView 등의 다른 뷰 -->
@@ -120,7 +122,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp">
+                        android:layout_marginLeft="14dp">
 
                         <TextView
                             android:id="@+id/mainItemTitle2"
@@ -133,15 +135,16 @@
                             app:layout_constraintBottom_toBottomOf="parent" />
 
                         <TextView
+                            android:id="@+id/mainItemMoreBtn2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="196dp"
                             android:text="더보기"
                             android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="@id/mainItemTitle2"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/mainItemTitle2"
-                            app:layout_constraintTop_toTopOf="@id/mainItemTitle2" />
+                            app:layout_constraintHorizontal_bias="0.85"
+                            app:layout_constraintStart_toEndOf="@+id/mainItemTitle2"
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- RecyclerView 등의 다른 뷰 -->
@@ -154,7 +157,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp">
+                        android:layout_marginLeft="14dp">
 
                         <TextView
                             android:id="@+id/mainItemTitle3"
@@ -167,15 +170,16 @@
                             app:layout_constraintBottom_toBottomOf="parent" />
 
                         <TextView
+                            android:id="@+id/mainItemMoreBtn3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="196dp"
                             android:text="더보기"
                             android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="@id/mainItemTitle3"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/mainItemTitle3"
-                            app:layout_constraintTop_toTopOf="@id/mainItemTitle3" />
+                            app:layout_constraintHorizontal_bias="0.85"
+                            app:layout_constraintStart_toEndOf="@+id/mainItemTitle3"
+                            app:layout_constraintTop_toTopOf="parent"/>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- RecyclerView 등의 다른 뷰 -->
@@ -188,7 +192,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp">
+                        android:layout_marginLeft="14dp">
 
                         <TextView
                             android:id="@+id/mainItemTitle4"
@@ -201,15 +205,16 @@
                             app:layout_constraintBottom_toBottomOf="parent" />
 
                         <TextView
+                            android:id="@+id/mainItemMoreBtn4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="196dp"
                             android:text="더보기"
                             android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="@id/mainItemTitle4"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/mainItemTitle4"
-                            app:layout_constraintTop_toTopOf="@id/mainItemTitle4" />
+                            app:layout_constraintHorizontal_bias="0.85"
+                            app:layout_constraintStart_toEndOf="@+id/mainItemTitle4"
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- RecyclerView 등의 다른 뷰 -->
@@ -222,7 +227,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp">
+                        android:layout_marginLeft="14dp">
 
                         <TextView
                             android:id="@+id/mainItemTitle5"
@@ -235,15 +240,16 @@
                             app:layout_constraintBottom_toBottomOf="parent" />
 
                         <TextView
+                            android:id="@+id/mainItemMoreBtn5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="196dp"
                             android:text="더보기"
                             android:textSize="18sp"
-                            app:layout_constraintBottom_toBottomOf="@id/mainItemTitle5"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/mainItemTitle5"
-                            app:layout_constraintTop_toTopOf="@id/mainItemTitle5" />
+                            app:layout_constraintHorizontal_bias="0.822"
+                            app:layout_constraintStart_toEndOf="@+id/mainItemTitle5"
+                            app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <!-- RecyclerView 등의 다른 뷰 -->
