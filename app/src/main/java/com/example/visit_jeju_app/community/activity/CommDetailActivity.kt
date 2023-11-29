@@ -13,7 +13,6 @@ import com.example.visit_jeju_app.community.model.CommunityData
 import com.example.visit_jeju_app.community.recycler.CommentAdapter
 import com.example.visit_jeju_app.databinding.ActivityCommDetailBinding
 import com.google.firebase.Timestamp
-import org.w3c.dom.Comment
 import java.text.SimpleDateFormat
 
 class CommDetailActivity : AppCompatActivity() {
