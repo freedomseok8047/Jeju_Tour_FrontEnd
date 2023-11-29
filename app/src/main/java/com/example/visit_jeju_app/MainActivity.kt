@@ -2,13 +2,18 @@ package com.example.visit_jeju_app
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +22,7 @@ import com.example.visit_jeju_app.community.activity.CommReadActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.startActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.visit_jeju_app.chat.ChatActivity
@@ -24,6 +30,7 @@ import com.example.visit_jeju_app.databinding.ActivityMainBinding
 import com.example.visit_jeju_app.main.adapter.ImageSliderAdapter
 import com.example.visit_jeju_app.main.adapter.RecyclerView
 import com.example.visit_jeju_app.retrofit.NetworkServiceRegionNm
+import com.example.visit_jeju_app.tour.adapter.TourAdapter
 import com.example.visit_jeju_app.tour.model.TourList
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -44,6 +51,9 @@ class MainActivity : AppCompatActivity() {
     lateinit var fusedLocationClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
+    private lateinit var handler: Handler
+    private var lastUpdateTimestamp = 0L
+    private val updateDelayMillis = 10000
     // -----------------------------------------------------------
 
     lateinit var binding: ActivityMainBinding
@@ -54,6 +64,10 @@ class MainActivity : AppCompatActivity() {
     //lateinit var viewPager_aespa: ViewPager2
     lateinit var viewPager_mainVisual: ViewPager2
 
+    // 현재 위치 담아 두는 변수
+     var lat : Double = 0.0
+     var lnt : Double = 0.0
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,10 +75,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        handler = Handler(Looper.getMainLooper())
+
         // 위치 받아오기 위해 추가 ---------------------------------------------------------
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         createLocationRequest()
-        createLocationCallback()
+//        createLocationCallback()
         //---------------------------------------------------------
 
         setSupportActionBar(binding.toolbar)
@@ -164,6 +180,33 @@ class MainActivity : AppCompatActivity() {
         viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
         viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
 
+        // 일단, 시작시 토스트로 현재 위치 위도, 경도 받아오기 테스트
+        getLocation()
+
+        // 현재 위치 백에 보내서, 데이터 받아오기.
+        // http://10.100.104.32:8083/tour/tourList/tourByGPS?lat=33.4&lnt=126.2
+
+        val networkService = (applicationContext as MyApplication).networkService
+        val tourGPSCall = networkService.getTourGPS(lat,lnt)
+
+        tourGPSCall.enqueue(object : Callback<List<TourList>> {
+            override fun onResponse(
+                call: Call<List<TourList>>,
+                response: Response<List<TourList>>
+
+            ) {
+                val tourList = response.body()
+
+                Log.d("lsy","tourList 값 : ${tourList}")
+                Log.d("lsy", "tourList 사이즈 : ${tourList?.size}")
+            }
+
+            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+                Log.d("lsy", "fail")
+                call.cancel()
+            }
+        })
+
 
 
 
@@ -198,26 +241,44 @@ class MainActivity : AppCompatActivity() {
 
     } //onCreate
 
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+        val fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(this)
+
+        fusedLocationProviderClient.lastLocation
+            .addOnSuccessListener { success: Location? ->
+                success?.let { location ->
+                    Log.d("lsy", "현재 위치 조회 : lat : ${location.latitude}, lnt : ${location.longitude}")
+                    lat = location.latitude
+                    lnt = location.longitude
+                    Log.d("lsy", "현재 위치 조회 2 : lat : ${lat}, lnt : ${lnt}")
+                }
+            }
+            .addOnFailureListener { fail ->
+                Log.d("lsy", "현재 위치 조회 실패")
+            }
+    }
+
     // 위치 데이터 획득 추가 ---------------------------------------------------------
     private fun createLocationRequest() {
         locationRequest = LocationRequest.create()?.apply {
-            interval = 10000
-            fastestInterval = 5000
+            interval = 40000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         }!!
     }
 
-    private fun createLocationCallback() {
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                locationResult ?: return
-                for (location in locationResult.locations){
-                    // 여기서 위치 정보를 사용하세요.
-                    sendLocationToServer(location.latitude, location.longitude)
-                }
-            }
-        }
-    }
+//    private fun createLocationCallback() {
+//        locationCallback = object : LocationCallback() {
+//            override fun onLocationResult(locationResult: LocationResult) {
+//                locationResult ?: return
+//                for (location in locationResult.locations){
+//                    // 여기서 위치 정보를 사용하세요.
+//                    sendLocationToServer(lat, lnt)
+//                }
+//            }
+//        }
+//    }
     // -----------------------------------------------------------------------------
 
 
@@ -236,13 +297,6 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
@@ -250,28 +304,26 @@ class MainActivity : AppCompatActivity() {
     //-----------------------------------------------------------------------------------------
 
 
-    // 백엔드 서버로 위치 데이터 전송 -----------------------------------------------------------------------
-    private fun sendLocationToServer(lat: Double, lnt: Double) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.100.104.32:8083/") // 백엔드 서버의 URL
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+//    // 백엔드 서버로 위치 데이터 전송 -----------------------------------------------------------------------
+//    private fun sendLocationToServer(lat: Double, lnt: Double) {
+//    val networkService = (applicationContext as MyApplication).networkService
+//        val tourGPSCall = networkService.getTourGPS(lat, lnt )
+//
+//    tourGPSCall.enqueue(object : Callback<List<TourList>> {
+//            override fun onResponse(call: Call<List<TourList>>, response: Response<List<TourList>>) {
+//                Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
+//            }
+//
+//            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+//                Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+//            }
+//        })
+//    }
 
-        val service = retrofit.create(NetworkServiceRegionNm::class.java)
-        val call = service.getTourGPS(lat, lnt )
+    // 현재 위치 백에 다시 보내서, 데이터 업데이트.
+    // http://10.100.104.32:8083/tour/tourList/tourByGPS?lat=33.4&lnt=126.2
 
-        call.enqueue(object : Callback<List<TourList>> {
-            override fun onResponse(call: Call<List<TourList>>, response: Response<List<TourList>>) {
-                // 서버로부터 응답을 받았을 때의 처리
-            }
-
-            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
-                // 통신 실패 시 처리
-            }
-        })
-    }
-
-    //--------------------------------------------------------------------------------------------
+//    //--------------------------------------------------------------------------------------------
 
     // 위치 정보 업데이트 중지 -------------------------------------------------------------------------
     override fun onPause() {
