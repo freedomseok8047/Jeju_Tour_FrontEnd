@@ -17,7 +17,7 @@ import com.example.visit_jeju_app.tour.model.TourList
 import com.example.visit_jeju_app.tour.model.TourModel
 
 class TourViewHolder2(val binding: ItemTourBinding): RecyclerView.ViewHolder(binding.root)
-class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class TourAdapter_Main(val context: Context, val datas:List<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -29,8 +29,8 @@ class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as TourViewHolder2).binding
-        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
-        holder.binding.root.animation = animation
+//        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
+//        holder.binding.root.animation = animation
 
         //add......................................
         val model = datas?.get(position)

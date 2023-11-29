@@ -28,8 +28,10 @@ class AccomAdapter_Main(val context: Context, val datas:MutableList<AccomList>?)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as AccomViewHolder2).binding
-        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
-        holder.binding.root.animation = animation
+
+        // 애니매이션 일단 주석
+//        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
+//        holder.binding.root.animation = animation
 
         //add......................................
         val model = datas?.get(position)
