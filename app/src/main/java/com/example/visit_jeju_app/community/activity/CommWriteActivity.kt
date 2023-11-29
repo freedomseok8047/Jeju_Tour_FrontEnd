@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.MenuItem
 import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -83,20 +84,25 @@ class CommWriteActivity : AppCompatActivity() {
             val radioButtonUsed = findViewById<RadioButton>(R.id.radioUsed)
             val radioButtonNotUsed = findViewById<RadioButton>(R.id.radioNotused)
 
+            // 카테고리를 파이어베이스에 저장하는 코드
+            val categoryRadioGroup = findViewById<RadioGroup>(R.id.categoryRadioGroup) // 추가된 라인
+
             val status = if (radioButtonUsed.isChecked) {
                 "사용"
             } else if (radioButtonNotUsed.isChecked) {
                 "비사용"
             } else {
-                Snackbar.make(
-                    binding.root,
-                    "라디오 버튼을 선택하세요",
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                // 카테고리를 파이어베이스에 저장하는 코드
+                Toast.makeText(this, "라디오 버튼을 선택하세요", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            saveStore(status)
+            val selectedCategoryId = categoryRadioGroup.checkedRadioButtonId
+            val selectedCategory =
+                if (selectedCategoryId != -1) findViewById<RadioButton>(selectedCategoryId).text.toString()
+                else ""
+
+            saveStore(status, selectedCategory)
         }
 
         binding.upload.setOnClickListener {
@@ -131,9 +137,19 @@ class CommWriteActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveStore(status: String) {
+    // 카테고리를 파이어베이스에 저장하는 코드
+    private fun saveStore(status: String, category: String) {
         // 현재 날짜와 시간을 문자열로 변환
         val timestampString = dateToString(Date())
+
+        // 카테고리를 파이어베이스에 저장하는 코드
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userEmail = currentUser?.email ?: "unknown"
+
+
+        val writerEmail =
+            if (binding.radioNotused.isChecked) "비공개"
+            else userEmail ?: "unknown" // 사용자 이메일 추가 및 null 체크
 
         val data = mapOf(
             "title" to binding.title.text.toString(),
@@ -144,8 +160,11 @@ class CommWriteActivity : AppCompatActivity() {
 
             // 디테일 뷰 중 작성자에 해당 커뮤니티 작성 이메일 불러오는 코드
             // (사용안함 선택 시, 이메일이 아닌 "비공개" 문자열이 파이어베이스에 저장)
-            "writerEmail" to if (binding.radioNotused.isChecked) "비공개" else userEmail, // 사용자 이메일 추가
-            "status" to status
+            "writerEmail" to writerEmail, // 사용자 이메일 추가
+            "status" to status,
+
+            // 카테고리를 파이어베이스에 저장하는 코드
+            "category" to category // 추가된 라인
 
         )
         db.collection("Communities")

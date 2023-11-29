@@ -53,25 +53,27 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:layout_gravity="center"
         android:textStyle="bold"
+        android:textSize="20sp"
         android:fontFamily="@font/sans_medium"
-        android:text="제주관광 커뮤니티"/>
+        android:text="제주관광 커뮤니티"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:textStyle="italic"
         android:fontFamily="@font/sans_medium"
         android:text="다양한 사람들과 자유롭게 정보를 공유해봐요"/>
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:layout_marginTop="20dp"
         android:textStyle="bold"
         android:fontFamily="@font/sans_medium"
         android:text="🗂️ 카테고리 선택"/>
@@ -136,17 +138,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:textStyle="bold"
         android:fontFamily="@font/sans_medium"
-        android:text="📜🖊️ 글작성"/>
+        android:text="📜🖊️ 글 작성"/>
 
     <EditText
         android:id="@+id/title"
-        android:padding="16dp"
         android:background="#eeeeee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:fontFamily="@font/sans_medium"
         android:hint="제목을 입력하세요."
@@ -160,24 +161,23 @@
         android:layout_marginTop="10dp"
         android:background="#eeeeee"
         android:hint="내용을 입력하세요."
-        android:padding="16dp"
         android:fontFamily="@font/sans_medium"
         android:scrollbars="vertical" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:layout_marginTop="10dp"
         android:textStyle="bold"
         android:fontFamily="@font/sans_medium"
-        android:text="🖼️ 사진첨부"/>
+        android:text="🖼️ 사진 첨부"/>
 
     <Button
         android:id="@+id/upload"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="사진 업로드"
-        android:background="#00BCD4"/>
+        android:layout_marginTop="10dp"
+        android:text="사진 업로드" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -191,7 +191,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:layout_marginTop="10dp"
         android:textStyle="bold"
         android:fontFamily="@font/sans_medium"
         android:text="🔒 작성자명 공개 체크"/>
@@ -226,7 +226,7 @@
         android:layout_marginTop="30dp"
         android:layout_gravity="center"
         android:fontFamily="@font/sans_medium"
-        android:text="작성완료"
+        android:text="작성 완료"
         android:background="#00BCD4"/>
 
 </LinearLayout>

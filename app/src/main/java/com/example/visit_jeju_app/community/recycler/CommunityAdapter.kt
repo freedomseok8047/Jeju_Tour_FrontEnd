@@ -32,6 +32,7 @@ class CommunityAdapter(val context: Context, private var itemList: MutableList<C
         // crud된 파이어베이스 데이터가 activiy_comm_read.xml 뷰에 자동반영되도록 하는 코드
         val data = itemList[position]
 
+
         holder.binding.run {
             itemTitleView.text=data.title
             itemContentView.text=data.content
@@ -41,6 +42,10 @@ class CommunityAdapter(val context: Context, private var itemList: MutableList<C
             // Timestamp를 문자열로 변환하여 표시
             // timestamp형이 아닌 string이면서 "yyyy-MM-dd HH:mm"포맷으로 파이어베이스 저장 및 조회 관련 코드
             itemDateView.text = data.date
+
+            // 카테고리를 파이어베이스에 저장하는 코드
+            itemCategoryView.text = "${data.category}" // 추가된 라인
+
         }
 
         holder.itemView.setOnClickListener {
@@ -50,6 +55,9 @@ class CommunityAdapter(val context: Context, private var itemList: MutableList<C
             intent.putExtra("CommunityContent", data.content)
             intent.putExtra("CommunityDate", data.date)
             intent.putExtra("Comment", data.comment)
+
+            // 카테고리를 파이어베이스에 저장하는 코드
+            intent.putExtra("Category", data.category) // 추가된 라인
             context.startActivity(intent)
         }
     }
