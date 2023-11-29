@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -13,6 +14,7 @@ import com.example.visit_jeju_app.community.model.CommunityData
 import com.example.visit_jeju_app.community.recycler.CommentAdapter
 import com.example.visit_jeju_app.databinding.ActivityCommDetailBinding
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 
 class CommDetailActivity : AppCompatActivity() {
@@ -99,6 +101,11 @@ class CommDetailActivity : AppCompatActivity() {
                         val writerEmail = documentSnapshot.getString("writerEmail")
                         Log.d("CommDetailActivity", "Writer Email: $writerEmail")
                         binding.CommunityWriter.text = writerEmail
+
+                        // 디테일 뷰에서 현재 로그인계정과 해당 글 작성자 일치여부에 따른 "수정","삭제"버튼 숨김여부 관련 코드
+                        // 현재 로그인한 사용자와 작성자가 같으면 수정, 삭제 버튼을 표시
+                        checkCurrentUserAndWriter(FirebaseAuth.getInstance().currentUser?.email, writerEmail)
+
                     } else {
                         Log.d("CommDetailActivity", "해당 문서가 없습니다")
                     }
@@ -189,6 +196,20 @@ class CommDetailActivity : AppCompatActivity() {
             overridePendingTransition(0, 0) //인텐트 효과 없애기
         }
     }
+
+    // 디테일 뷰에서 현재 로그인계정과 해당 글 작성자 일치여부에 따른 "수정","삭제"버튼 숨김여부 관련 코드
+    private fun checkCurrentUserAndWriter(currentUserEmail: String?, writerEmail: String?) {
+        if (currentUserEmail == writerEmail) {
+            // 현재 로그인한 사용자와 작성자가 같으면 수정, 삭제 버튼을 표시
+            binding.CommunityModify.visibility = View.VISIBLE
+            binding.CommunityDelete.visibility = View.VISIBLE
+        } else {
+            // 다르면 숨김
+            binding.CommunityModify.visibility = View.GONE
+            binding.CommunityDelete.visibility = View.GONE
+        }
+    }
+
 
     // 파이어베이스에 저장된 timestamp형인 date를 불러올 수 있도록
     // activity_comm_detail.xml 내 android:id="@+id/CommunityDate"인 textview에 timestamp형인 date를 설정
