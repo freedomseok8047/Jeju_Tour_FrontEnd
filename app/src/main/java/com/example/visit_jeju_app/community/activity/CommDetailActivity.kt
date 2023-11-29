@@ -109,6 +109,24 @@ class CommDetailActivity : AppCompatActivity() {
                 }
         }
 
+        // 파이어베이스에 저장된 카테고리 데이터를 디테일 뷰에 불러오는 관련 코드
+        // Firebase에서 카테고리 가져와서 TextView에 설정
+        if (docId != null) {
+            MyApplication.db.collection("Communities").document(docId)
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+                        val category = documentSnapshot.getString("category") ?: ""
+                        binding.itemCategoryView.text = category
+                    } else {
+                        Log.d("CommDetailActivity", "해당 문서가 없습니다")
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Log.d("CommDetailActivity", "데이터 가져오기 실패: ", exception)
+                }
+        }
+
 
         // 수정
         binding.CommunityModify.setOnClickListener {
