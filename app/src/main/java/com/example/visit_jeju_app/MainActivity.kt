@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         // 위치 받아오기 위해 추가 ---------------------------------------------------------
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         createLocationRequest()
-//        createLocationCallback()
+        createLocationCallback()
         //---------------------------------------------------------
         // 각 가테고리별 넘어온 데이터 담을 리스트 초기화, 할당.
         dataListFromAccomActivity = mutableListOf<AccomList>()
@@ -477,17 +477,17 @@ class MainActivity : AppCompatActivity() {
         }!!
     }
 
-//    private fun createLocationCallback() {
-//        locationCallback = object : LocationCallback() {
-//            override fun onLocationResult(locationResult: LocationResult) {
-//                locationResult ?: return
-//                for (location in locationResult.locations){
-//                    // 여기서 위치 정보를 사용하세요.
-//                    sendLocationToServer(lat, lnt)
-//                }
-//            }
-//        }
-//    }
+    private fun createLocationCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    // 여기서 위치 정보를 사용하세요.
+                    sendLocationToServer(lat, lnt)
+                }
+            }
+        }
+    }
     // -----------------------------------------------------------------------------
 
 
@@ -513,21 +513,21 @@ class MainActivity : AppCompatActivity() {
     //-----------------------------------------------------------------------------------------
 
 
-//    // 백엔드 서버로 위치 데이터 전송 -----------------------------------------------------------------------
-//    private fun sendLocationToServer(lat: Double, lnt: Double) {
-//    val networkService = (applicationContext as MyApplication).networkService
-//        val tourGPSCall = networkService.getTourGPS(lat, lnt )
-//
-//    tourGPSCall.enqueue(object : Callback<List<TourList>> {
-//            override fun onResponse(call: Call<List<TourList>>, response: Response<List<TourList>>) {
-//                Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
-//            }
-//
-//            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
-//                Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
-//            }
-//        })
-//    }
+    // 백엔드 서버로 위치 데이터 전송 -----------------------------------------------------------------------
+    private fun sendLocationToServer(lat: Double, lnt: Double) {
+    val networkService = (applicationContext as MyApplication).networkService
+        val tourGPSCall = networkService.getTourGPS(lat, lnt )
+
+    tourGPSCall.enqueue(object : Callback<List<TourList>> {
+            override fun onResponse(call: Call<List<TourList>>, response: Response<List<TourList>>) {
+                Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
+            }
+
+            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+                Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+    }
 
     // 현재 위치 백에 다시 보내서, 데이터 업데이트.
     // http://10.100.104.32:8083/tour/tourList/tourByGPS?lat=33.4&lnt=126.2
