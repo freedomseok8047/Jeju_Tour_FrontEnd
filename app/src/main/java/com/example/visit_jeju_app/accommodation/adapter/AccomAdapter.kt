@@ -33,8 +33,8 @@ class AccomAdapter(val context: AccomActivity, val datas:List<AccomList>?): Recy
         //add......................................
         val model = datas?.get(position)
         binding.name.text = model?.itemsTitle
-        binding.addr1.text = model?.itemsAddaccoms
-        binding.addr2.text = model?.itemsRoadAddaccoms
+        binding.addr1.text = model?.itemsAddress
+        binding.addr2.text = model?.itemsRoadAddress
         binding.tel.text = model?.itemsPhoneNo
         Log.d("ljs","model?.itemsTitle: ${model?.itemsTitle}")
 
@@ -57,8 +57,8 @@ class AccomAdapter(val context: AccomActivity, val datas:List<AccomList>?): Recy
             intent.putExtra("itemsRegion1CdLabel", model?.itemsRegion1CdLabel)
             intent.putExtra("itemsRegion2CdLabel", model?.itemsRegion2CdLabel)
             intent.putExtra("itemsRegion2CdValue", model?.itemsRegion2CdValue)
-            intent.putExtra("itemsAddaccoms", model?.itemsAddaccoms)
-            intent.putExtra("itemsRoadAddaccoms", model?.itemsRoadAddaccoms)
+            intent.putExtra("itemsAddaccoms", model?.itemsAddress)
+            intent.putExtra("itemsRoadAddaccoms", model?.itemsRoadAddress)
             intent.putExtra("itemsIntroduction", model?.itemsIntroduction)
             intent.putExtra("itemsAllTag", model?.itemsAllTag)
             intent.putExtra("itemsPhoneNo", model?.itemsPhoneNo)

@@ -17,11 +17,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:backgroundTint="#00BCD4"
         android:text="로그아웃"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:visibility="visible" />
+        android:visibility="visible"
+        style="@style/buttonStyle"/>
 
 
     <!--이메일-->
@@ -63,11 +61,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="40dp"
-        android:backgroundTint="#00BCD4"
         android:text="로그인"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:visibility="visible" />
+        android:visibility="visible"
+        style="@style/buttonStyle"/>
     <Button
         android:id="@+id/signBtn"
         android:layout_width="match_parent"
