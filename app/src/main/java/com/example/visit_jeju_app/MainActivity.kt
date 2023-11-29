@@ -18,19 +18,25 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.visit_jeju_app.accommodation.AccomActivity
 import com.example.visit_jeju_app.accommodation.adapter.AccomAdapter_Main
 import com.example.visit_jeju_app.accommodation.model.AccomList
 import com.example.visit_jeju_app.chat.ChatActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
+import com.example.visit_jeju_app.festival.FesActivity
 import com.example.visit_jeju_app.festival.adapter.FesAdapter_Main
 import com.example.visit_jeju_app.festival.model.FesList
+import com.example.visit_jeju_app.gpt.GptActivity
 import com.example.visit_jeju_app.login.AuthActivity
 import com.example.visit_jeju_app.main.adapter.ImageSliderAdapter
 import com.example.visit_jeju_app.main.adapter.RecyclerView
+import com.example.visit_jeju_app.restaurant.ResActivity
 import com.example.visit_jeju_app.restaurant.adapter.ResAdapter_Main
 import com.example.visit_jeju_app.restaurant.model.ResList
+import com.example.visit_jeju_app.shopping.ShopActivity
 import com.example.visit_jeju_app.shopping.adapter.ShopAdapter_Main
 import com.example.visit_jeju_app.shopping.model.ShopList
+import com.example.visit_jeju_app.tour.TourActivity
 import com.example.visit_jeju_app.tour.adapter.TourAdapter_Main
 import com.example.visit_jeju_app.tour.model.TourList
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -71,8 +77,8 @@ class MainActivity : AppCompatActivity() {
         dataListFromAccomActivity = mutableListOf<AccomList>()
         dataListFromResActivity = mutableListOf<ResList>()
         dataListFromTourActivity = mutableListOf<TourList>()
-        //dataListFromFesActivity = mutableListOf<FesList>()
-        //dataListFromShopActivity = mutableListOf<ShopList>()
+        dataListFromFesActivity = mutableListOf<FesList>()
+        dataListFromShopActivity = mutableListOf<ShopList>()
 
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
@@ -108,15 +114,73 @@ class MainActivity : AppCompatActivity() {
         // NavigationView 메뉴 아이템 클릭 리스너 설정
         binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
+                R.id.accommodation -> {
+                    startActivity(Intent(this, AccomActivity::class.java))
+                    true
+                }
+                R.id.restaurant -> {
+                    startActivity(Intent(this, ResActivity::class.java))
+                    true
+                }
+                R.id.tour -> {
+                    startActivity(Intent(this, TourActivity::class.java))
+                    true
+                }
+                R.id.festival -> {
+                    startActivity(Intent(this, FesActivity::class.java))
+                    true
+                }
+                R.id.shopping -> {
+                    startActivity(Intent(this, ShopActivity::class.java))
+                    true
+                }
                 R.id.community -> {
                     // '커뮤니티' 메뉴 아이템 클릭 시 CommReadActivity로 이동
                     startActivity(Intent(this, CommReadActivity::class.java))
                     true
                 }
-                // 다른 메뉴 아이템에 대한 처리 추가
+                R.id.chatting -> {
+                    startActivity(Intent(this, ChatActivity::class.java))
+                    true
+                }
 
                 else -> false
             }
+        }
+
+
+        // 메인 카테고리 더보기 링크
+        val moreAccomTextView: TextView = findViewById(R.id.mainItemTitle1)
+        val moreRestaurantTextView: TextView = findViewById(R.id.mainItemTitle2)
+        val moreTourTextView: TextView = findViewById(R.id.mainItemTitle3)
+        val moreFestivalTextView: TextView = findViewById(R.id.mainItemTitle4)
+        val moreShoppingTextView: TextView = findViewById(R.id.mainItemTitle5)
+
+        // 각 "더보기" 텍스트 뷰에 클릭 리스너를 추가
+        moreAccomTextView.setOnClickListener {
+            // 제주 숙박 더보기 클릭 시 수행할 동작
+            val intent = Intent(this, AccomActivity::class.java)
+            startActivity(intent)
+        }
+
+        moreRestaurantTextView.setOnClickListener {
+            val intent = Intent(this, ResActivity::class.java)
+            startActivity(intent)
+        }
+
+        moreTourTextView.setOnClickListener {
+            val intent = Intent(this, TourActivity::class.java)
+            startActivity(intent)
+        }
+
+        moreFestivalTextView.setOnClickListener {
+            val intent = Intent(this, FesActivity::class.java)
+            startActivity(intent)
+        }
+
+        moreShoppingTextView.setOnClickListener {
+            val intent = Intent(this, ShopActivity::class.java)
+            startActivity(intent)
         }
 
 
@@ -282,19 +346,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
-       /* // 메인 슬라이더
-        val viewPager: ViewPager2 = findViewById(R.id.viewPager)
-
-        // 뷰페이저2 어댑터 설정하기
-        val images = listOf(R.drawable.jeju_apec01, R.drawable.jeju_apec02, R.drawable.jeju_apec03, R.drawable.jeju_apec04)
-        val imageSliderAdapter = ImageSliderAdapter(images)
-        viewPager.adapter = imageSliderAdapter*/
-
+        // 메인 비주얼
         viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
         viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
         viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
-
-
 
 
 
@@ -309,7 +364,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.chat -> {
-                    val intent = Intent(this@MainActivity, ChatActivity::class.java)
+                    val intent = Intent(this@MainActivity, GptActivity::class.java)
                     startActivity(intent)
                     true
                 }

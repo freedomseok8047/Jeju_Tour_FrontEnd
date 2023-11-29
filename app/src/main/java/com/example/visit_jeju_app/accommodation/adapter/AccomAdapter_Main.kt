@@ -14,8 +14,9 @@ import com.example.visit_jeju_app.accommodation.AccomActivity
 import com.example.visit_jeju_app.databinding.ItemAccomBinding
 import com.example.visit_jeju_app.accommodation.AccomDetailActivity
 import com.example.visit_jeju_app.accommodation.model.AccomList
+import com.example.visit_jeju_app.databinding.MainItemBinding
 
-class AccomViewHolder2(val binding: ItemAccomBinding): RecyclerView.ViewHolder(binding.root)
+class AccomViewHolder2(val binding: MainItemBinding): RecyclerView.ViewHolder(binding.root)
 class AccomAdapter_Main(val context: Context, val datas:MutableList<AccomList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
@@ -24,7 +25,7 @@ class AccomAdapter_Main(val context: Context, val datas:MutableList<AccomList>?)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
-            = AccomViewHolder2(ItemAccomBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            = AccomViewHolder2(MainItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as AccomViewHolder2).binding
@@ -34,8 +35,7 @@ class AccomAdapter_Main(val context: Context, val datas:MutableList<AccomList>?)
         //add......................................
         val model = datas?.get(position)
         binding.name.text = model?.itemsTitle
-        binding.addr1.text = model?.itemsAddaccoms
-        binding.addr2.text = model?.itemsRoadAddaccoms
+        binding.addr2.text = model?.itemsRoadAddress
         binding.tel.text = model?.itemsPhoneNo
         Log.d("ljs","model?.itemsTitle: ${model?.itemsTitle}")
 
@@ -58,8 +58,8 @@ class AccomAdapter_Main(val context: Context, val datas:MutableList<AccomList>?)
             intent.putExtra("itemsRegion1CdLabel", model?.itemsRegion1CdLabel)
             intent.putExtra("itemsRegion2CdLabel", model?.itemsRegion2CdLabel)
             intent.putExtra("itemsRegion2CdValue", model?.itemsRegion2CdValue)
-            intent.putExtra("itemsAddaccoms", model?.itemsAddaccoms)
-            intent.putExtra("itemsRoadAddaccoms", model?.itemsRoadAddaccoms)
+            intent.putExtra("itemsAddaccoms", model?.itemsAddress)
+            intent.putExtra("itemsRoadAddaccoms", model?.itemsRoadAddress)
             intent.putExtra("itemsIntroduction", model?.itemsIntroduction)
             intent.putExtra("itemsAllTag", model?.itemsAllTag)
             intent.putExtra("itemsPhoneNo", model?.itemsPhoneNo)

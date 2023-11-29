@@ -70,87 +70,192 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager_mainVisual"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:background="#eee"/>
+                    android:layout_height="wrap_content"
+                    android:background="#ddd"/>
                 <!-- //메인 비쥬얼 슬라이더 -->
-
-
-
 
                 <!-- 키 데이터 리사이클러 뷰 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
-                    <!--리사이클러뷰 연동 -->
-                    <!--제주 숙박 -->
-                    <TextView
-                        android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="60dp">
+
+                    <!-- 제주 숙박 타이틀 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:text="제주 숙박"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="30dp" />
+                        android:layout_marginLeft="30dp">
+
+                        <TextView
+                            android:id="@+id/mainItemTitle1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="26sp"
+                            android:text="제주 숙박"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="196dp"
+                            android:text="더보기"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@id/mainItemTitle1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/mainItemTitle1"
+                            app:layout_constraintTop_toTopOf="@id/mainItemTitle1" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- RecyclerView 등의 다른 뷰 -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewRecyclerAccom"
                         android:layout_width="match_parent"
                         android:layout_height="320dp" />
 
-                    <!--제주 맛집 -->
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- 제주 맛집 타이틀 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:text="제주 맛집"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="30dp" />
+                        android:layout_marginLeft="30dp">
+
+                        <TextView
+                            android:id="@+id/mainItemTitle2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="26sp"
+                            android:text="제주 맛집"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="196dp"
+                            android:text="더보기"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@id/mainItemTitle2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/mainItemTitle2"
+                            app:layout_constraintTop_toTopOf="@id/mainItemTitle2" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- RecyclerView 등의 다른 뷰 -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewRecyclerRestaurant"
                         android:layout_width="match_parent"
                         android:layout_height="320dp" />
 
-                    <!--제주 투어 -->
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- 제주 투어 타이틀 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:text="제주 투어"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="30dp" />
+                        android:layout_marginLeft="30dp">
+
+                        <TextView
+                            android:id="@+id/mainItemTitle3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="26sp"
+                            android:text="제주 투어"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="196dp"
+                            android:text="더보기"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@id/mainItemTitle3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/mainItemTitle3"
+                            app:layout_constraintTop_toTopOf="@id/mainItemTitle3" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- RecyclerView 등의 다른 뷰 -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewRecyclerTour"
                         android:layout_width="match_parent"
                         android:layout_height="320dp" />
 
-                    <!--제주 축제 -->
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- 제주 축제 타이틀 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:text="제주 축제"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="30dp" />
+                        android:layout_marginLeft="30dp">
+
+                        <TextView
+                            android:id="@+id/mainItemTitle4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="26sp"
+                            android:text="제주 축제"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="196dp"
+                            android:text="더보기"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@id/mainItemTitle4"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/mainItemTitle4"
+                            app:layout_constraintTop_toTopOf="@id/mainItemTitle4" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- RecyclerView 등의 다른 뷰 -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewRecyclerFestival"
                         android:layout_width="match_parent"
                         android:layout_height="320dp" />
 
-                    <!--제주 쇼핑 -->
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- 제주 쇼핑 타이틀 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="24sp"
-                        android:text="제주 쇼핑"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="30dp" />
+                        android:layout_marginLeft="30dp">
+
+                        <TextView
+                            android:id="@+id/mainItemTitle5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="26sp"
+                            android:text="제주 쇼핑"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="196dp"
+                            android:text="더보기"
+                            android:textSize="18sp"
+                            app:layout_constraintBottom_toBottomOf="@id/mainItemTitle5"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/mainItemTitle5"
+                            app:layout_constraintTop_toTopOf="@id/mainItemTitle5" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <!-- RecyclerView 등의 다른 뷰 -->
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/viewRecyclerShopping"
                         android:layout_width="match_parent"
                         android:layout_height="320dp" />
+
+                </LinearLayout>
+
                 </LinearLayout>
                 <!-- //키 데이터 리사이클러 뷰 -->
-
-            </LinearLayout>
 
         </ScrollView>
 

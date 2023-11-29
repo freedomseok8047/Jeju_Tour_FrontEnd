@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.databinding.ItemFesBinding
+import com.example.visit_jeju_app.databinding.MainItem2Binding
+import com.example.visit_jeju_app.databinding.MainItemBinding
 import com.example.visit_jeju_app.festival.FesActivity
 import com.example.visit_jeju_app.festival.FesDetailActivity
 import com.example.visit_jeju_app.festival.model.FesList
 
-class FesViewHolder2(val binding: ItemFesBinding): RecyclerView.ViewHolder(binding.root)
+class FesViewHolder2(val binding: MainItem2Binding): RecyclerView.ViewHolder(binding.root)
 class FesAdapter_Main(val context: Context, val datas:MutableList<FesList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
@@ -24,7 +26,7 @@ class FesAdapter_Main(val context: Context, val datas:MutableList<FesList>?): Re
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
-            = FesViewHolder2(ItemFesBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            = FesViewHolder2(MainItem2Binding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as FesViewHolder2).binding
@@ -34,9 +36,8 @@ class FesAdapter_Main(val context: Context, val datas:MutableList<FesList>?): Re
         //add......................................
         val model = datas?.get(position)
         binding.name.text = model?.itemsTitle
-        binding.addr1.text = model?.itemsAddress
-        binding.addr2.text = model?.itemsRoadAddress
-        binding.tel.text = model?.itemsPhoneNo
+        binding.reg1.text = model?.itemsRegion1CdLabel
+        binding.reg2.text = model?.itemsRegion2CdLabel
         Log.d("ljs","model?.itemsTitle: ${model?.itemsTitle}")
 
         // glide 통해서, 이미지 를 직접 가져와서 처리하는 부분.

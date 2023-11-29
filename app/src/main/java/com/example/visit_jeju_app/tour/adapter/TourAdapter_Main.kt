@@ -11,12 +11,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.databinding.ItemTourBinding
+import com.example.visit_jeju_app.databinding.MainItem2Binding
+import com.example.visit_jeju_app.databinding.MainItemBinding
 import com.example.visit_jeju_app.tour.TourActivity
 import com.example.visit_jeju_app.tour.TourDetailActivity
 import com.example.visit_jeju_app.tour.model.TourList
 import com.example.visit_jeju_app.tour.model.TourModel
 
-class TourViewHolder2(val binding: ItemTourBinding): RecyclerView.ViewHolder(binding.root)
+class TourViewHolder2(val binding: MainItem2Binding): RecyclerView.ViewHolder(binding.root)
 class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
@@ -25,7 +27,7 @@ class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
-            = TourViewHolder2(ItemTourBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            = TourViewHolder2(MainItem2Binding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as TourViewHolder2).binding
@@ -35,9 +37,8 @@ class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): 
         //add......................................
         val model = datas?.get(position)
         binding.name.text = model?.itemsTitle
-        binding.addr1.text = model?.itemsAddress
-        binding.addr2.text = model?.itemsRoadAddress
-        binding.tel.text = model?.itemsPhoneNo
+        binding.reg1.text = model?.itemsRegion1CdLabel
+        binding.reg2.text = model?.itemsRegion2CdLabel
         Log.d("lsy","model?.itemsTitle: ${model?.itemsTitle}")
 
         // glide 통해서, 이미지 를 직접 가져와서 처리하는 부분.
