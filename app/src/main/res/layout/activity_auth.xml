@@ -1,87 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.AuthActivity">
-    <ScrollView
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/authMainTextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="20dp">
+    <Button
+        android:id="@+id/logoutBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#00BCD4"
+        android:text="로그아웃"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="visible" />
 
-            <TextView
-                android:id="@+id/authMainText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"/>
 
-            <Button
-                android:id="@+id/logoutBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="#1C2E88"
-                android:text="Logout"
-                android:visibility="gone"/>
-            <Button
-                android:id="@+id/signInBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="#1C2E88"
-                android:text="Sign In"
-                android:visibility="visible"/>
-            <Button
-                android:id="@+id/googleAuthInBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="#1C2E88"
-                android:text="Google 인증"
-                android:visibility="visible"/>
+    <!--이메일-->
+    <EditText
+        android:id="@+id/authEmailEditView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="이메일"
+        android:inputType="textEmailAddress"
+        android:visibility="visible" />
 
-            <EditText
-                android:id="@+id/editTextEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:hint="email"
-                android:inputType="textEmailAddress"
-                android:visibility="gone"/>
-            <EditText
-                android:id="@+id/editTestPass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:hint="password 6자 이상"
-                android:inputType="textPassword"
-                android:visibility="gone"/>
 
-            <Button
-                android:id="@+id/loginBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="#1C2E88"
-                android:text="Login"
-                android:visibility="gone"/>
+    <!--    비밀번호-->
+    <EditText
+        android:id="@+id/authPasswordEditView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="비밀번호 - 6자 이상"
+        android:inputType="textPassword"
+        android:visibility="visible" />
 
-            <Button
-                android:id="@+id/joinBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="#1C2E88"
-                android:text="Join(파이어 email,password 가입)"
-                android:visibility="gone"/>
 
-        </LinearLayout>
+    <!--    이름-->
+    <EditText
+        android:id="@+id/authUsernameEditView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="이름"
+        android:inputType="text"
+        android:visibility="visible" />
 
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="#00BCD4"
+        android:text="로그인"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="visible" />
+    <Button
+        android:id="@+id/signBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#00BCD4"
+        android:text="가입"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/hostSignBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#00BCD4"
+        android:text="호스트 가입"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleSignBtn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#00BCD4"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+
+    <TextView
+        android:id="@+id/authNotEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="계정이 없으실 경우"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/goSignInBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:visibility="visible"
+            android:backgroundTint="#F44336"
+            android:text="회원가입"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            />
+
+<!--        <Button-->
+<!--            android:id="@+id/goHostSignBtn"-->
+<!--            android:layout_width="90dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginLeft="30dp"-->
+<!--            android:backgroundTint="#F44336"-->
+<!--            android:text="호스트"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textStyle="bold"-->
+<!--            android:visibility="visible" />-->
+
+
+<!--        <Button-->
+<!--            android:id="@+id/goGoogleSignInBtn"-->
+<!--            android:layout_width="90dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginLeft="30dp"-->
+<!--            android:backgroundTint="#F44336"-->
+<!--            android:text="구글"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textStyle="bold"-->
+<!--            android:visibility="visible" />-->
+
+    </LinearLayout>
+
+<!--    <TextView-->
+<!--        android:id="@+id/authSNS"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:text="구글 계정이나 sns계정이 있으실 경우"/>-->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        >
+
+
+<!--        <ImageView-->
+<!--            android:id="@+id/googleLoginBtn"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:layout_marginLeft="80dp"-->
+<!--            android:layout_marginTop="10dp"-->
+
+<!--            android:src="@drawable/ic_google_icon"-->
+<!--            android:visibility="visible" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/facebookLoginBtn"-->
+<!--            android:layout_width="80dp"-->
+<!--            android:layout_height="80dp"-->
+<!--            android:layout_marginLeft="50dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:src="@drawable/facebook_logo_icon"-->
+
+<!--            android:textStyle="bold"-->
+<!--            android:visibility="visible" />-->
+
+    </LinearLayout>
+
+</LinearLayout>
