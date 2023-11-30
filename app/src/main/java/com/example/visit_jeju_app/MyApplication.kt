@@ -46,10 +46,10 @@ class MyApplication : MultiDexApplication() {
             }
         }
 
-        // 현재 위치 담아 두는 변수
+//         // 현재 위치 담아 두는 변수
 //        var lat : Double = 0.0
 //        var lnt : Double = 0.0
-
+//
 //        @SuppressLint("MissingPermission")
 //        fun getLocation(context: Context) {
 //            val fusedLocationProviderClient =
