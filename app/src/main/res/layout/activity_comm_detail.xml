@@ -10,8 +10,11 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -20,11 +23,12 @@
             android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <!-- tool bar -->
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black">
+                android:background="@color/jejutourPoint">
 
                 <!--툴바 뷰 생성 -->
                 <androidx.appcompat.widget.Toolbar
@@ -33,7 +37,6 @@
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- ScrollView로 감싼 LinearLayout -->
@@ -43,7 +46,8 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="16dp"
@@ -160,8 +164,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:padding="16dp"
-                    android:background="#00BCD4"
-                    android:text="수정" />
+                    android:background="#FF9800"
+                    android:text="수정"
+                    android:textColor="@color/white"/>
 
                 <Button
                     android:id="@+id/CommunityDelete"
@@ -170,8 +175,10 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:padding="16dp"
-                    android:background="#00BCD4"
-                    android:text="삭제" />
+                    android:background="#FF9800"
+                    android:text="삭제"
+                    android:textColor="@color/white"/>
+
             </LinearLayout>
 
             <TextView
@@ -210,8 +217,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="8dp"
-                    android:background="#00BCD4"
-                    android:text="댓글 등록" />
+                    android:background="#FF9800"
+                    android:text="댓글 등록"
+                    android:textColor="@color/white"/>
+
             </LinearLayout>
 
         </LinearLayout>
@@ -219,7 +228,11 @@
     </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </RelativeLayout>
+
     <!-- Navigation View -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/main_drawer_view"
