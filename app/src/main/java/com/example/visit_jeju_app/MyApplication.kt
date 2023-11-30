@@ -1,7 +1,12 @@
 package com.example.visit_jeju_app
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.location.Location
+import android.util.Log
 import androidx.multidex.MultiDexApplication
 import com.example.visit_jeju_app.retrofit.NetworkServiceRegionNm
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -40,6 +45,31 @@ class MyApplication : MultiDexApplication() {
                 false
             }
         }
+
+        // 현재 위치 담아 두는 변수
+        var lat : Double = 0.0
+        var lnt : Double = 0.0
+
+        @SuppressLint("MissingPermission")
+        fun getLocation(context: Context) {
+            val fusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(context)
+
+            fusedLocationProviderClient.lastLocation
+                .addOnSuccessListener { success: Location? ->
+                    success?.let { location ->
+                        Log.d("lsy", "현재 위치 조회 : lat : ${location.latitude}, lnt : ${location.longitude}")
+                        lat = location.latitude
+                        lnt = location.longitude
+                        Log.d("lsy", "현재 위치 조회 2 : lat : ${lat}, lnt : ${lnt}")
+                    }
+                }
+                .addOnFailureListener { fail ->
+                    Log.d("lsy", "현재 위치 조회 실패")
+                }
+        }
+
+
     } //companion
 
 

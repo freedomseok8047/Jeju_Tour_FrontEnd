@@ -8,10 +8,10 @@
     <ImageView
         android:id="@+id/iv_mainVisual"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="216dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/jeju_apec01" />
+        app:srcCompat="@drawable/jeju_apec02" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

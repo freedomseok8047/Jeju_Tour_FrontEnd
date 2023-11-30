@@ -3,13 +3,12 @@
     <item
         android:id="@+id/home"
         android:title="Home"
-        android:icon="@drawable/round_home_24"/>
+        android:icon="@drawable/round_home_24_w" />
 
     <item
         android:id="@+id/chat"
         android:title="Chat"
-        android:icon="@drawable/round_chat_bubble_24"
-        />
+        android:icon="@drawable/round_chat_bubble_24" />
     <item
         android:id="@+id/youtube"
         android:title="Youtube"

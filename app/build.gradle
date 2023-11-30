@@ -98,5 +98,7 @@ dependencies {
     // 카드뷰
     implementation ("androidx.cardview:cardview:1.0.0")
 
+    // 슬라이딩 패널
+    implementation ("com.sothree.slidinguppanel:library:3.4.0")
 
 }
