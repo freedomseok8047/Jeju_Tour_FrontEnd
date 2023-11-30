@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "708023448634",
-    "project_id": "visitjejutest1",
-    "storage_bucket": "visitjejutest1.appspot.com"
+    "project_number": "813438847241",
+    "project_id": "jeju-tour---team-project",
+    "storage_bucket": "jeju-tour---team-project.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:708023448634:android:1566b624ae5b8dca6d7103",
+        "mobilesdk_app_id": "1:813438847241:android:1b3f6dab49147ec2526bd8",
         "android_client_info": {
           "package_name": "com.example.visit_jeju_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "708023448634-qthhf6jojeohmre00biug9ju7l8u8oqj.apps.googleusercontent.com",
+          "client_id": "813438847241-9sj6ojkvakdg6jb3if7mv2bljos874vb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.visit_jeju_app",
-            "certificate_hash": "1eaabde7f325f5add9596cc5b3761884867e277d"
+            "certificate_hash": "507f3ecab1d32ab7322df17e1fb2626b2271bc68"
           }
         },
         {
-          "client_id": "708023448634-sm3phh0vh3g05o9nvac5mpbq0k62etmf.apps.googleusercontent.com",
+          "client_id": "813438847241-srg9tbducbfmsn12tt5u22s7i24ojb96.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCqpbhvCTe_X3tha5mvyKbuSvoBnHJSr1I"
+          "current_key": "AIzaSyCJt26kOF6AcVzH6pk6FJk6-k5D_IDJNTM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "708023448634-sm3phh0vh3g05o9nvac5mpbq0k62etmf.apps.googleusercontent.com",
+              "client_id": "813438847241-srg9tbducbfmsn12tt5u22s7i24ojb96.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

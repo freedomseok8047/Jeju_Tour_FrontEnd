@@ -45,7 +45,7 @@ class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): 
         //방법2)
         Glide.with(context)
             //load 실제 URL 주소 직접 넣기.
-            .load(model?.itemsRepPhotoPhotoidThumbnailPath)
+            .load(model?.itemsRepPhotoPhotoidImgPath)
             .override(150,150)
             .into(binding.thumbNailPhoto)
 
