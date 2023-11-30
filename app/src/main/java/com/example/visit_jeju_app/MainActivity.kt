@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.community.activity.CommReadActivity
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.motion.widget.Debug.getLocation
 
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat.startActivity
@@ -60,6 +61,7 @@ import kotlin.coroutines.suspendCoroutine
 
 
 class MainActivity : AppCompatActivity() {
+
     // 위치 정보 받아오기 위한 변수 선언 -------------------------------------
     lateinit var fusedLocationClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
@@ -68,15 +70,18 @@ class MainActivity : AppCompatActivity() {
     private var lastUpdateTimestamp = 0L
     private val updateDelayMillis = 10000
     // -----------------------------------------------------------
+
     lateinit var binding: ActivityMainBinding
+
     //액션버튼 토글
     lateinit var toggle: ActionBarDrawerToggle
+
     // 메인 비주얼
     lateinit var viewPager_mainVisual: ViewPager2
-    // 현재 위치 담아 두는 변수
-    var lat : Double = 0.0
-    var lnt : Double = 0.0
 
+    // 현재 위치 담아 두는 변수
+     var lat : Double = 0.0
+     var lnt : Double = 0.0
 
     // 통신으로 받아온 투어 정보 담는 리스트 , 전역으로 설정, 각 어느 곳에서든 사용가능.
     // 제주 숙박
@@ -89,15 +94,20 @@ class MainActivity : AppCompatActivity() {
     lateinit var dataListFromFesActivity: MutableList<FesList>
     // 제주 쇼핑
     lateinit var dataListFromShopActivity: MutableList<ShopList>
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         handler = Handler(Looper.getMainLooper())
+
         // 위치 받아오기 위해 추가 ---------------------------------------------------------
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         createLocationRequest()
-        createLocationCallback()
+//        createLocationCallback()
         //---------------------------------------------------------
         // 각 가테고리별 넘어온 데이터 담을 리스트 초기화, 할당.
         dataListFromAccomActivity = mutableListOf<AccomList>()
@@ -109,6 +119,7 @@ class MainActivity : AppCompatActivity() {
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
+
         headerLogoutBtn.setOnClickListener {
             // 로그아웃 로직
             MyApplication.auth.signOut()
@@ -118,6 +129,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
         val userEmail = intent.getStringExtra("USER_EMAIL") ?: "No Email"
         headerUserEmail.text = userEmail
         setSupportActionBar(binding.toolbar)
@@ -163,20 +175,26 @@ class MainActivity : AppCompatActivity() {
                 binding.viewRecyclerAccom.layoutManager = accomLayoutManager
                 binding.viewRecyclerAccom.adapter = AccomAdapter_Main(this@MainActivity,dataListFromAccomActivity)
             }
+
             override fun onFailure(call: Call<List<AccomList>>, t: Throwable) {
                 Log.d("lsy", "fail")
                 call.cancel()
             }
         })
+
         // 제주 맛집
         val resListCall = networkService.GetResList()
+
         resListCall.enqueue(object : Callback<List<ResList>> {
             override fun onResponse(
                 call: Call<List<ResList>>,
                 response: Response<List<ResList>>
+
             ) {
                 val resList = response.body()
+
                 Log.d("ljs","resModel 값 : ${resList}")
+
                 //데이터 받기 확인 후, 리스트에 담기.
                 resList?.get(0)?.let { dataListFromResActivity.add(it) }
                 resList?.get(1)?.let { dataListFromResActivity.add(it) }
@@ -188,6 +206,7 @@ class MainActivity : AppCompatActivity() {
                 binding.viewRecyclerRestaurant.layoutManager = resLayoutManager
                 binding.viewRecyclerRestaurant.adapter = ResAdapter_Main(this@MainActivity,dataListFromResActivity)
             }
+
             override fun onFailure(call: Call<List<ResList>>, t: Throwable) {
                 Log.d("lsy", "fail")
                 call.cancel()
@@ -202,6 +221,7 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(
                 call: Call<List<TourList>>,
                 response: Response<List<TourList>>
+
             ) {
                 val tourList = response.body()
 
@@ -220,51 +240,63 @@ class MainActivity : AppCompatActivity() {
                 call.cancel()
             }
         })
+
         // 제주 축제
         val fesListCall = networkService.GetFesList()
+
         fesListCall.enqueue(object : Callback<List<FesList>> {
             override fun onResponse(
                 call: Call<List<FesList>>,
                 response: Response<List<FesList>>
+
             ) {
                 val fesList = response.body()
+
                 Log.d("ljs","fesModel 값 : ${fesList}")
+
                 //데이터 받기 확인 후, 리스트에 담기.
                 fesList?.get(0)?.let { dataListFromFesActivity.add(it) }
                 fesList?.get(1)?.let { dataListFromFesActivity.add(it) }
                 fesList?.get(2)?.let { dataListFromFesActivity.add(it) }
                 fesList?.get(3)?.let { dataListFromFesActivity.add(it) }
                 fesList?.get(4)?.let { dataListFromFesActivity.add(it) }
-                Log.d("lsy","test 값 추가 후 확인 : dataListFromFesActivity 길이 값 : ${dataListFromFesActivity?.size}")
+                Log.d("lsy","test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromFesActivity?.size}")
                 val fesLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                 binding.viewRecyclerFestival.layoutManager = fesLayoutManager
                 binding.viewRecyclerFestival.adapter = FesAdapter_Main(this@MainActivity,dataListFromFesActivity)
             }
+
             override fun onFailure(call: Call<List<FesList>>, t: Throwable) {
                 Log.d("lsy", "fail")
                 call.cancel()
             }
         })
+
         // 제주 쇼핑
         val shopListCall = networkService.GetShopList()
+
         shopListCall.enqueue(object : Callback<List<ShopList>> {
             override fun onResponse(
                 call: Call<List<ShopList>>,
                 response: Response<List<ShopList>>
+
             ) {
                 val shopList = response.body()
+
                 Log.d("ljs","shopModel 값 : ${shopList}")
+
                 //데이터 받기 확인 후, 리스트에 담기.
                 shopList?.get(0)?.let { dataListFromShopActivity.add(it) }
                 shopList?.get(1)?.let { dataListFromShopActivity.add(it) }
                 shopList?.get(2)?.let { dataListFromShopActivity.add(it) }
                 shopList?.get(3)?.let { dataListFromShopActivity.add(it) }
                 shopList?.get(4)?.let { dataListFromShopActivity.add(it) }
-                Log.d("lsy","test 값 추가 후 확인 : dataListFromShopActivity 길이 값 : ${dataListFromShopActivity?.size}")
+                Log.d("lsy","test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromShopActivity?.size}")
                 val shopLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                 binding.viewRecyclerShopping.layoutManager = shopLayoutManager
                 binding.viewRecyclerShopping.adapter = ShopAdapter_Main(this@MainActivity,dataListFromShopActivity)
             }
+
             override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
                 Log.d("lsy", "fail")
                 call.cancel()
@@ -325,6 +357,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
         // Bottom Navigation link
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.setOnNavigationItemSelectedListener { item: MenuItem ->
@@ -352,13 +386,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
     } //onCreate
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
         val fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(this)
-
 
         fusedLocationProviderClient.lastLocation
             .addOnSuccessListener { success: Location? ->
@@ -368,7 +402,6 @@ class MainActivity : AppCompatActivity() {
                     lnt = location.longitude
                     Log.d("lsy", "현재 위치 조회 2 : lat : ${lat}, lnt : ${lnt}")
                 }
-
             }
             .addOnFailureListener { fail ->
                 Log.d("lsy", "현재 위치 조회 실패")
@@ -488,24 +521,24 @@ class MainActivity : AppCompatActivity() {
 
 
     // 위치 정보 업데이트 ---------------------------------------------------------------------
-//    override fun onResume() {
-//        super.onResume()
-//        startLocationUpdates()
-//    }
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
+    }
 
-//    private fun startLocationUpdates() {
-//        if (ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_COARSE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            return
-//        }
-//        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
-//    }
+    private fun startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+    }
     //-----------------------------------------------------------------------------------------
 
 
@@ -527,16 +560,21 @@ class MainActivity : AppCompatActivity() {
 
     // 현재 위치 백에 다시 보내서, 데이터 업데이트.
     // http://10.100.104.32:8083/tour/tourList/tourByGPS?lat=33.4&lnt=126.2
+
 //    //--------------------------------------------------------------------------------------------
+
     // 위치 정보 업데이트 중지 -------------------------------------------------------------------------
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
     }
+
     private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
     //-------------------------------------------------------------------------------------------
+
+
     // 뷰 페이저에 들어갈 아이템
     private fun getMainvisual(): ArrayList<Int> {
         return arrayListOf<Int>(
@@ -545,6 +583,8 @@ class MainActivity : AppCompatActivity() {
             R.drawable.jeju_apec03,
             R.drawable.jeju_apec04)
     }
+
+
     private fun openWebPage(url: String) {
         val webpage = Uri.parse(url)
         val intent = Intent(Intent.ACTION_VIEW, webpage)
@@ -552,14 +592,17 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
             return true
         }
         return super.onOptionsItemSelected(item)
     }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu,menu)
+
         // 검색 뷰에, 이벤트 추가하기.
         val menuItem = menu?.findItem(R.id.menu_toolbar_search)
         // menuItem 의 형을 SearchView 타입으로 변환, 형변환
@@ -570,6 +613,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d("kmk","텍스트 변경시 마다 호출 : ${newText} ")
                 return true
             }
+
             override fun onQueryTextSubmit(query: String?): Boolean {
                 // 검색어가 제출이 되었을 경우, 연결할 로직.
                 // 사용자 디비, 검색을하고, 그 결과 뷰를 출력하는 형태.
@@ -577,6 +621,9 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
+
         return super.onCreateOptionsMenu(menu)
     }
+
 }
+
