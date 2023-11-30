@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.chatting -> {
-                    startActivity(Intent(this, ChatActivity::class.java))
+                    startActivity(Intent(this, ChatMainActivity::class.java))
                     true
                 }
 
