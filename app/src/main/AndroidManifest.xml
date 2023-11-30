@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -22,7 +22,52 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Visit_Jeju_App"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+        <activity
+            android:name=".LocationTestActivity"
+            android:exported="true" />
+        <activity
+            android:name=".festival.FesRegionNmActivity"
+            android:exported="true" />
+        <activity
+            android:name=".festival.FesDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".festival.FesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".festival.regionNmDetailFesActivity"
+            android:exported="true" />
+        <activity
+            android:name=".shopping.ShopRegionNmActivity"
+            android:exported="true" />
+        <activity
+            android:name=".shopping.ShopDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".shopping.ShopActivity"
+            android:exported="true" />
+        <activity
+            android:name=".shopping.regionNmDetailShopActivity"
+            android:exported="true" />
+        <activity
+            android:name=".accommodation.AccomRegionNmActivity"
+            android:exported="true" />
+        <activity
+            android:name=".accommodation.regionNmDetailAccomActivity"
+            android:exported="true" />
+        <activity
+            android:name=".restaurant.ResRegionNmActivity"
+            android:exported="true" />
+        <activity
+            android:name=".restaurant.regionNmDetailResActivity"
+            android:exported="true" />
+        <activity
+            android:name=".tour.regionNmDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".tour.TourRegionNmActivity"
+            android:exported="true" />
         <activity
             android:name=".restaurant.ResDetailActivity"
             android:exported="true" />
@@ -73,19 +118,19 @@
             android:exported="true" />
         <activity
             android:name=".IntroActivity"
-            android:exported="true" />
-        <activity
-            android:name=".gpt.GptActivity"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".gpt.GptActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

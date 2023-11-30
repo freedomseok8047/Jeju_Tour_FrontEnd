@@ -11,4 +11,5 @@ class CommunityData {
     // timestamp형이 아닌 string이면서 "yyyy-MM-dd HH:mm"포맷으로 파이어베이스 저장 및 조회 관련 코드
     var date: String? = null
     var comment: String? = null
+
 }

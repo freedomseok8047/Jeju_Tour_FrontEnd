@@ -9,8 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.visit_jeju_app.R
-import com.example.visit_jeju_app.databinding.ItemAccomBinding
 import com.example.visit_jeju_app.accommodation.AccomActivity
+import com.example.visit_jeju_app.databinding.ItemAccomBinding
 import com.example.visit_jeju_app.accommodation.AccomDetailActivity
 import com.example.visit_jeju_app.accommodation.model.AccomList
 
@@ -33,8 +33,8 @@ class AccomAdapter(val context: AccomActivity, val datas:List<AccomList>?): Recy
         //add......................................
         val model = datas?.get(position)
         binding.name.text = model?.itemsTitle
-        binding.addr1.text = model?.itemsAddress
-        binding.addr2.text = model?.itemsRoadAddress
+        binding.addr1.text = model?.itemsAddaccoms
+        binding.addr2.text = model?.itemsRoadAddaccoms
         binding.tel.text = model?.itemsPhoneNo
         Log.d("ljs","model?.itemsTitle: ${model?.itemsTitle}")
 
@@ -57,8 +57,8 @@ class AccomAdapter(val context: AccomActivity, val datas:List<AccomList>?): Recy
             intent.putExtra("itemsRegion1CdLabel", model?.itemsRegion1CdLabel)
             intent.putExtra("itemsRegion2CdLabel", model?.itemsRegion2CdLabel)
             intent.putExtra("itemsRegion2CdValue", model?.itemsRegion2CdValue)
-            intent.putExtra("itemsAddress", model?.itemsAddress)
-            intent.putExtra("itemsRoadAddress", model?.itemsRoadAddress)
+            intent.putExtra("itemsAddaccoms", model?.itemsAddaccoms)
+            intent.putExtra("itemsRoadAddaccoms", model?.itemsRoadAddaccoms)
             intent.putExtra("itemsIntroduction", model?.itemsIntroduction)
             intent.putExtra("itemsAllTag", model?.itemsAllTag)
             intent.putExtra("itemsPhoneNo", model?.itemsPhoneNo)
