@@ -1,9 +1,49 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/drawerLayout"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".chat.ChatActivity">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <!-- 앱바 구성 (툴바 포함) -->
+        <!-- Appbar
+        <include layout="@layout/appbar"/>
+        //Appbar -->
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <!-- tool bar -->
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                >
+                <!--툴바 뷰 생성 -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    app:layout_collapseMode="pin"
+                    style="@style/ToolBarCss"
+                    />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
     <!-- 대화 내용 -->
     <androidx.recyclerview.widget.RecyclerView
@@ -21,7 +61,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:orientation="horizontal"
-        android:weightSum="100">
+        android:weightSum="100"
+        android:layout_gravity="bottom">
 
         <EditText
             android:layout_width="340dp"
@@ -48,4 +89,20 @@
             />
 
     </LinearLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </RelativeLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/main_drawer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navi_header"
+        app:menu="@menu/drawer_menu"/>
+    <!-- //Navigation View -->
+
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

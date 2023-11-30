@@ -26,10 +26,6 @@
         <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <!-- 앱바 구성 (툴바 포함) -->
-            <!-- Appbar
-            <include layout="@layout/appbar"/>
-            //Appbar -->
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
