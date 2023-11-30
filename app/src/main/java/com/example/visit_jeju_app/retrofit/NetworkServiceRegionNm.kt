@@ -64,6 +64,32 @@ interface NetworkServiceRegionNm {
 
 //    http://10.100.104.32:8083/tour/tourList/tourByGPS?lat=33.4&lnt=126.2
 
+    @GET("accom/accomList/accomByGPS")
+    fun getAccomGPS(
+        @Query("lat") lat : Double?,
+        @Query("lnt") lnt : Double?
+    ): Call<List<TourList>>
+
+    @GET("res/resList/resByGPS")
+    fun getResGPS(
+        @Query("lat") lat : Double?,
+        @Query("lnt") lnt : Double?
+    ): Call<List<TourList>>
+
+    @GET("fes/fesList/fesByGPS")
+    fun getFesGPS(
+        @Query("lat") lat : Double?,
+        @Query("lnt") lnt : Double?
+    ): Call<List<TourList>>
+
+    @GET("shop/shopList/shopByGPS")
+    fun getShopGPS(
+        @Query("lat") lat : Double?,
+        @Query("lnt") lnt : Double?
+    ): Call<List<TourList>>
+
+
+
 
 
 }

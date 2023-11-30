@@ -28,6 +28,8 @@ class MyApplication : MultiDexApplication() {
         lateinit var rdb: DatabaseReference
         //인증할 이메일
         var email : String? = null
+        var lat : Double? = null
+        var lnt : Double? = null
 
         // 이미지 저장소 , 인스턴스 도구
         lateinit var storage: FirebaseStorage
@@ -46,28 +48,6 @@ class MyApplication : MultiDexApplication() {
             }
         }
 
-        // 현재 위치 담아 두는 변수
-        var lat : Double = 0.0
-        var lnt : Double = 0.0
-
-        @SuppressLint("MissingPermission")
-        fun getLocation(context: Context) {
-            val fusedLocationProviderClient =
-                LocationServices.getFusedLocationProviderClient(context)
-
-            fusedLocationProviderClient.lastLocation
-                .addOnSuccessListener { success: Location? ->
-                    success?.let { location ->
-                        Log.d("lsy", "현재 위치 조회 : lat : ${location.latitude}, lnt : ${location.longitude}")
-                        lat = location.latitude
-                        lnt = location.longitude
-                        Log.d("lsy", "현재 위치 조회 2 : lat : ${lat}, lnt : ${lnt}")
-                    }
-                }
-                .addOnFailureListener { fail ->
-                    Log.d("lsy", "현재 위치 조회 실패")
-                }
-        }
 
 
     } //companion

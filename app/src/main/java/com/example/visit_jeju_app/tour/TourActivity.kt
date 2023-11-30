@@ -248,7 +248,7 @@ class TourActivity : AppCompatActivity() {
     private fun onLocationChanged(location: Location) {
         mLastLocation = location
         val coords = "${mLastLocation.longitude},${mLastLocation.latitude}"
-        getTourListWithinRadius(coords)
+        getTourListWithinRadius()
     }
 
     private fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
@@ -266,7 +266,7 @@ class TourActivity : AppCompatActivity() {
         return R * c
     }
 
-    private fun getTourListWithinRadius(coords: String) {
+    private fun getTourListWithinRadius() {
 
         val networkService = (applicationContext as MyApplication).networkService
         val tourListCall = networkService.GetTourList()
