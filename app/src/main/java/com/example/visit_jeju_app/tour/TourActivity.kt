@@ -4,20 +4,35 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.MenuItem
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.camp.campingapp.model.NaverReverseGeocodeResponse
+import com.example.visit_jeju_app.MainActivity
 import com.example.visit_jeju_app.MyApplication
+import com.example.visit_jeju_app.R
+import com.example.visit_jeju_app.accommodation.AccomActivity
+import com.example.visit_jeju_app.chat.ChatActivity
+import com.example.visit_jeju_app.community.activity.CommReadActivity
 import com.example.visit_jeju_app.databinding.ActivityTourBinding
+import com.example.visit_jeju_app.festival.FesActivity
+import com.example.visit_jeju_app.gpt.GptActivity
+import com.example.visit_jeju_app.login.AuthActivity
+import com.example.visit_jeju_app.restaurant.ResActivity
 import com.example.visit_jeju_app.retrofit.NaverNetworkService
+import com.example.visit_jeju_app.shopping.ShopActivity
 import com.example.visit_jeju_app.tour.adapter.TourAdapter
 import com.example.visit_jeju_app.tour.model.TourList
 import com.example.visit_jeju_app.tour.model.TourModel
@@ -28,6 +43,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
@@ -54,10 +70,114 @@ class TourActivity : AppCompatActivity() {
 
 
     lateinit var binding: ActivityTourBinding
+
+    //액션버튼 토글(공통 레이아웃 코드)
+    lateinit var toggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTourBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 공통 레이아웃 시작 -------------------------------------------------------------
+        setSupportActionBar(binding.toolbar)
+
+        //(공통 레이아웃 코드)
+        val headerView = binding.mainDrawerView.getHeaderView(0)
+        val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
+        val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
+
+        headerLogoutBtn.setOnClickListener {
+            // 로그아웃 로직
+            MyApplication.auth.signOut()
+            MyApplication.email = null
+            // 로그아웃 후 처리 (예: 로그인 화면으로 이동)
+            val intent = Intent(this, AuthActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        val userEmail = intent.getStringExtra("USER_EMAIL") ?: "No Email"
+        headerUserEmail.text = userEmail
+
+
+        setSupportActionBar(binding.toolbar)
+
+
+        //드로워화면 액션버튼 클릭 시 드로워 화면 나오게 하기(공통 레이아웃 코드)
+        toggle =
+            ActionBarDrawerToggle(this@TourActivity, binding.drawerLayout, R.string.open, R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
+
+        //화면 적용하기(공통 레이아웃 코드)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        //버튼 클릭스 동기화 : 드로워 열어주기(공통 레이아웃 코드)
+        toggle.syncState()
+
+        // NavigationView 메뉴 아이템 클릭 리스너 설정(공통 레이아웃 코드)
+        binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.accommodation -> {
+                    startActivity(Intent(this, AccomActivity::class.java))
+                    true
+                }
+                R.id.restaurant -> {
+                    startActivity(Intent(this, ResActivity::class.java))
+                    true
+                }
+                R.id.tour -> {
+                    startActivity(Intent(this, TourActivity::class.java))
+                    true
+                }
+                R.id.festival -> {
+                    startActivity(Intent(this, FesActivity::class.java))
+                    true
+                }
+                R.id.shopping -> {
+                    startActivity(Intent(this, ShopActivity::class.java))
+                    true
+                }
+                R.id.community -> {
+                    // '커뮤니티' 메뉴 아이템 클릭 시 CommReadActivity로 이동
+                    startActivity(Intent(this, CommReadActivity::class.java))
+                    true
+                }
+                R.id.chatting -> {
+                    startActivity(Intent(this, ChatActivity::class.java))
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+        // Bottom Navigation link(공통 레이아웃 코드)
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.home -> {
+                    // 홈 아이템 클릭 처리
+                    val intent = Intent(this@TourActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.chat -> {
+                    val intent = Intent(this@TourActivity, GptActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.youtube -> {
+                    openWebPage("https://www.youtube.com/c/visitjeju")
+                    true
+                }
+                R.id.instagram -> {
+                    openWebPage("https://www.instagram.com/visitjeju.kr")
+                    true
+                }
+                else -> false
+            }
+        }
+        // 공통 레이아웃 끝 -------------------------------------------------------------
 
         handler = Handler(Looper.getMainLooper())
 
@@ -80,6 +200,23 @@ class TourActivity : AppCompatActivity() {
         }
     }//oncreate
 
+    // 함수 구현 ---------------------------------------------------------------------------
+
+    // Bottom Navigation link(공통 레이아웃 코드)
+    private fun openWebPage(url: String) {
+        val webpage = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW, webpage)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivity(intent)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     private fun startLocationUpdates() {
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)

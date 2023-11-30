@@ -26,6 +26,8 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.visit_jeju_app.MyApplication.Companion.lat
+import com.example.visit_jeju_app.MyApplication.Companion.lnt
 import com.example.visit_jeju_app.accommodation.AccomActivity
 import com.example.visit_jeju_app.accommodation.adapter.AccomAdapter_Main
 import com.example.visit_jeju_app.accommodation.model.AccomList
@@ -140,7 +142,12 @@ class MainActivity : AppCompatActivity() {
 
         //드로워화면 액션버튼 클릭 시 드로워 화면 나오게 하기
         toggle =
-            ActionBarDrawerToggle(this@MainActivity, binding.drawerLayout,R.string.open, R.string.close)
+            ActionBarDrawerToggle(
+                this@MainActivity,
+                binding.drawerLayout,
+                R.string.open,
+                R.string.close
+            )
 
         binding.drawerLayout.addDrawerListener(toggle)
         //화면 적용하기
@@ -156,27 +163,33 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this, AccomActivity::class.java))
                     true
                 }
+
                 R.id.restaurant -> {
                     startActivity(Intent(this, ResActivity::class.java))
                     true
                 }
+
                 R.id.tour -> {
                     startActivity(Intent(this, TourActivity::class.java))
                     true
                 }
+
                 R.id.festival -> {
                     startActivity(Intent(this, FesActivity::class.java))
                     true
                 }
+
                 R.id.shopping -> {
                     startActivity(Intent(this, ShopActivity::class.java))
                     true
                 }
+
                 R.id.community -> {
                     // '커뮤니티' 메뉴 아이템 클릭 시 CommReadActivity로 이동
                     startActivity(Intent(this, CommReadActivity::class.java))
                     true
                 }
+
                 R.id.chatting -> {
                     startActivity(Intent(this, ChatMainActivity::class.java))
                     true
@@ -237,7 +250,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 val accomList = accomponse.body()
 
-                Log.d("ljs","accomModel 값 : ${accomList}")
+                Log.d("ljs", "accomModel 값 : ${accomList}")
 
                 //데이터 받기 확인 후, 리스트에 담기.
                 accomList?.get(0)?.let { dataListFromAccomActivity.add(it) }
@@ -245,10 +258,15 @@ class MainActivity : AppCompatActivity() {
                 accomList?.get(2)?.let { dataListFromAccomActivity.add(it) }
                 accomList?.get(3)?.let { dataListFromAccomActivity.add(it) }
                 accomList?.get(4)?.let { dataListFromAccomActivity.add(it) }
-                Log.d("lsy","test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromAccomActivity?.size}")
-                val accomLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                Log.d(
+                    "lsy",
+                    "test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromAccomActivity?.size}"
+                )
+                val accomLayoutManager =
+                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                 binding.viewRecyclerAccom.layoutManager = accomLayoutManager
-                binding.viewRecyclerAccom.adapter = AccomAdapter_Main(this@MainActivity,dataListFromAccomActivity)
+                binding.viewRecyclerAccom.adapter =
+                    AccomAdapter_Main(this@MainActivity, dataListFromAccomActivity)
             }
 
             override fun onFailure(call: Call<List<AccomList>>, t: Throwable) {
@@ -268,7 +286,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 val resList = response.body()
 
-                Log.d("ljs","resModel 값 : ${resList}")
+                Log.d("ljs", "resModel 값 : ${resList}")
 
                 //데이터 받기 확인 후, 리스트에 담기.
                 resList?.get(0)?.let { dataListFromResActivity.add(it) }
@@ -276,10 +294,15 @@ class MainActivity : AppCompatActivity() {
                 resList?.get(2)?.let { dataListFromResActivity.add(it) }
                 resList?.get(3)?.let { dataListFromResActivity.add(it) }
                 resList?.get(4)?.let { dataListFromResActivity.add(it) }
-                Log.d("lsy","test 값 추가 후 확인 : dataListFromResActivity 길이 값 : ${dataListFromResActivity?.size}")
-                val resLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                Log.d(
+                    "lsy",
+                    "test 값 추가 후 확인 : dataListFromResActivity 길이 값 : ${dataListFromResActivity?.size}"
+                )
+                val resLayoutManager =
+                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                 binding.viewRecyclerRestaurant.layoutManager = resLayoutManager
-                binding.viewRecyclerRestaurant.adapter = ResAdapter_Main(this@MainActivity,dataListFromResActivity)
+                binding.viewRecyclerRestaurant.adapter =
+                    ResAdapter_Main(this@MainActivity, dataListFromResActivity)
             }
 
             override fun onFailure(call: Call<List<ResList>>, t: Throwable) {
@@ -300,7 +323,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 val tourList = response.body()
 
-                Log.d("lsy","tourModel 값 : ${tourList}")
+                Log.d("lsy", "tourModel 값 : ${tourList}")
 
                 //데이터 받기 확인 후, 리스트에 담기.
                 tourList?.get(0)?.let { dataListFromTourActivity.add(it) }
@@ -308,10 +331,15 @@ class MainActivity : AppCompatActivity() {
                 tourList?.get(2)?.let { dataListFromTourActivity.add(it) }
                 tourList?.get(3)?.let { dataListFromTourActivity.add(it) }
                 tourList?.get(4)?.let { dataListFromTourActivity.add(it) }
-                Log.d("lsy","test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromTourActivity?.size}")
-                val tourLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                Log.d(
+                    "lsy",
+                    "test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromTourActivity?.size}"
+                )
+                val tourLayoutManager =
+                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                 binding.viewRecyclerTour.layoutManager = tourLayoutManager
-                binding.viewRecyclerTour.adapter = TourAdapter_Main(this@MainActivity,dataListFromTourActivity)
+                binding.viewRecyclerTour.adapter =
+                    TourAdapter_Main(this@MainActivity, dataListFromTourActivity)
             }
 
             override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
@@ -331,7 +359,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 val fesList = response.body()
 
-                Log.d("ljs","fesModel 값 : ${fesList}")
+                Log.d("ljs", "fesModel 값 : ${fesList}")
 
                 //데이터 받기 확인 후, 리스트에 담기.
                 fesList?.get(0)?.let { dataListFromFesActivity.add(it) }
@@ -339,10 +367,15 @@ class MainActivity : AppCompatActivity() {
                 fesList?.get(2)?.let { dataListFromFesActivity.add(it) }
                 fesList?.get(3)?.let { dataListFromFesActivity.add(it) }
                 fesList?.get(4)?.let { dataListFromFesActivity.add(it) }
-                Log.d("lsy","test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromFesActivity?.size}")
-                val fesLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                Log.d(
+                    "lsy",
+                    "test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromFesActivity?.size}"
+                )
+                val fesLayoutManager =
+                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                 binding.viewRecyclerFestival.layoutManager = fesLayoutManager
-                binding.viewRecyclerFestival.adapter = FesAdapter_Main(this@MainActivity,dataListFromFesActivity)
+                binding.viewRecyclerFestival.adapter =
+                    FesAdapter_Main(this@MainActivity, dataListFromFesActivity)
             }
 
             override fun onFailure(call: Call<List<FesList>>, t: Throwable) {
@@ -362,7 +395,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 val shopList = response.body()
 
-                Log.d("ljs","shopModel 값 : ${shopList}")
+                Log.d("ljs", "shopModel 값 : ${shopList}")
 
                 //데이터 받기 확인 후, 리스트에 담기.
                 shopList?.get(0)?.let { dataListFromShopActivity.add(it) }
@@ -370,10 +403,15 @@ class MainActivity : AppCompatActivity() {
                 shopList?.get(2)?.let { dataListFromShopActivity.add(it) }
                 shopList?.get(3)?.let { dataListFromShopActivity.add(it) }
                 shopList?.get(4)?.let { dataListFromShopActivity.add(it) }
-                Log.d("lsy","test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromShopActivity?.size}")
-                val shopLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                Log.d(
+                    "lsy",
+                    "test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromShopActivity?.size}"
+                )
+                val shopLayoutManager =
+                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                 binding.viewRecyclerShopping.layoutManager = shopLayoutManager
-                binding.viewRecyclerShopping.adapter = ShopAdapter_Main(this@MainActivity,dataListFromShopActivity)
+                binding.viewRecyclerShopping.adapter =
+                    ShopAdapter_Main(this@MainActivity, dataListFromShopActivity)
             }
 
             override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
@@ -383,20 +421,22 @@ class MainActivity : AppCompatActivity() {
         })
 
 
-
         // 메인 비주얼
         viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
         viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
         viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
 
         // 일단, 시작시 토스트로 현재 위치 위도, 경도 받아오기 테스트
-        getLocation()
+        getLocation {
 
+            Log.d("lsy", "현재 위치 조회 3 : lat : $lat, lnt : $lnt")
         // 현재 위치 백에 보내서, 데이터 받아오기.
         // http://10.100.104.32:8083/tour/tourList/tourByGPS?lat=33.4&lnt=126.2
 
 
-        val tourGPSCall = networkService.getTourGPS(lat,lnt)
+        val tourGPSCall = networkService.getTourGPS(lat, lnt)
+
+        Log.d("lsy", "현재 위치 조회 4 : lat : $lat, lnt : $lnt")
 
         tourGPSCall.enqueue(object : Callback<List<TourList>> {
             override fun onResponse(
@@ -406,7 +446,7 @@ class MainActivity : AppCompatActivity() {
             ) {
                 val tourList = response.body()
 
-                Log.d("lsy","tourList 값 : ${tourList}")
+                Log.d("lsy", "tourList 값 : ${tourList}")
                 Log.d("lsy", "tourList 사이즈 : ${tourList?.size}")
             }
 
@@ -415,6 +455,7 @@ class MainActivity : AppCompatActivity() {
                 call.cancel()
             }
         })
+    }
 
 
 
@@ -451,7 +492,7 @@ class MainActivity : AppCompatActivity() {
     } //onCreate
 
     @SuppressLint("MissingPermission")
-    private fun getLocation() {
+    private fun getLocation(callback: () -> Unit) {
         val fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(this)
 
@@ -462,6 +503,8 @@ class MainActivity : AppCompatActivity() {
                     lat = location.latitude
                     lnt = location.longitude
                     Log.d("lsy", "현재 위치 조회 2 : lat : ${lat}, lnt : ${lnt}")
+
+                    callback()
                 }
             }
             .addOnFailureListener { fail ->
