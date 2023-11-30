@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -476,16 +477,48 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
+                /*R.id.youtube -> {
+                    val videoUrl = "https://www.youtube.com/c/visitjeju" // 여기에 YouTube 링크를 입력하세요
+
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl))
+                    intent.putExtra("force_fullscreen", true) // 전체 화면으로 열고 싶은 경우
+
+                    // YouTube 앱이 없을 경우 대체 앱(웹 브라우저)을 열기
+                    val youtubeAppPackage = "com.google.android.youtube"
+                    if (isAppInstalled(youtubeAppPackage)) {
+                        intent.`package` = youtubeAppPackage
+                    } else {
+                        intent.setPackage(null)
+                    }
+
+                    startActivity(intent)
+                    true
+                }*/
                 R.id.youtube -> {
-                    openWebPage("https://www.youtube.com/c/visitjeju")
+                    val webpageUrl = "https://www.youtube.com/c/visitjeju" // 웹 페이지 링크를 입력하세요
+
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
+                    startActivity(intent)
                     true
                 }
                 R.id.instagram -> {
-                    openWebPage("https://www.instagram.com/visitjeju.kr")
+                    val webpageUrl = "https://www.instagram.com/visitjeju.kr" // 웹 페이지 링크를 입력하세요
+
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
+                    startActivity(intent)
                     true
                 }
                 else -> false
             }
+        }
+
+        val communityBanner = findViewById<ImageView>(R.id.communityBanner)
+
+        // ImageView를 클릭했을 때 동작하는 이벤트 리스너 추가
+        communityBanner.setOnClickListener {
+            // 클릭 시 새로운 화면으로 이동하는 Intent 생성
+            val intent = Intent(this, CommReadActivity::class.java)
+            startActivity(intent) // 새로운 화면으로 이동
         }
 
 
@@ -599,12 +632,22 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun openWebPage(url: String) {
-        val webpage = Uri.parse(url)
-        val intent = Intent(Intent.ACTION_VIEW, webpage)
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivity(intent)
+
+
+    // 앱 설치 여부 확인 함수
+    private fun isAppInstalled(packageName: String): Boolean {
+        return try {
+            applicationContext.packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
         }
+    }
+
+    // 웹 페이지 열기 함수
+    private fun openWebPage(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
