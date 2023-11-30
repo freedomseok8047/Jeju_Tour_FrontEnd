@@ -31,6 +31,7 @@ import com.example.visit_jeju_app.accommodation.adapter.AccomAdapter_Main
 import com.example.visit_jeju_app.accommodation.model.AccomList
 import com.example.visit_jeju_app.community.activity.CommReadActivity
 import com.example.visit_jeju_app.chat.ChatActivity
+import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
 import com.example.visit_jeju_app.festival.FesActivity
 import com.example.visit_jeju_app.festival.adapter.FesAdapter_Main
