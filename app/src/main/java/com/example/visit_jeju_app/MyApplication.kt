@@ -28,6 +28,8 @@ class MyApplication : MultiDexApplication() {
         lateinit var rdb: DatabaseReference
         //인증할 이메일
         var email : String? = null
+        var lat : Double? = null
+        var lnt : Double? = null
 
         // 이미지 저장소 , 인스턴스 도구
         lateinit var storage: FirebaseStorage
