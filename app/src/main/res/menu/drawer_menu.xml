@@ -27,7 +27,7 @@
         android:icon="@drawable/outline_forum_black_24"/>
     <item
         android:id="@+id/chatting"
-        android:title="채팅하기"
+        android:title="문의하기"
         android:icon="@drawable/baseline_chat_24"/>
 
 </menu>

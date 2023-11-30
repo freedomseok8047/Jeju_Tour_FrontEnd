@@ -32,6 +32,8 @@ class CommUpdateActivity : AppCompatActivity() {
     // 나누어서 파이어베이스의 스토어와 스토리지에 변경된 내용으로 저장되도록 하는 코드
     private var docId: String? = null
 
+    // Activity Result API를 사용하기 위한 런처
+    // 갤러리에서 이미지를 선택하기 위한 requestLauncher를 설정
     private val requestLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -46,12 +48,13 @@ class CommUpdateActivity : AppCompatActivity() {
         binding = ActivityCommUpdateBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Intent에서 데이터 추출
         val docId = intent.getStringExtra("DocId")
         val title = intent.getStringExtra("CommunityTitle")
         val content = intent.getStringExtra("CommunityContent")
         val date = intent.getStringExtra("CommunityDate")
 
-
+        // UI에 데이터 설정
         binding.CommunityDate.text = date
         binding.regTitle.setText(title)
         binding.regContent.setText(content)
@@ -85,6 +88,7 @@ class CommUpdateActivity : AppCompatActivity() {
 
         // 내용 수정한 부분을 파이어베이스에 반영하는 코드
         // 수정
+        // "CommunityModify" 버튼이 클릭되었을 때 실행되는 코드 블록을 정의
         binding.CommunityModify.setOnClickListener {
             val updatedTitle = binding.regTitle.text.toString()
             val updatedContent = binding.regContent.text.toString()
@@ -112,6 +116,7 @@ class CommUpdateActivity : AppCompatActivity() {
 
     // 이미지와 내용이 모두 변경되는 경우, 이미지만 변경되는 경우, 내용만 변경되는 경우인 총 3가지 경우로
     // 나누어서 파이어베이스의 스토어와 스토리지에 변경된 내용으로 저장되도록 하는 코드
+    // 갤러리 열기
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.setDataAndType(
@@ -121,6 +126,7 @@ class CommUpdateActivity : AppCompatActivity() {
         requestLauncher.launch(intent)
     }
 
+    // 갤러리에서 선택한 이미지 처리
     private fun handleImageSelection(uri: Uri) {
         Glide.with(applicationContext)
             .load(uri)
@@ -154,6 +160,7 @@ class CommUpdateActivity : AppCompatActivity() {
         }
     }
 
+    // 내용만 변경된 경우 데이터 업데이트
     private fun updateDataOnly(docId: String?, title: String, content: String) {
         if (docId != null) {
             val data = mapOf(

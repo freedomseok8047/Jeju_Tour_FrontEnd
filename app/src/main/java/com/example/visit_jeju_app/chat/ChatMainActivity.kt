@@ -137,12 +137,12 @@ class ChatMainActivity : AppCompatActivity() {
         // 채팅 화면에 나올 유저 뷰
 
         // 해당 이메일의 유저로 로그인을 하면 필터링이 됨.
-        val allowedEmails = listOf("issho@naver.com", "")
+        val allowedEmails = listOf("xoqls081215@gmail.com", "tb081212@naver.com")
         val currentUser = auth.currentUser
 
-        if (currentUser != null && allowedEmails.contains(currentUser.email)) {
+        if (currentUser != null && !allowedEmails.contains(currentUser.email)) {
             // 두 사용자 이름을 리스트로 만들고 각 사용자에 대해 쿼리를 실행합니다.
-            val targetUsernames = listOf("제주도문의", "서귀포문의")
+            val targetUsernames = listOf("제주시 고객센터","서귀포시 고객센터", "")
             for (username in targetUsernames) {
                 rdb.child("user").orderByChild("username").equalTo(username)
                     .addListenerForSingleValueEvent(object : ValueEventListener {

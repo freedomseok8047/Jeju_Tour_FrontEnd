@@ -88,6 +88,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:padding="16dp"
+                android:background="#FF9800"
+                android:textColor="@color/white"
                 android:text="사진 변경"/>
 
             <ImageView
@@ -125,6 +127,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:padding="16dp"
+                    android:background="#FF9800"
+                    android:textColor="@color/white"
                     android:text="수정 완료" />
 
                 <Button
@@ -134,6 +138,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="10dp"
                     android:padding="16dp"
+                    android:background="#FF9800"
+                    android:textColor="@color/white"
                     android:text="취소" />
 
             </LinearLayout>
