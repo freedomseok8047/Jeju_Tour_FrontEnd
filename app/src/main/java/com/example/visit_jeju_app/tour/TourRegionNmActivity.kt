@@ -40,6 +40,7 @@ class TourRegionNmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
         // 공통 레이아웃 코드 시작 --------------------------------------------------------------
         setSupportActionBar(binding.toolbar)
 

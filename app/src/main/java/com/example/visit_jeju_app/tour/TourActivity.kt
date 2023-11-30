@@ -78,6 +78,7 @@ class TourActivity : AppCompatActivity() {
         binding = ActivityTourBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         // 공통 레이아웃 시작 -------------------------------------------------------------
         setSupportActionBar(binding.toolbar)
 
