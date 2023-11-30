@@ -65,25 +65,28 @@
         android:layout_gravity="bottom">
 
         <EditText
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
             android:id="@+id/message_edit"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_weight="85"
-            android:background="@drawable/rightbubble"
-            android:hint="메시지를 입력하세요"
-            android:inputType="text"
-            android:paddingStart="10dp" />
+            android:layout_centerInParent="true"
+            android:hint="Write here "
+            android:padding="16dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/rounded_corner"
+            />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:id="@+id/send_btn"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="15"
-            android:background="@drawable/send"
-            android:textColor="@android:color/white" />
+            android:padding="8dp"
+            android:src="@drawable/ic_baseline_send_24"
+            android:background="?attr/selectableItemBackgroundBorderless"
+
+            />
 
     </LinearLayout>
 
