@@ -549,10 +549,10 @@ class MainActivity : AppCompatActivity() {
     // 뷰 페이저에 들어갈 아이템
     private fun getMainvisual(): ArrayList<Int> {
         return arrayListOf<Int>(
-            R.drawable.jeju_apec01,
             R.drawable.jeju_apec02,
             R.drawable.jeju_apec03,
-            R.drawable.jeju_apec04)
+            R.drawable.jeju_apec04,
+            R.drawable.jeju_apec01,)
     }
 
 

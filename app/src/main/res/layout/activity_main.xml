@@ -36,8 +36,6 @@
             android:layout_marginEnd="10dp"
             app:itemIconSize="20dp"
             app:itemPaddingBottom="10dp"
-
-
             />
         <!-- //Bottom Navigation View -->
 
@@ -90,7 +88,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="16dp"
-                        android:layout_marginBottom="60dp"
+                        android:layout_marginBottom="100dp"
                         android:orientation="vertical"
                         android:paddingLeft="10dp">
 
@@ -269,22 +267,22 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
 
+                        <!-- 커뮤니티 배너 -->
+                        <ImageView
+                            android:id="@+id/communityBanner"
+                            android:layout_width="match_parent"
+                            android:layout_height="234dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/commu_banner" />
+
                     </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/communityBanner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/commu_banner" />
+
 
                 </LinearLayout>
                 <!-- //키 데이터 리사이클러 뷰 -->
 
-                <!--<ImageView
-                android:id="@+id/communityBanner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/commu_banner"/>-->
 
             </ScrollView>
 
