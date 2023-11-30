@@ -62,7 +62,9 @@
         android:layout_marginBottom="10dp"
         android:orientation="horizontal"
         android:weightSum="100"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:layout_marginRight="24dp"
+        android:layout_marginLeft="24dp">
 
         <EditText
             android:layout_width="340dp"

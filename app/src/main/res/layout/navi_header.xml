@@ -4,30 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="240dp"
-    android:background="#242c63">
+    android:background="#242c63"
+    android:paddingLeft="30dp">
 
     <ImageView
         android:id="@+id/headerUserImage"
-        android:layout_width="200dp"
-        android:layout_height="38dp"
+        android:layout_width="220dp"
+        android:layout_height="30dp"
         android:layout_gravity="center"
-        android:padding="5dp"
         android:scaleType="centerCrop"
         android:src="@drawable/jejutour_h"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="37dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.093"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.275" />
 
     <TextView
         android:id="@+id/headerUserEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="abc@abc.com"
         android:textColor="@color/white"
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="55dp"
-        tools:layout_editor_absoluteY="108dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toStartOf="@+id/headerUserImage"
+        app:layout_constraintTop_toBottomOf="@+id/headerUserImage" />
 
     <Button
         android:id="@+id/headerLogoutBtn"
@@ -37,8 +40,10 @@
         android:layout_marginTop="18dp"
         android:background="@drawable/btn_radius_point"
         android:text="Logout"
-        app:layout_constraintTop_toBottomOf="@+id/headerUserEmail"
-        tools:layout_editor_absoluteX="55dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/headerUserEmail"
+        app:layout_constraintTop_toBottomOf="@id/headerUserEmail"
+        app:layout_constraintVertical_bias="0.032" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
