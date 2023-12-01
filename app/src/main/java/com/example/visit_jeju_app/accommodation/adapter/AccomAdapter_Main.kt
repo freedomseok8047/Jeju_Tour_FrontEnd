@@ -17,7 +17,7 @@ import com.example.visit_jeju_app.accommodation.model.AccomList
 import com.example.visit_jeju_app.databinding.MainItemBinding
 
 class AccomViewHolder2(val binding: MainItemBinding): RecyclerView.ViewHolder(binding.root)
-class AccomAdapter_Main(val context: Context, val datas:MutableList<AccomList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class AccomAdapter_Main(val context: Context, val datas:List<AccomList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0

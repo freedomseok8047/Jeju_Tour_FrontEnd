@@ -80,8 +80,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var viewPager_mainVisual: ViewPager2
 
     // 현재 위치 담아 두는 변수
-    var lat : Double = 0.0
-    var lnt : Double = 0.0
+    var lat : Double = 33.2541
+    var lnt : Double = 126.5601
 
     // 통신으로 받아온 투어 정보 담는 리스트 , 전역으로 설정, 각 어느 곳에서든 사용가능.
     // 제주 숙박
@@ -108,6 +108,10 @@ class MainActivity : AppCompatActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         createLocationRequest()
         createLocationCallback()
+        createLocationFesCallback()
+        createLocationResCallback()
+        createLocationAccomCallback()
+        createLocationShopCallback()
         //---------------------------------------------------------
         // 각 가테고리별 넘어온 데이터 담을 리스트 초기화, 할당.
         dataListFromAccomActivity = mutableListOf<AccomList>()
@@ -195,6 +199,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Bottom Navigation link
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item: MenuItem ->
+            when (item.itemId) {
+                R.id.home -> {
+                    // 홈 아이템 클릭 처리
+                    val intent = Intent(this@MainActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.chat -> {
+                    val intent = Intent(this@MainActivity, GptActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.youtube -> {
+                    openWebPage("https://www.youtube.com/c/visitjeju")
+                    true
+                }
+                R.id.instagram -> {
+                    openWebPage("https://www.instagram.com/visitjeju.kr")
+                    true
+                }
+                else -> false
+            }
+        }
+
 
         // 메인 카테고리 더보기 링크
         val moreAccomTextView: TextView = findViewById(R.id.mainItemMoreBtn1)
@@ -235,80 +266,272 @@ class MainActivity : AppCompatActivity() {
 
         val networkService = (applicationContext as MyApplication).networkService
 
-        // 제주 숙박
-        val accomListCall = networkService.GetAccomList()
+        // accom main gps [수정]
+        val accomListCall = networkService.getAccomGPS(lat,lnt)
 
         accomListCall.enqueue(object : Callback<List<AccomList>> {
             override fun onResponse(
                 call: Call<List<AccomList>>,
-                accomponse: Response<List<AccomList>>
+                response: Response<List<AccomList>>
 
-            ) {
-                val accomList = accomponse.body()
+            )
+            {
+                // 메인 비주얼
+                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
 
-                Log.d("ljs", "accomModel 값 : ${accomList}")
+                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+                getLocation()
+                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                Log.d("lsy", "shared 불러오고 후 lat : ${lat}, lnt : ${lnt}")
 
-                //데이터 받기 확인 후, 리스트에 담기.
-                accomList?.get(0)?.let { dataListFromAccomActivity.add(it) }
-                accomList?.get(1)?.let { dataListFromAccomActivity.add(it) }
-                accomList?.get(2)?.let { dataListFromAccomActivity.add(it) }
-                accomList?.get(3)?.let { dataListFromAccomActivity.add(it) }
-                accomList?.get(4)?.let { dataListFromAccomActivity.add(it) }
-                Log.d(
-                    "lsy",
-                    "test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromAccomActivity?.size}"
-                )
-                val accomLayoutManager =
-                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-                binding.viewRecyclerAccom.layoutManager = accomLayoutManager
-                binding.viewRecyclerAccom.adapter =
-                    AccomAdapter_Main(this@MainActivity, dataListFromAccomActivity)
+                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+                sendAccomLocationToServer(lat,lnt)
+            }
+
+            // 백엔드 서버로 위치 데이터 전송 // [변경 사항] 제주 투어 -----------------------------------------------------------------------
+            private fun sendAccomLocationToServer(lat: Double?, lnt: Double?) {
+                val networkService = (applicationContext as MyApplication).networkService
+                val accomGPSCall = networkService.getAccomGPS(lat, lnt )
+
+                accomGPSCall.enqueue(object : Callback<List<AccomList>> {
+                    override fun onResponse
+                                (call: Call<List<AccomList>>,
+                                 response: Response<List<AccomList>>) {
+                        Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
+
+                        val accomList = response.body()
+
+                        Log.d("lsy","getTourGPS로 불러온 tourList 값 : ${accomList}")
+                        Log.d("lsy", "getTourGPS로 불러온 tourList 사이즈 : ${accomList?.size}")
+                        Log.d(
+                            "lsy", "통신 후 받아온 tourList 길이 값 : ${accomList?.size}"
+                        )
+                        val accomLayoutManager =
+                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                        binding.viewRecyclerAccom.layoutManager = accomLayoutManager
+                        binding.viewRecyclerAccom.adapter =
+                            AccomAdapter_Main(this@MainActivity, accomList)
+                    }
+
+                    override fun onFailure(call: Call<List<AccomList>>, t: Throwable) {
+                        Log.d("lsy", "fail")
+                        call.cancel()
+                    }
+                })
+
+
             }
 
             override fun onFailure(call: Call<List<AccomList>>, t: Throwable) {
                 Log.d("lsy", "fail")
-                call.cancel()
+                Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
             }
         })
 
-        // 제주 맛집
-        val resListCall = networkService.GetResList()
+        // res main gps [수정]
+        val resListCall = networkService.getResGPS(lat,lnt)
 
         resListCall.enqueue(object : Callback<List<ResList>> {
             override fun onResponse(
                 call: Call<List<ResList>>,
                 response: Response<List<ResList>>
 
-            ) {
-                val resList = response.body()
+            )
+            {
+                // 메인 비주얼
+                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
 
-                Log.d("ljs", "resModel 값 : ${resList}")
+                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+                getLocation()
+                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                Log.d("lsy", "shared 불러오고 후 lat : ${lat}, lnt : ${lnt}")
 
-                //데이터 받기 확인 후, 리스트에 담기.
-                resList?.get(0)?.let { dataListFromResActivity.add(it) }
-                resList?.get(1)?.let { dataListFromResActivity.add(it) }
-                resList?.get(2)?.let { dataListFromResActivity.add(it) }
-                resList?.get(3)?.let { dataListFromResActivity.add(it) }
-                resList?.get(4)?.let { dataListFromResActivity.add(it) }
-                Log.d(
-                    "lsy",
-                    "test 값 추가 후 확인 : dataListFromResActivity 길이 값 : ${dataListFromResActivity?.size}"
-                )
-                val resLayoutManager =
-                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-                binding.viewRecyclerRestaurant.layoutManager = resLayoutManager
-                binding.viewRecyclerRestaurant.adapter =
-                    ResAdapter_Main(this@MainActivity, dataListFromResActivity)
+                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+                sendResLocationToServer(lat,lnt)
+            }
+
+            // 백엔드 서버로 위치 데이터 전송 // [변경 사항] 제주 투어 -----------------------------------------------------------------------
+            private fun sendResLocationToServer(lat: Double?, lnt: Double?) {
+                val networkService = (applicationContext as MyApplication).networkService
+                val resGPSCall = networkService.getResGPS(lat, lnt )
+
+                resGPSCall.enqueue(object : Callback<List<ResList>> {
+                    override fun onResponse
+                                (call: Call<List<ResList>>,
+                                 response: Response<List<ResList>>) {
+                        Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
+
+                        val resList = response.body()
+
+                        Log.d("lsy","getTourGPS로 불러온 tourList 값 : ${resList}")
+                        Log.d("lsy", "getTourGPS로 불러온 tourList 사이즈 : ${resList?.size}")
+                        Log.d(
+                            "lsy", "통신 후 받아온 tourList 길이 값 : ${resList?.size}"
+                        )
+                        val resLayoutManager =
+                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                        binding.viewRecyclerRestaurant.layoutManager = resLayoutManager
+                        binding.viewRecyclerRestaurant.adapter =
+                            ResAdapter_Main(this@MainActivity, resList)
+                    }
+
+                    override fun onFailure(call: Call<List<ResList>>, t: Throwable) {
+                        Log.d("lsy", "fail")
+                        call.cancel()
+                    }
+                })
+
+
             }
 
             override fun onFailure(call: Call<List<ResList>>, t: Throwable) {
                 Log.d("lsy", "fail")
-                call.cancel()
+                Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
             }
         })
 
 
-        // [변경 사항] 제주 투어
+        // fes main gps [수정]
+        val fesListCall = networkService.getFesGPS(lat,lnt)
+
+        fesListCall.enqueue(object : Callback<List<FesList>> {
+            override fun onResponse(
+                call: Call<List<FesList>>,
+                response: Response<List<FesList>>
+
+            )
+            {
+                // 메인 비주얼
+                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+
+                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+                getLocation()
+                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                Log.d("lsy", "shared 불러오고 후 lat : ${lat}, lnt : ${lnt}")
+
+                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+                sendFesLocationToServer(lat,lnt)
+            }
+
+            // 백엔드 서버로 위치 데이터 전송 // [변경 사항] 제주 투어 -----------------------------------------------------------------------
+            private fun sendFesLocationToServer(lat: Double?, lnt: Double?) {
+                val networkService = (applicationContext as MyApplication).networkService
+                val fesGPSCall = networkService.getFesGPS(lat, lnt )
+
+                fesGPSCall.enqueue(object : Callback<List<FesList>> {
+                    override fun onResponse
+                                (call: Call<List<FesList>>,
+                                 response: Response<List<FesList>>) {
+                        Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
+
+                        val fesList = response.body()
+
+                        Log.d("lsy","getTourGPS로 불러온 tourList 값 : ${fesList}")
+                        Log.d("lsy", "getTourGPS로 불러온 tourList 사이즈 : ${fesList?.size}")
+                        Log.d(
+                            "lsy", "통신 후 받아온 tourList 길이 값 : ${fesList?.size}"
+                        )
+                        val fesLayoutManager =
+                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                        binding.viewRecyclerFestival.layoutManager = fesLayoutManager
+                        binding.viewRecyclerFestival.adapter =
+                            FesAdapter_Main(this@MainActivity, fesList)
+                    }
+
+                    override fun onFailure(call: Call<List<FesList>>, t: Throwable) {
+                        Log.d("lsy", "fail")
+                        call.cancel()
+                    }
+                })
+
+
+            }
+
+            override fun onFailure(call: Call<List<FesList>>, t: Throwable) {
+                Log.d("lsy", "fail")
+                Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+
+        // shop main gps [수정]
+        val shopListCall = networkService.getShopGPS(lat,lnt)
+
+        shopListCall.enqueue(object : Callback<List<ShopList>> {
+            override fun onResponse(
+                call: Call<List<ShopList>>,
+                response: Response<List<ShopList>>
+
+            )
+            {
+                // 메인 비주얼
+                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+
+                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+                getLocation()
+                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                Log.d("lsy", "shared 불러오고 후 lat : ${lat}, lnt : ${lnt}")
+
+                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+                sendShopLocationToServer(lat,lnt)
+            }
+
+            // 백엔드 서버로 위치 데이터 전송 // [변경 사항] 제주 투어 -----------------------------------------------------------------------
+            private fun sendShopLocationToServer(lat: Double?, lnt: Double?) {
+                val networkService = (applicationContext as MyApplication).networkService
+                val shopGPSCall = networkService.getShopGPS(lat, lnt )
+
+                shopGPSCall.enqueue(object : Callback<List<ShopList>> {
+                    override fun onResponse
+                                (call: Call<List<ShopList>>,
+                                 response: Response<List<ShopList>>) {
+                        Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
+
+                        val shopList = response.body()
+
+                        Log.d("lsy","getTourGPS로 불러온 tourList 값 : ${shopList}")
+                        Log.d("lsy", "getTourGPS로 불러온 tourList 사이즈 : ${shopList?.size}")
+                        Log.d(
+                            "lsy", "통신 후 받아온 tourList 길이 값 : ${shopList?.size}"
+                        )
+                        val shopLayoutManager =
+                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                        binding.viewRecyclerShopping.layoutManager = shopLayoutManager
+                        binding.viewRecyclerShopping.adapter =
+                            ShopAdapter_Main(this@MainActivity, shopList)
+                    }
+
+                    override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
+                        Log.d("lsy", "fail")
+                        call.cancel()
+                    }
+                })
+
+
+            }
+
+            override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
+                Log.d("lsy", "fail")
+                Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+
+        // tour main gps [수정]
         val tourListCall = networkService.getTourGPS(lat,lnt)
 
         tourListCall.enqueue(object : Callback<List<TourList>> {
@@ -318,181 +541,52 @@ class MainActivity : AppCompatActivity() {
 
             )
             {
-//                val tourList = response.body()
+                // 메인 비주얼
+                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
 
-//                Log.d("lsy", "tourModel 값 : ${tourList}")
-//
-////                데이터 받기 확인 후, 리스트에 담기.
-//                tourList?.get(0)?.let { dataListFromTourActivity.add(it) }
-//                tourList?.get(1)?.let { dataListFromTourActivity.add(it) }
-//                tourList?.get(2)?.let { dataListFromTourActivity.add(it) }
-//                tourList?.get(3)?.let { dataListFromTourActivity.add(it) }
-//                tourList?.get(4)?.let { dataListFromTourActivity.add(it) }
-//                Log.d(
-//                    "lsy", "통신 후 받아온 tourList 길이 값 : ${tourList?.size}"
-//                )
-//                val tourLayoutManager =
-//                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-//                binding.viewRecyclerTour.layoutManager = tourLayoutManager
-//                binding.viewRecyclerTour.adapter =
-//                    TourAdapter_Main(this@MainActivity, tourList)
-//            }
-//
-//            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
-//                Log.d("lsy", "fail")
-//                call.cancel()
-//            }
-//        })
+                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+                getLocation()
+                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                Log.d("lsy", "shared 불러오고 후 lat : ${lat}, lnt : ${lnt}")
 
-
-        // 제주 축제
-        val fesListCall = networkService.GetFesList()
-
-        fesListCall.enqueue(object : Callback<List<FesList>> {
-            override fun onResponse(
-                call: Call<List<FesList>>,
-                response: Response<List<FesList>>
-
-            ) {
-                val fesList = response.body()
-
-                Log.d("ljs", "fesModel 값 : ${fesList}")
-
-                //데이터 받기 확인 후, 리스트에 담기.
-                fesList?.get(0)?.let { dataListFromFesActivity.add(it) }
-                fesList?.get(1)?.let { dataListFromFesActivity.add(it) }
-                fesList?.get(2)?.let { dataListFromFesActivity.add(it) }
-                fesList?.get(3)?.let { dataListFromFesActivity.add(it) }
-                fesList?.get(4)?.let { dataListFromFesActivity.add(it) }
-                Log.d(
-                    "lsy",
-                    "test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromFesActivity?.size}"
-                )
-                val fesLayoutManager =
-                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-                binding.viewRecyclerFestival.layoutManager = fesLayoutManager
-                binding.viewRecyclerFestival.adapter =
-                    FesAdapter_Main(this@MainActivity, dataListFromFesActivity)
+                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+                sendTourLocationToServer(lat,lnt)
             }
 
-            override fun onFailure(call: Call<List<FesList>>, t: Throwable) {
-                Log.d("lsy", "fail")
-                call.cancel()
-            }
-        })
+            // 백엔드 서버로 위치 데이터 전송 // [변경 사항] 제주 투어 -----------------------------------------------------------------------
+            private fun sendTourLocationToServer(lat: Double?, lnt: Double?) {
+                val networkService = (applicationContext as MyApplication).networkService
+                val tourGPSCall = networkService.getTourGPS(lat, lnt )
 
-        // 제주 쇼핑
-        val shopListCall = networkService.GetShopList()
+                tourGPSCall.enqueue(object : Callback<List<TourList>> {
+                    override fun onResponse
+                                (call: Call<List<TourList>>,
+                                 response: Response<List<TourList>>) {
+                        Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
 
-        shopListCall.enqueue(object : Callback<List<ShopList>> {
-            override fun onResponse(
-                call: Call<List<ShopList>>,
-                response: Response<List<ShopList>>
+                        val tourList = response.body()
 
-            ) {
-                val shopList = response.body()
+                        Log.d("lsy","getTourGPS로 불러온 tourList 값 : ${tourList}")
+                        Log.d("lsy", "getTourGPS로 불러온 tourList 사이즈 : ${tourList?.size}")
+                        Log.d(
+                            "lsy", "통신 후 받아온 tourList 길이 값 : ${tourList?.size}"
+                        )
+                        val tourLayoutManager =
+                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                        binding.viewRecyclerTour.layoutManager = tourLayoutManager
+                        binding.viewRecyclerTour.adapter =
+                            TourAdapter_Main(this@MainActivity, tourList)
+                    }
 
-                Log.d("ljs", "shopModel 값 : ${shopList}")
-
-                //데이터 받기 확인 후, 리스트에 담기.
-                shopList?.get(0)?.let { dataListFromShopActivity.add(it) }
-                shopList?.get(1)?.let { dataListFromShopActivity.add(it) }
-                shopList?.get(2)?.let { dataListFromShopActivity.add(it) }
-                shopList?.get(3)?.let { dataListFromShopActivity.add(it) }
-                shopList?.get(4)?.let { dataListFromShopActivity.add(it) }
-                Log.d(
-                    "lsy",
-                    "test 값 추가 후 확인 : dataListFromTourActivity 길이 값 : ${dataListFromShopActivity?.size}"
-                )
-                val shopLayoutManager =
-                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-                binding.viewRecyclerShopping.layoutManager = shopLayoutManager
-                binding.viewRecyclerShopping.adapter =
-                    ShopAdapter_Main(this@MainActivity, dataListFromShopActivity)
-            }
-
-            override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
-                Log.d("lsy", "fail")
-                call.cancel()
-            }
-        })
-
-
-        // 메인 비주얼
-        viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
-        viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
-        viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
-
-        // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
-        getLocation()
-        val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
-        val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
-        val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
-        Log.d("lsy", "shared 불러오고 후 lat : ${lat}, lnt : ${lnt}")
-
-        // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
-        sendTourLocationToServer(lat,lnt)
-
-        // Bottom Navigation link
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigationView.setOnNavigationItemSelectedListener { item: MenuItem ->
-            when (item.itemId) {
-                R.id.home -> {
-                    // 홈 아이템 클릭 처리
-                    val intent = Intent(this@MainActivity, MainActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.chat -> {
-                    val intent = Intent(this@MainActivity, GptActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
-                R.id.youtube -> {
-                    openWebPage("https://www.youtube.com/c/visitjeju")
-                    true
-                }
-                R.id.instagram -> {
-                    openWebPage("https://www.instagram.com/visitjeju.kr")
-                    true
-                }
-                else -> false
-            }
-        }
-
-
-    } //onCreate
-
-    // 백엔드 서버로 위치 데이터 전송 // [변경 사항] 제주 투어 -----------------------------------------------------------------------
-    private fun sendTourLocationToServer(lat: Double?, lnt: Double?) {
-        val networkService = (applicationContext as MyApplication).networkService
-        val tourGPSCall = networkService.getTourGPS(lat, lnt )
-
-        tourGPSCall.enqueue(object : Callback<List<TourList>> {
-            override fun onResponse
-                        (call: Call<List<TourList>>,
-                         response: Response<List<TourList>>) {
-                Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
-
-                val tourList = response.body()
-
-                Log.d("lsy","getTourGPS로 불러온 tourList 값 : ${tourList}")
-                Log.d("lsy", "getTourGPS로 불러온 tourList 사이즈 : ${tourList?.size}")
-                Log.d(
-                    "lsy", "통신 후 받아온 tourList 길이 값 : ${tourList?.size}"
-                )
-                val tourLayoutManager =
-                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-                binding.viewRecyclerTour.layoutManager = tourLayoutManager
-                binding.viewRecyclerTour.adapter =
-                    TourAdapter_Main(this@MainActivity, tourList)
-            }
-
-            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
-                Log.d("lsy", "fail")
-                call.cancel()
-            }
-        })
+                    override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+                        Log.d("lsy", "fail")
+                        call.cancel()
+                    }
+                })
 
 
             }
@@ -555,6 +649,54 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun createLocationShopCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    // 여기서 위치 정보를 사용하세요.
+                    sendLocationShopToServer(lat, lnt)
+                }
+            }
+        }
+    }
+
+    private fun createLocationFesCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    // 여기서 위치 정보를 사용하세요.
+                    sendLocationFesToServer(lat, lnt)
+                }
+            }
+        }
+    }
+
+    private fun createLocationResCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    // 여기서 위치 정보를 사용하세요.
+                    sendLocationResToServer(lat, lnt)
+                }
+            }
+        }
+    }
+
+    private fun createLocationAccomCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    // 여기서 위치 정보를 사용하세요.
+                    sendLocationAccomToServer(lat, lnt)
+                }
+            }
+        }
+    }
     // -----------------------------------------------------------------------------
 
 
@@ -591,6 +733,66 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+                Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+    }
+
+    private fun sendLocationShopToServer(lat: Double, lnt: Double) {
+        val networkService = (applicationContext as MyApplication).networkService
+        val shopGPSCall = networkService.getShopGPS(lat, lnt )
+
+        shopGPSCall.enqueue(object : Callback<List<ShopList>> {
+            override fun onResponse(call: Call<List<ShopList>>, response: Response<List<ShopList>>) {
+                Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
+            }
+
+            override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
+                Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+    }
+
+    private fun sendLocationFesToServer(lat: Double, lnt: Double) {
+        val networkService = (applicationContext as MyApplication).networkService
+        val fesGPSCall = networkService.getFesGPS(lat, lnt )
+
+        fesGPSCall.enqueue(object : Callback<List<FesList>> {
+            override fun onResponse(call: Call<List<FesList>>, response: Response<List<FesList>>) {
+                Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
+            }
+
+            override fun onFailure(call: Call<List<FesList>>, t: Throwable) {
+                Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+    }
+
+    private fun sendLocationResToServer(lat: Double, lnt: Double) {
+        val networkService = (applicationContext as MyApplication).networkService
+        val resGPSCall = networkService.getResGPS(lat, lnt )
+
+        resGPSCall.enqueue(object : Callback<List<ResList>> {
+            override fun onResponse(call: Call<List<ResList>>, response: Response<List<ResList>>) {
+                Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
+            }
+
+            override fun onFailure(call: Call<List<ResList>>, t: Throwable) {
+                Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+    }
+
+    private fun sendLocationAccomToServer(lat: Double, lnt: Double) {
+        val networkService = (applicationContext as MyApplication).networkService
+        val accomGPSCall = networkService.getAccomGPS(lat, lnt )
+
+        accomGPSCall.enqueue(object : Callback<List<AccomList>> {
+            override fun onResponse(call: Call<List<AccomList>>, response: Response<List<AccomList>>) {
+                Log.d("lsy", "현재 위치 업데이트 성공: lat : ${lat}, lnt : ${lnt}")
+            }
+
+            override fun onFailure(call: Call<List<AccomList>>, t: Throwable) {
                 Log.d("lsy", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
             }
         })

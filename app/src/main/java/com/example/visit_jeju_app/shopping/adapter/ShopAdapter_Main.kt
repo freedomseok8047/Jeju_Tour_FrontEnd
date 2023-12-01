@@ -17,7 +17,7 @@ import com.example.visit_jeju_app.shopping.ShopDetailActivity
 import com.example.visit_jeju_app.shopping.model.ShopList
 
 class ShopViewHolder2(val binding: MainItemBinding): RecyclerView.ViewHolder(binding.root)
-class ShopAdapter_Main(val context: Context, val datas:MutableList<ShopList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ShopAdapter_Main(val context: Context, val datas:List<ShopList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
