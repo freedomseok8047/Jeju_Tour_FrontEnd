@@ -215,11 +215,17 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.youtube -> {
-                    openWebPage("https://www.youtube.com/c/visitjeju")
+                    val webpageUrl = "https://www.youtube.com/c/visitjeju" // 웹 페이지 링크
+
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
+                    startActivity(intent)
                     true
                 }
                 R.id.instagram -> {
-                    openWebPage("https://www.instagram.com/visitjeju.kr")
+                    val webpageUrl = "https://www.instagram.com/visitjeju.kr" // 웹 페이지 링크
+
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
+                    startActivity(intent)
                     true
                 }
                 else -> false
@@ -479,6 +485,23 @@ class MainActivity : AppCompatActivity() {
                 viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
                 viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
                 viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+
+                val NUM_PAGES = 4 // 전체 페이지 수
+                var currentPage = 0
+
+// 자동 스크롤을 위한 Handler 생성
+                val handler = Handler(Looper.getMainLooper())
+                val runnable = object : Runnable {
+                    override fun run() {
+                        currentPage = (currentPage + 1) % NUM_PAGES // 다음 페이지로 이동
+                        viewPager_mainVisual.setCurrentItem(currentPage, true) // 다음 페이지로 슬라이드
+
+                        handler.postDelayed(this, 3000) // 3초 후에 다음 페이지로 이동
+                    }
+                }
+
+// 자동 스크롤 시작
+                handler.postDelayed(runnable, 3000) // 3초 후에 첫 번째 페이지로 이동
 
                 // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
                 getLocation()
@@ -824,14 +847,6 @@ class MainActivity : AppCompatActivity() {
             R.drawable.jeju_apec01,)
     }
 
-
-    private fun openWebPage(url: String) {
-        val webpage = Uri.parse(url)
-        val intent = Intent(Intent.ACTION_VIEW, webpage)
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivity(intent)
-        }
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (toggle.onOptionsItemSelected(item)) {
