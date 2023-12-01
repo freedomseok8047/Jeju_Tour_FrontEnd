@@ -177,7 +177,7 @@
 
     <Button
         android:id="@+id/upload"
-        android:layout_width="120dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:background="#FF9800"
         android:layout_marginTop="5dp"
