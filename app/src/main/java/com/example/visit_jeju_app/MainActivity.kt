@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -232,6 +233,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val communityBanner = findViewById<ImageView>(R.id.communityBanner)
+
+        // ImageView를 클릭했을 때 동작하는 이벤트 리스너 추가
+        communityBanner.setOnClickListener {
+            val intent = Intent(this@MainActivity, CommReadActivity::class.java)
+            this@MainActivity.startActivity(intent)
+        }
 
         // 메인 카테고리 더보기 링크
         val moreAccomTextView: TextView = findViewById(R.id.mainItemMoreBtn1)

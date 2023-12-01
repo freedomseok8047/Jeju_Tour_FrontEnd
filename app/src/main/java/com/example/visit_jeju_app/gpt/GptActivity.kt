@@ -88,7 +88,7 @@ class GptActivity : AppCompatActivity() {
         val body = jsonBody.toString().toRequestBody(JSON)
         val request = Request.Builder()
             .url("https://api.openai.com/v1/completions")
-            .header("Authorization", "Bearer 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")
+            .header("Authorization", "Bearer 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")
             .post(body)
             .build()
 
