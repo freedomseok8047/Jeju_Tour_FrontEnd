@@ -14,6 +14,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -104,6 +105,27 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         handler = Handler(Looper.getMainLooper())
+
+        // 카테고리 버튼 참조 및 OnClickListener 설정
+        findViewById<Button>(R.id.accommodationCategoryButton).setOnClickListener {
+            scrollToSection(R.id.viewRecyclerAccom)
+        }
+
+        findViewById<Button>(R.id.restaurantCategoryButton).setOnClickListener {
+            scrollToSection(R.id.viewRecyclerRestaurant)
+        }
+
+        findViewById<Button>(R.id.tourCategoryButton).setOnClickListener {
+            scrollToSection(R.id.viewRecyclerTour)
+        }
+
+        findViewById<Button>(R.id.shoppingCategoryButton).setOnClickListener {
+            scrollToSection(R.id.viewRecyclerShopping)
+        }
+
+        findViewById<Button>(R.id.festivalCategoryButton).setOnClickListener {
+            scrollToSection(R.id.viewRecyclerFestival)
+        }
 
         // 위치 받아오기 위해 추가 ---------------------------------------------------------
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -888,4 +910,8 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+    private fun scrollToSection(sectionId: Int) {
+        val sectionView = findViewById<View>(sectionId)
+        binding.scroll.smoothScrollTo(0, sectionView.top)
+    }
 }
