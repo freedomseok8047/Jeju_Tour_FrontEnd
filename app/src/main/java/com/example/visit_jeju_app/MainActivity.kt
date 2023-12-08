@@ -96,6 +96,7 @@ class MainActivity : AppCompatActivity() {
         handler = Handler(Looper.getMainLooper())
 
 
+//        getLocation()
 
         // 위치 받아오기 위해 추가 ---------------------------------------------------------
         // 위치 권한 확인 및 요청
@@ -110,7 +111,7 @@ class MainActivity : AppCompatActivity() {
             // 위치 권한이 없는 경우 사용자에게 권한 요청
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_PERMISSION_LOCATION
             )
         }
@@ -274,38 +275,38 @@ class MainActivity : AppCompatActivity() {
 
         // 투어====== ======== ========= ========== ========== ========== ========== ========== ================ ======== ========= ========== ========== ========== ========== ========== ======================= ======== ========= ========== ========== ========== ========== ========== ==========
 
-        val tourListCall = (applicationContext as MyApplication).networkService.getTourGPS(lat,lnt)
-
-        tourListCall.enqueue(object : Callback<List<TourList>> {
-            override fun onResponse(
-                call: Call<List<TourList>>,
-                response: Response<List<TourList>>
-
-            )
-            {
-                // 메인 비주얼
-                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
-                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
-                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
-
-                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
-//                getLocation()
-                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
-                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
-                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
-                Log.d("ljs", "[원하는 실행 순서 2]")
-                Log.d("ljs", "shared 불러온 후 lat : ${lat}, lnt : ${lnt}" +
-                        " ->onCreate 안에서 절차대로 실행 ")
-
-                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
-                sendTourLocationToServer(lat,lnt)
-            }
-
-            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
-                Log.d("ljs", "fail")
-                Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
-            }
-        })
+//        val tourListCall = (applicationContext as MyApplication).networkService.getTourGPS(lat,lnt)
+//
+//        tourListCall.enqueue(object : Callback<List<TourList>> {
+//            override fun onResponse(
+//                call: Call<List<TourList>>,
+//                response: Response<List<TourList>>
+//
+//            )
+//            {
+//                // 메인 비주얼
+//                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+//                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+//                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+//
+//                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+////                getLocation()
+//                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+//                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+//                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+//                Log.d("ljs", "[원하는 실행 순서 2]")
+//                Log.d("ljs", "shared 불러온 후 lat : ${lat}, lnt : ${lnt}" +
+//                        " ->onCreate 안에서 절차대로 실행 ")
+//
+//                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+//                sendTourLocationToServer(lat,lnt)
+//            }
+//
+//            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+//                Log.d("ljs", "fail")
+//                Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+//            }
+//        })
 
         // 투어 끝 ====== ======== ========= ========== ========== ========== ========== ========== ================ ======== ========= ========== ========== ========== ========== ========== ======================= ======== ========= ========== ========== ========== ========== ========== ==========
 
@@ -344,6 +345,40 @@ class MainActivity : AppCompatActivity() {
                     editor.commit()
 //                     위치 정보를 받아온 후, 서버로 전송
 //                    sendLocationToServer(lat, lnt)
+
+                    //
+                    val tourListCall = (applicationContext as MyApplication).networkService.getTourGPS(lat,lnt)
+
+                    tourListCall.enqueue(object : Callback<List<TourList>> {
+                        override fun onResponse(
+                            call: Call<List<TourList>>,
+                            response: Response<List<TourList>>
+
+                        )
+                        {
+                            // 메인 비주얼
+                            viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+                            viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+                            viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+
+                            // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+//                getLocation()
+                            val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                            val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                            val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                            Log.d("ljs", "[원하는 실행 순서 2]")
+                            Log.d("ljs", "shared 불러온 후 lat : ${lat}, lnt : ${lnt}" +
+                                    " ->onCreate 안에서 절차대로 실행 ")
+
+                            // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+                            sendTourLocationToServer(lat,lnt)
+                        }
+
+                        override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+                            Log.d("ljs", "fail")
+                            Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+                        }
+                    })
                 }
             }
             .addOnFailureListener { fail ->
@@ -365,7 +400,7 @@ class MainActivity : AppCompatActivity() {
                          response: Response<List<TourList>>) {
                 Log.d("ljs", "[원하는 실행 순서 3]")
                 Log.d("ljs", "현재 위치 업데이트 성공1: lat : ${lat}, lnt : ${lnt}" +
-                        " -> onCreate 안에서 절차대로 실행2 -> sendTourLocationToServer()에 의해 실행 ")
+                        " -> onCreate 안에서 절차대로 실행2 \n -> sendTourLocationToServer()에 의해 실행 ")
 
                 val tourList = response.body()
 
@@ -423,6 +458,7 @@ class MainActivity : AppCompatActivity() {
     private fun sendLocationTourToServer(lat: Double?, lnt: Double?) {
         val networkService = (applicationContext as MyApplication).networkService
         val tourGPSCall = networkService.getTourGPS(lat, lnt )
+//        val accomGPSCall = networkService.getAccomGPS(lat, lnt )
 
         tourGPSCall.enqueue(object : Callback<List<TourList>> {
             override fun onResponse(call: Call<List<TourList>>, response: Response<List<TourList>>) {
@@ -435,6 +471,18 @@ class MainActivity : AppCompatActivity() {
                 Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
             }
         })
+
+//        accomGPSCall.enqueue(object : Callback<List<AccomList>> {
+//            override fun onResponse(call: Call<List<AccomList>>, response: Response<List<AccomList>>) {
+//                Log.d("ljs", "[원하는 실행 순서 4]")
+//                Log.d("ljs", "현재 위치 업데이트 성공2: lat : ${lat}, lnt : ${lnt}" +
+//                        " -> createLocationTourCallback()에 의해 실행")
+//            }
+//
+//            override fun onFailure(call: Call<List<AccomList>>, t: Throwable) {
+//                Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+//            }
+//        })
     }
 
     //--------------------------------------------------------------------------------------------
