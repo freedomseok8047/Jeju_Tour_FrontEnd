@@ -1,6 +1,7 @@
 package com.example.visit_jeju_app.login
 
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -88,28 +89,35 @@ class AuthActivity : AppCompatActivity() {
 
 
         binding.loginBtn.setOnClickListener {
-            //이메일, 비밀번호 로그인.......................
+            // 이메일, 비밀번호 로그인
             val email = binding.authEmailEditView.text.toString()
             val password = binding.authPasswordEditView.text.toString()
             MyApplication.auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this){ task ->
+                .addOnCompleteListener(this) { task ->
                     binding.authEmailEditView.text.clear()
                     binding.authPasswordEditView.text.clear()
-                    if(task.isSuccessful){
-                        if(MyApplication.checkAuth()){
-                            MyApplication.email = email
+                    if (task.isSuccessful) {
+                        if (MyApplication.checkAuth()) {
+                            saveEmailToSharedPreferences(email)
                             changeVisibility("login")
                             Toast.makeText(baseContext, "로그인 성공.", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@AuthActivity, MainActivity::class.java)
-                            intent.putExtra("USER_EMAIL", MyApplication.email)
-                            startActivity(intent)
-                        }else {
+                            startActivity(Intent(this@AuthActivity, MainActivity::class.java))
+                        } else {
                             Toast.makeText(baseContext, "전송된 메일로 이메일 인증이 되지 않았습니다.", Toast.LENGTH_SHORT).show()
                         }
-                    }else {
+                    } else {
                         Toast.makeText(baseContext, "로그인 실패", Toast.LENGTH_SHORT).show()
                     }
                 }
+        }
+    }
+
+    // SharedPreferences에 이메일 저장
+    fun saveEmailToSharedPreferences(email: String) {
+        val sharedPref = applicationContext.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+        sharedPref.edit().apply {
+            putString("USER_EMAIL", email)
+            apply()
         }
     }
     private fun signOut() {
