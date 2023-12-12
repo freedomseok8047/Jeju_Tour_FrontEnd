@@ -104,12 +104,14 @@ interface NetworkServiceRegionNm {
 
 // 사용자 정보 모델
 data class UserInfo(
-    val uid: String,
     val name: String,
-    val email: String
+    val email: String,
+    val firebaseUid: String // 필드 이름과 타입 변경
 )
 
-fun addUserToMysql(name: String, email: String, uId: String){
+
+
+fun addUserToMysql(name: String, email: String, firebaseUid: String) {
     // Retrofit을 사용하여 서버 API 호출
     val retrofit = Retrofit.Builder()
         .baseUrl("http://10.0.2.2:8083/") // 서버 URL
@@ -117,7 +119,7 @@ fun addUserToMysql(name: String, email: String, uId: String){
         .build()
 
     val userService = retrofit.create(NetworkServiceRegionNm::class.java)
-    val userInfo = UserInfo(name, email, uId)
+    val userInfo = UserInfo(name, email, firebaseUid) // 수정된 UserInfo 객체 생성
 
     userService.registerUser(userInfo).enqueue(object : Callback<ResponseBody> {
         override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -133,6 +135,7 @@ fun addUserToMysql(name: String, email: String, uId: String){
         }
     })
 }
+
 
 
 
