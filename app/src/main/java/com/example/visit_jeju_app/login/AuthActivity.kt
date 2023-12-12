@@ -103,6 +103,7 @@ class AuthActivity : AppCompatActivity() {
                             val intent = Intent(this@AuthActivity, MainActivity::class.java)
                             intent.putExtra("USER_EMAIL", MyApplication.email)
                             startActivity(intent)
+                            finish()
                         }else {
                             Toast.makeText(baseContext, "전송된 메일로 이메일 인증이 되지 않았습니다.", Toast.LENGTH_SHORT).show()
                         }
@@ -154,7 +155,7 @@ class AuthActivity : AppCompatActivity() {
                 signBtn.visibility= View.GONE
                 hostSignBtn.visibility=View.GONE
                 loginBtn.visibility= View.GONE
-                
+
                 googleSignBtn.visibility=View.GONE
             }
 
@@ -183,7 +184,7 @@ class AuthActivity : AppCompatActivity() {
                 authPasswordEditView.visibility = View.VISIBLE
                 authUsernameEditView.visibility=View.VISIBLE
                 signBtn.visibility = View.VISIBLE
-                
+
                 hostSignBtn.visibility=View.GONE
                 loginBtn.visibility = View.GONE
                 googleSignBtn.visibility=View.GONE
