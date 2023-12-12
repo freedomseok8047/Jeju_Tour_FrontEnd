@@ -3,6 +3,7 @@ package com.example.visit_jeju_app
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
@@ -650,4 +651,21 @@ class MainActivity : AppCompatActivity() {
         handler.removeCallbacksAndMessages(null) // 핸들러 메시지 제거
     }
 
+    override fun onBackPressed() {
+        // 여기에 뒤로가기 버튼을 눌렀을 때의 로직을 구현합니다.
+        if (isTaskRoot) {
+            AlertDialog.Builder(this)
+                .setMessage("앱을 종료하시겠습니까?")
+                .setCancelable(false)
+                .setPositiveButton("예") { _, _ ->
+                    super.onBackPressed() // '예'를 선택한 경우, 앱 종료
+                }
+                .setNegativeButton("아니요", null) // '아니요'를 선택한 경우, 아무것도 하지 않음
+                .show()
+        } else {
+            super.onBackPressed() // 다른 액티비티가 스택에 있으면, 이전 화면으로 이동
+        }
+    }
+
+    // ... 기타 메서드들 ...
 }
