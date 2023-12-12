@@ -283,26 +283,31 @@ class MainActivity : AppCompatActivity() {
         moreAccomTextView.setOnClickListener {
             // 제주 숙박 더보기 클릭 시 수행할 동작
             val intent = Intent(this, AccomActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
             startActivity(intent)
         }
 
         moreRestaurantTextView.setOnClickListener {
             val intent = Intent(this, ResActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
             startActivity(intent)
         }
 
         moreTourTextView.setOnClickListener {
             val intent = Intent(this, TourActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
             startActivity(intent)
         }
 
         moreFestivalTextView.setOnClickListener {
             val intent = Intent(this, FesActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
             startActivity(intent)
         }
 
         moreShoppingTextView.setOnClickListener {
             val intent = Intent(this, ShopActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
             startActivity(intent)
         }
 

@@ -25,6 +25,7 @@ import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.accommodation.AccomActivity
 import com.example.visit_jeju_app.chat.ChatActivity
+import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.community.activity.CommReadActivity
 import com.example.visit_jeju_app.databinding.ActivityTourBinding
 import com.example.visit_jeju_app.festival.FesActivity
@@ -115,36 +116,55 @@ class TourActivity : AppCompatActivity() {
         //버튼 클릭스 동기화 : 드로워 열어주기(공통 레이아웃 코드)
         toggle.syncState()
 
-        // NavigationView 메뉴 아이템 클릭 리스너 설정(공통 레이아웃 코드)
+        // NavigationView 메뉴 아이템 클릭 리스너 설정
         binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.accommodation -> {
-                    startActivity(Intent(this, AccomActivity::class.java))
+                    val intent = Intent(this, AccomActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.restaurant -> {
-                    startActivity(Intent(this, ResActivity::class.java))
+                    val intent = Intent(this, ResActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.tour -> {
-                    startActivity(Intent(this, TourActivity::class.java))
+                    val intent = Intent(this, TourActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.festival -> {
-                    startActivity(Intent(this, FesActivity::class.java))
+                    val intent = Intent(this, FesActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.shopping -> {
-                    startActivity(Intent(this, ShopActivity::class.java))
+                    val intent = Intent(this, ShopActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.community -> {
-                    // '커뮤니티' 메뉴 아이템 클릭 시 CommReadActivity로 이동
-                    startActivity(Intent(this, CommReadActivity::class.java))
+                    val intent = Intent(this, CommReadActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.chatting -> {
-                    startActivity(Intent(this, ChatActivity::class.java))
+                    val intent = Intent(this, ChatMainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
 
