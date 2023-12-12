@@ -224,6 +224,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.home -> {
                     // 홈 아이템 클릭 처리
                     val intent = Intent(this@MainActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                     startActivity(intent)
                     true
                 }
