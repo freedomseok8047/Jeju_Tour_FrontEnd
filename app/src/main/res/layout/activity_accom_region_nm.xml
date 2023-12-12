@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawerLayout"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Bottom Navigation View -->
+        <!--<com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_alignParentBottom="true"
+            android:elevation="7dp"
+            app:menu="@menu/bottom_navigation_menu"
+            android:background="@drawable/btn_radius_base"
+            app:itemIconTint="@drawable/selector_bottom_navi"
+            app:itemTextColor="#fff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintVertical_bias=".9"
+            app:layout_constraintHeight_percent=".1"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:itemIconSize="20dp"
+            app:itemPaddingBottom="10dp"
+            />-->
+        <!-- //Bottom Navigation View -->
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <!-- tool bar -->
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black">
+                    <!--툴바 뷰 생성 -->
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/toolbar"
+                        style="@style/ToolBarCss"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        app:layout_collapseMode="pin"
+                        app:layout_scrollFlags="scroll|enterAlways" />
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+            <!-- //앱바 구성 (툴바 포함) -->
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    android:id="@+id/main_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    app:umanoDragView="@id/slide_layout"
+    tools:context=".accommodation.AccomRegionNmActivity">
+    <!--  상단   -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/back_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints"
+            android:layout_marginTop="60dp">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/sans_medium"
+                android:text="오늘 내가, 우리가 갈 곳은?"
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/where_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="@font/sans_medium"
+                android:text="지역을 선택해 주세요.⭐️"
+                android:textSize="25dp" />
+
+            <!--            <Button-->
+            <!--                android:id="@+id/go_home"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="left"-->
+            <!--                android:text="home"-->
+            <!--                tools:ignore="MissingConstraints" />-->
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="700dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:ignore="MissingConstraints"
+                />
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--  하단   -->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/slide_layout"
+        android:layout_width="match_parent"
+        android:layout_height="450dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+
+            <!--  다른지역보기  -->
+            <Button
+                android:id="@+id/btn_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:layout_marginTop="8dp"
+                android:background="#00FFFFFF"
+                android:fontFamily="@font/sans_light"
+                android:text="다른 지역 보기"
+                android:textSize="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <!--  하단 버튼 1 줄  -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_1"
+                        android:layout_width="73dp"
+                        android:layout_height="73dp"
+                        android:layout_marginRight="7dp"
+                        android:src="@drawable/detail_1"
+                        android:text="제주시내" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text="  제주시내"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_2"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginRight="7dp"
+                        android:src="@drawable/detail_2"
+                        android:text="서귀포시내" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text="  서귀포시내"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_3"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginRight="7dp"
+                        android:src="@drawable/detail_3"
+                        android:text="애월" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text=" 애월"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_4"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="7dp"
+                        android:src="@drawable/detail_4"
+                        android:text="성산" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text=" 성산"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <!--  하단 버튼 2 줄  -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_5"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="left"
+                        android:layout_marginRight="7dp"
+                        android:src="@drawable/detail_5"
+                        android:text="우도" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text="  우도"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_6"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginRight="7dp"
+                        android:src="@drawable/detail_6"
+                        android:text="중문" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text="  중문"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_7"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginRight="7dp"
+                        android:src="@drawable/detail_7"
+                        android:text="남원" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text="  남원"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_8"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="7dp"
+                        android:src="@drawable/detail_8"
+                        android:text="한림" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text=" 한림"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--  하단 버튼 3 줄  -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_9"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="left"
+                        android:layout_marginRight="7dp"
+                        android:src="@drawable/detail_9"
+                        android:text="한경" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text=" 한경"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_10"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginRight="7dp"
+                        android:src="@drawable/detail_10"
+                        android:text="조천" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text="  조천"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_11"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="7dp"
+                        android:layout_marginRight="7dp"
+                        android:src="@drawable/detail_11"
+                        android:text="구좌" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text=" 구좌"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/regionNm_12"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="left"
+                        android:layout_marginLeft="7dp"
+                        android:src="@drawable/detail_12"
+                        android:text="대정" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/sans_medium"
+                        android:text=" 대정"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/pageChange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="내가 있는 곳, 위치별로 보기!"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </RelativeLayout>
+
+    <!-- Navigation View -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/main_drawer_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navi_header"
+        app:menu="@menu/drawer_menu"/>
+    <!-- //Navigation View -->
+
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
