@@ -1,12 +1,20 @@
 package com.example.visit_jeju_app.retrofit
 
+import android.util.Log
 import com.example.visit_jeju_app.accommodation.model.AccomList
 import com.example.visit_jeju_app.festival.model.FesList
 import com.example.visit_jeju_app.restaurant.model.ResList
 import com.example.visit_jeju_app.shopping.model.ShopList
 import com.example.visit_jeju_app.tour.model.TourList
+import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -89,9 +97,41 @@ interface NetworkServiceRegionNm {
     ): Call<List<ShopList>>
 
 
+    @POST("users/register")
+    fun registerUser(@Body userInfo: UserInfo): Call<ResponseBody>
 
+}
 
+// 사용자 정보 모델
+data class UserInfo(
+    val uid: String,
+    val name: String,
+    val email: String
+)
 
+fun addUserToMysql(name: String, email: String, uId: String){
+    // Retrofit을 사용하여 서버 API 호출
+    val retrofit = Retrofit.Builder()
+        .baseUrl("http://10.0.2.2:8083/") // 서버 URL
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val userService = retrofit.create(NetworkServiceRegionNm::class.java)
+    val userInfo = UserInfo(name, email, uId)
+
+    userService.registerUser(userInfo).enqueue(object : Callback<ResponseBody> {
+        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            if (response.isSuccessful) {
+                Log.d("lsy", "MySQL에 사용자 정보 저장 성공")
+            } else {
+                Log.d("lsy", "MySQL에 사용자 정보 저장 실패 - 상태 코드: ${response.code()}")
+            }
+        }
+
+        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            Log.d("lsy", "서버 에러: ${t.message}")
+        }
+    })
 }
 
 
