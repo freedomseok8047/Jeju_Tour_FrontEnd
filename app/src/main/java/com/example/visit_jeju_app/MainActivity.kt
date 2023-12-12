@@ -243,20 +243,21 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.chat -> {
                     val intent = Intent(this@MainActivity, GptActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
                     startActivity(intent)
                     true
                 }
                 R.id.youtube -> {
                     val webpageUrl = "https://www.youtube.com/c/visitjeju" // 웹 페이지 링크
-
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
                     startActivity(intent)
                     true
                 }
                 R.id.instagram -> {
                     val webpageUrl = "https://www.instagram.com/visitjeju.kr" // 웹 페이지 링크
-
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
                     startActivity(intent)
                     true
                 }
