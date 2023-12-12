@@ -67,7 +67,7 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     // 위치 정보 위한 변수 선언 -------------------------------------
-    lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var fusedLocationClient: FusedLocationProviderClient? = null
     lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private lateinit var handler: Handler
@@ -95,11 +95,29 @@ class MainActivity : AppCompatActivity() {
 
         handler = Handler(Looper.getMainLooper())
 
+        // 공유 프리퍼런스 파일이 존재하는지 확인
+        val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+        val lat: Double? = pref.getString("lat", null)?.toDoubleOrNull()
+        val lnt: Double? = pref.getString("lnt", null)?.toDoubleOrNull()
 
+        Log.d("Debug", "lat: $lat, lnt: $lnt")
+
+        // 공유 프리퍼런스 파일이 존재하지 않으면 기본값으로 파일 생성
+        if (lat == null || lnt == null) {
+            val editor = pref.edit()
+            editor.putString("lat", "기본위치값")
+            editor.putString("lnt", "기본위치값")
+            editor.apply()
+        }
+        // Todo 앱터지는 원인 밑에 4개 중 하나
+//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 //        getLocation()
+//        createLocationRequest()
+//        createLocationTourCallback()
 
         // 위치 받아오기 위해 추가 ---------------------------------------------------------
         // 위치 권한 확인 및 요청
+        // 순서1, 최초 실행시 권한이 없으로 false , 건너띄고,
         if (checkPermissionForLocation(this)) {
             // 위치 권한이 허용된 경우 위치 요청 초기화 및 업데이트 시작
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -107,14 +125,16 @@ class MainActivity : AppCompatActivity() {
             createLocationRequest()
             createLocationTourCallback()
             startLocationUpdates()
-        } else {
-            // 위치 권한이 없는 경우 사용자에게 권한 요청
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_PERMISSION_LOCATION
-            )
         }
+//        else {
+//            // 위치 권한이 없는 경우 사용자에게 권한 요청
+//            ActivityCompat.requestPermissions(
+//                this,
+//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+//                REQUEST_PERMISSION_LOCATION
+//            )
+//        }
+
 
         //---------------------------------------------------------
 
@@ -505,7 +525,12 @@ class MainActivity : AppCompatActivity() {
         ) {
             return
         }
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+        fusedLocationClient?.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.myLooper()
+//            null
+        )
     }
     //-----------------------------------------------------------------------------------------
 
@@ -569,6 +594,7 @@ class MainActivity : AppCompatActivity() {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (context.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 true
+
             } else {
                 ActivityCompat.requestPermissions(
                     this,
@@ -576,6 +602,7 @@ class MainActivity : AppCompatActivity() {
                     REQUEST_PERMISSION_LOCATION
                 )
                 false
+//                Log.d("ljs","위치 권한 허용이 필요합니다. ")
             }
         } else {
             true
