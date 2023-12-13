@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawerLayout"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <!-- Bottom Navigation View -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_alignParentBottom="true"
+        android:elevation="7dp"
+        app:menu="@menu/bottom_navigation_menu"
+        android:background="@drawable/btn_radius_base"
+        app:itemIconTint="@drawable/selector_bottom_navi"
+        app:itemTextColor="#fff"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintVertical_bias=".9"
+        app:layout_constraintHeight_percent=".1"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:itemIconSize="20dp"
+        app:itemPaddingBottom="10dp"
+        />
+    <!-- //Bottom Navigation View -->
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <com.google.android.material.appbar.AppBarLayout
+          android:id="@+id/appBar"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+        <!-- tool bar -->
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black">
+          <!--툴바 뷰 생성 -->
+          <androidx.appcompat.widget.Toolbar
+              android:id="@+id/toolbar"
+              style="@style/ToolBarCss"
+              android:layout_width="match_parent"
+              android:layout_height="?attr/actionBarSize"
+              app:layout_collapseMode="pin"
+              app:layout_scrollFlags="scroll|enterAlways" />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+      </com.google.android.material.appbar.AppBarLayout>
+      <!-- //앱바 구성 (툴바 포함) -->
+
+      <ScrollView
+          android:id="@+id/scroll"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          app:layout_behavior="@string/appbar_scrolling_view_behavior"
+          android:background="@color/campDonmIntroColor"
+    tools:context=".restaurant.ResDetailActivity">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_gravity="left"
+      android:orientation="vertical"
+      android:paddingLeft="20dp"
+      android:paddingRight="20dp"
+      android:paddingBottom="100dp">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/sans_bold"
+        android:gravity="center"
+        android:text="테스트"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="10dp"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:src="@drawable/line" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/sans_medium"
+        android:text="📍위치"
+        android:textSize="17dp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="20dp">
+
+      <com.naver.maps.map.MapView
+          android:id="@+id/map_view"
+          android:layout_width="match_parent"
+          android:layout_height="200dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/sans_medium"
+        android:text="📸 사진"
+        android:textSize="17dp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="20dp">
+
+      <ImageView
+          android:id="@+id/itemImage"
+          android:layout_width="350dp"
+          android:layout_height="200dp"
+          android:layout_gravity="center"
+          android:layout_margin="10dp"
+          android:scaleType="centerCrop"
+          />
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/addr1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/sans_light"
+        android:text="상세주소 들어가고싶어용"
+        android:textColor="#70000000"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/addr2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/sans_light"
+        android:text="상세주소 들어가고싶어용"
+        android:textColor="#70000000"
+        android:textSize="15dp" />
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="8dp"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="20dp">
+
+      <TextView
+          android:id="@+id/regionlable"
+          android:layout_width="match_parent"
+          android:layout_height="40dp"
+          android:gravity="center"
+          android:text="지역 카테고리" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/sans_medium"
+        android:text="✨소개"
+        android:textSize="17dp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="20dp">
+
+      <TextView
+          android:id="@+id/info"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/sans_light"
+          android:padding="15dp"
+          android:text="이 관광지는 역사적인 가치와 함께 현대적인 매력을 가지고 있는 곳입니다. 오래된 건물과 현대 건축물이 조화를 이루며 고유한 분위기를 자아내고 있습니다. 로컬 음식과 장터도 방문해보면 좋은 추억이 될 것 같아요"
+          android:textSize="15dp"></TextView>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/sans_medium"
+        android:text="📋 기타 편의 정보"
+        android:textSize="17dp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="20dp">
+
+      <TextView
+          android:id="@+id/convenience"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:fontFamily="@font/sans_light"
+          android:padding="15dp"
+          android:text="전기, 무선인터넷, 장작판매 등등 .."
+          android:textSize="15dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/sans_medium"
+        android:text="📞 연락 정보"
+        android:textSize="17dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+      <androidx.cardview.widget.CardView
+          android:layout_width="260dp"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:layout_marginLeft="0dp"
+          android:layout_marginRight="8dp"
+          android:backgroundTint="@color/white"
+          app:cardCornerRadius="20dp">
+
+        <TextView
+            android:id="@+id/tel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:layout_marginLeft="10dp"
+            android:padding="13dp"
+            android:text="000-000-000"
+            android:textSize="17dp" />
+
+      </androidx.cardview.widget.CardView>
+
+      <!--     전화 버튼       -->
+      <androidx.cardview.widget.CardView
+          android:id="@+id/callBtn"
+          android:layout_width="60dp"
+          android:layout_height="60dp"
+          android:layout_gravity="center"
+          android:layout_marginLeft="20dp"
+          android:layout_marginRight="8dp"
+          android:backgroundTint="@color/white"
+          app:cardCornerRadius="20dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="☎"
+            android:textSize="25dp" />
+      </androidx.cardview.widget.CardView>
+    </LinearLayout>
+
+
+  </LinearLayout>
+
+
+      </ScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+  </RelativeLayout>
+
+  <!-- Navigation View -->
+  <com.google.android.material.navigation.NavigationView
+      android:id="@+id/main_drawer_view"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="start"
+      app:headerLayout="@layout/navi_header"
+      app:menu="@menu/drawer_menu"/>
+  <!-- //Navigation View -->
+
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

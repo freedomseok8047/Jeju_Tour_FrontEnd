@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    // Firebase SDK 추가
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -37,6 +39,14 @@ android {
 }
 
 dependencies {
+
+    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
+    // ok http3 연결
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+    // 파이어베이스 설정
+    implementation("com.google.firebase:firebase-database-ktx:20.2.2")
 
     // 파이어베이스 설정
     implementation platform('com.google.firebase:firebase-bom:32.5.0')
@@ -79,4 +89,21 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // gps
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.naver.maps:map-sdk:3.17.0")
+    implementation "com.google.android.gms:play-services-location:20.0.0"
+
+    // 카드뷰
+    implementation ("androidx.cardview:cardview:1.0.0")
+
+    // 슬라이딩 패널
+    implementation ("com.sothree.slidinguppanel:library:3.4.0")
+
+    // Java language implementation
+    implementation "androidx.preference:preference:1.2.1"
+    // 공유 프레퍼런스
+    implementation "androidx.preference:preference-ktx:1.2.1"
+
 }

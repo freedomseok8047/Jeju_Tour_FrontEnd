@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/round_home_24_w" />
+
+    <item
+        android:id="@+id/chat"
+        android:title="Chat"
+        android:icon="@drawable/round_chat_bubble_24" />
+    <item
+        android:id="@+id/youtube"
+        android:title="Youtube"
+        android:icon="@drawable/icons8_youtube_white" />
+    <item
+        android:id="@+id/instagram"
+        android:title="Instagram"
+        android:icon="@drawable/icons8_instagram" />
+
+</menu>
