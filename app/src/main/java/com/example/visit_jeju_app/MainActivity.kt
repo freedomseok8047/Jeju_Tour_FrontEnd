@@ -392,10 +392,10 @@ class MainActivity : AppCompatActivity() {
                     //
                     val tourListCall = (applicationContext as MyApplication).networkService.getTourGPS(lat,lnt,currentPage)
 
-                    tourListCall.enqueue(object : Callback<MutableList<TourList>> {
+                    tourListCall.enqueue(object : Callback<List<TourList>> {
                         override fun onResponse(
-                            call: Call<MutableList<TourList>>,
-                            response: Response<MutableList<TourList>>
+                            call: Call<List<TourList>>,
+                            response: Response<List<TourList>>
 
                         )
                         {
@@ -417,7 +417,7 @@ class MainActivity : AppCompatActivity() {
                             sendTourLocationToServer(lat,lnt,currentPage)
                         }
 
-                        override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
+                        override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
                             Log.d("ljs", "fail")
                             Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
                         }
@@ -437,10 +437,10 @@ class MainActivity : AppCompatActivity() {
         val networkService = (applicationContext as MyApplication).networkService
         val tourGPSCall = networkService.getTourGPS(lat, lnt, currentPage)
 
-        tourGPSCall.enqueue(object : Callback<MutableList<TourList>> {
+        tourGPSCall.enqueue(object : Callback<List<TourList>> {
             override fun onResponse
-                        (call: Call<MutableList<TourList>>,
-                         response: Response<MutableList<TourList>>) {
+                        (call: Call<List<TourList>>,
+                         response: Response<List<TourList>>) {
 
                 Log.d("ljs", "[원하는 실행 순서 3]")
                 Log.d("ljs", "현재 위치 업데이트 성공1: lat : ${lat}, lnt : ${lnt}" +
@@ -483,7 +483,7 @@ class MainActivity : AppCompatActivity() {
 
             }
 
-            override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
+            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
                 Log.d("ljs", "[원하는 실행 순서 3] : fail")
                 call.cancel()
             }
@@ -517,14 +517,14 @@ class MainActivity : AppCompatActivity() {
         val tourGPSCall = networkService.getTourGPS(lat, lnt , currentPage )
 //        val accomGPSCall = networkService.getAccomGPS(lat, lnt )
 
-        tourGPSCall.enqueue(object : Callback<MutableList<TourList>> {
-            override fun onResponse(call: Call<MutableList<TourList>>, response: Response<MutableList<TourList>>) {
+        tourGPSCall.enqueue(object : Callback<List<TourList>> {
+            override fun onResponse(call: Call<List<TourList>>, response: Response<List<TourList>>) {
                 Log.d("ljs", "[원하는 실행 순서 4]")
                 Log.d("ljs", "현재 위치 업데이트 성공2: lat : ${lat}, lnt : ${lnt}" +
                         " -> createLocationTourCallback()에 의해 실행")
             }
 
-            override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
+            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
                 Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
             }
         })

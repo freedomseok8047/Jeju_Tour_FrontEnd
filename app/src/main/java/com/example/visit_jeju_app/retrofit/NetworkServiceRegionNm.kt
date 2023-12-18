@@ -59,8 +59,8 @@ interface NetworkServiceRegionNm {
     @GET("tour/tourList/tourByGPS")
     fun getTourGPS(
         @Query("lat") lat : Double?,
-        @Query("lnt") lnt : Double?
-//        @Query("page") page : Int?
+        @Query("lnt") lnt : Double?,
+        @Query("page") page : Int?
     ): Call<List<TourList>>
 
 //    http://10.100.104.32:8083/tour/tourList/tourByGPS/?lat=33.4&lnt=126.2?page=1
