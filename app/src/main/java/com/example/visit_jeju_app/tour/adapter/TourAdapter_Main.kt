@@ -19,7 +19,7 @@ import com.example.visit_jeju_app.tour.model.TourList
 import com.example.visit_jeju_app.tour.model.TourModel
 
 class TourViewHolder2(val binding: MainItem2Binding): RecyclerView.ViewHolder(binding.root)
-class TourAdapter_Main(val context: Context, val datas: List<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class TourAdapter_Main(val context: Context, val datas:List<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -72,6 +72,9 @@ class TourAdapter_Main(val context: Context, val datas: List<TourList>?): Recycl
 
     }
 
+
+}
+
     // 새 데이터 세트로 전체 리스트를 교체
 //    fun setData(newDatas: List<TourList>) {
 //        datas?.clear()
@@ -87,4 +90,4 @@ class TourAdapter_Main(val context: Context, val datas: List<TourList>?): Recycl
 //    }
 //
 
-}
+//}

@@ -390,7 +390,7 @@ class MainActivity : AppCompatActivity() {
 //                    sendLocationToServer(lat, lnt)
 
                     //
-                    val tourListCall = (applicationContext as MyApplication).networkService.getTourGPS(lat,lnt,currentPage)
+                    val tourListCall = (applicationContext as MyApplication).networkService.getTourGPS(lat,lnt)
 
                     tourListCall.enqueue(object : Callback<List<TourList>> {
                         override fun onResponse(
@@ -414,7 +414,7 @@ class MainActivity : AppCompatActivity() {
                                     " ->onCreate 안에서 절차대로 실행 ")
 
                             // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
-                            sendTourLocationToServer(lat,lnt,currentPage)
+                            sendTourLocationToServer(lat,lnt)
                         }
 
                         override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
@@ -433,15 +433,15 @@ class MainActivity : AppCompatActivity() {
 
     // 백엔드 서버로 위치 데이터 전송 // -----------------------------------------------------------------------
     // Todo 확인 포인트
-    private fun sendTourLocationToServer(lat: Double?, lnt: Double?, currentPage: Int?) {
+    //, currentPage: Int?
+    private fun sendTourLocationToServer(lat: Double?, lnt: Double?) {
         val networkService = (applicationContext as MyApplication).networkService
-        val tourGPSCall = networkService.getTourGPS(lat, lnt, currentPage)
+        val tourGPSCall = networkService.getTourGPS(lat, lnt )
 
         tourGPSCall.enqueue(object : Callback<List<TourList>> {
             override fun onResponse
                         (call: Call<List<TourList>>,
                          response: Response<List<TourList>>) {
-
                 Log.d("ljs", "[원하는 실행 순서 3]")
                 Log.d("ljs", "현재 위치 업데이트 성공1: lat : ${lat}, lnt : ${lnt}" +
                         " -> onCreate 안에서 절차대로 실행2 \n -> sendTourLocationToServer()에 의해 실행 ")
@@ -455,20 +455,19 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 val currentTime = System.currentTimeMillis()
-                lastUpdateTimestamp = currentTime
 
                 // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
                 if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
                     return
                 }
 
-
+                lastUpdateTimestamp = currentTime
 
                 val tourLayoutManager =
                     LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                 binding.viewRecyclerTour.layoutManager = tourLayoutManager
-                binding.viewRecyclerTour.adapter = TourAdapter_Main(this@MainActivity, tourList)
-
+                binding.viewRecyclerTour.adapter =
+                    TourAdapter_Main(this@MainActivity, tourList)
 
                 // 데이터 새로 불러오기
 //                val newTourList = response.body() ?: return
@@ -489,8 +488,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-
     }
+    // -----------------------------------------------------------------------------
 
     // Todo 확인 포인트 sendLocationTourToServer(lat, lnt)를 실행
     private fun createLocationTourCallback() {
@@ -514,7 +513,7 @@ class MainActivity : AppCompatActivity() {
     // Todo 확인 포인트 -> 왜 두번이나 전송?
     private fun sendLocationTourToServer(lat: Double?, lnt: Double?, currentPage: Int?) {
         val networkService = (applicationContext as MyApplication).networkService
-        val tourGPSCall = networkService.getTourGPS(lat, lnt , currentPage )
+        val tourGPSCall = networkService.getTourGPS(lat, lnt)
 //        val accomGPSCall = networkService.getAccomGPS(lat, lnt )
 
         tourGPSCall.enqueue(object : Callback<List<TourList>> {
