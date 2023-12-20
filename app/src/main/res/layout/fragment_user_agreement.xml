@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:layout_margin="20dp"
+    android:background="#888"
+    android:orientation="vertical"
     tools:context=".login.UserAgreementFragment">
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="640dp"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:background="#666">
+        android:layout_height="match_parent">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="이용약관" />
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"
+            android:text="이용약관"/>
 
-    </ScrollView>
+    </FrameLayout>
 
-
-</FrameLayout>
+</ScrollView>
