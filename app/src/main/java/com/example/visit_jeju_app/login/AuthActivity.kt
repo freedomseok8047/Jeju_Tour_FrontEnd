@@ -40,7 +40,7 @@ class AuthActivity : AppCompatActivity() {
 
         // signUpBtn 클릭 이벤트 처리
         binding.signUpBtn.setOnClickListener {
-            val signUpIntent = Intent(this, SignUpActivity::class.java)
+            val signUpIntent = Intent(this, PhoneAuthActivity::class.java)
             startActivity(signUpIntent)
         }
 
