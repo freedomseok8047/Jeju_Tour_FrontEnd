@@ -24,33 +24,22 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.visit_jeju_app.MyApplication.Companion.lat
 import com.example.visit_jeju_app.MyApplication.Companion.lnt
 import com.example.visit_jeju_app.accommodation.AccomActivity
-import com.example.visit_jeju_app.accommodation.adapter.AccomAdapter_Main
-import com.example.visit_jeju_app.accommodation.model.AccomList
 import com.example.visit_jeju_app.community.activity.CommReadActivity
-import com.example.visit_jeju_app.chat.ChatActivity
 import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
 import com.example.visit_jeju_app.festival.FesActivity
-import com.example.visit_jeju_app.festival.adapter.FesAdapter_Main
-import com.example.visit_jeju_app.festival.model.FesList
 import com.example.visit_jeju_app.gpt.GptActivity
 import com.example.visit_jeju_app.login.AuthActivity
 import com.example.visit_jeju_app.main.adapter.ImageSliderAdapter
-import com.example.visit_jeju_app.main.adapter.RecyclerView
 import com.example.visit_jeju_app.restaurant.ResActivity
-import com.example.visit_jeju_app.restaurant.adapter.ResAdapter_Main
-import com.example.visit_jeju_app.restaurant.model.ResList
 import com.example.visit_jeju_app.shopping.ShopActivity
-import com.example.visit_jeju_app.shopping.adapter.ShopAdapter_Main
-import com.example.visit_jeju_app.shopping.model.ShopList
 import com.example.visit_jeju_app.tour.TourActivity
 import com.example.visit_jeju_app.tour.adapter.TourAdapter_Main
 import com.example.visit_jeju_app.tour.model.TourList
@@ -88,6 +77,9 @@ class MainActivity : AppCompatActivity() {
     // 현재 위치 담아 두는 변수 선언 및 초기화
 //    var lat : Double = 33.2541
 //    var lnt : Double = 126.5601
+
+    //페이징처리 1
+    var currentPage = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -351,6 +343,16 @@ class MainActivity : AppCompatActivity() {
 
         // 투어 끝 ====== ======== ========= ========== ========== ========== ========== ========== ================ ======== ========= ========== ========== ========== ========== ========== ======================= ======== ========= ========== ========== ========== ========== ========== ==========
 
+        // RecyclerView에 스크롤 리스너 추가
+//        binding.viewRecyclerTour.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
+//                    currentPage++ // 페이지 번호 증가
+//                    sendTourLocationToServer(lat, lnt, currentPage) // 서버에 새 페이지 데이터 요청
+//                }
+//            }
+//        })
     } //onCreate 끝
 
     // 위치 데이터 획득 추가 ---------------------------------------------------------
@@ -431,6 +433,7 @@ class MainActivity : AppCompatActivity() {
 
     // 백엔드 서버로 위치 데이터 전송 // -----------------------------------------------------------------------
     // Todo 확인 포인트
+    //, currentPage: Int?
     private fun sendTourLocationToServer(lat: Double?, lnt: Double?) {
         val networkService = (applicationContext as MyApplication).networkService
         val tourGPSCall = networkService.getTourGPS(lat, lnt )
@@ -465,6 +468,18 @@ class MainActivity : AppCompatActivity() {
                 binding.viewRecyclerTour.layoutManager = tourLayoutManager
                 binding.viewRecyclerTour.adapter =
                     TourAdapter_Main(this@MainActivity, tourList)
+
+                // 데이터 새로 불러오기
+//                val newTourList = response.body() ?: return
+//
+//                if (currentPage == 0) {
+//                    // 첫 페이지인 경우 데이터 세트 교체
+//                    (binding.viewRecyclerTour.adapter as TourAdapter_Main).setData(newTourList)
+//                } else {
+//                    // 추가 페이지인 경우 데이터 추가
+//                    (binding.viewRecyclerTour.adapter as TourAdapter_Main).appendData(newTourList)
+//                }
+
             }
 
             override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
@@ -473,8 +488,8 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-
     }
+    // -----------------------------------------------------------------------------
 
     // Todo 확인 포인트 sendLocationTourToServer(lat, lnt)를 실행
     private fun createLocationTourCallback() {
@@ -487,7 +502,7 @@ class MainActivity : AppCompatActivity() {
                     val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
                     val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
                     // Todo 확인 포인트
-                        sendLocationTourToServer(lat, lnt)
+                        sendLocationTourToServer(lat, lnt, currentPage)
                 }
             }
         }
@@ -496,9 +511,9 @@ class MainActivity : AppCompatActivity() {
 
     // 백엔드 서버로 위치 데이터 전송 하는 매서드 -----------------------------------------------------------------------
     // Todo 확인 포인트 -> 왜 두번이나 전송?
-    private fun sendLocationTourToServer(lat: Double?, lnt: Double?) {
+    private fun sendLocationTourToServer(lat: Double?, lnt: Double?, currentPage: Int?) {
         val networkService = (applicationContext as MyApplication).networkService
-        val tourGPSCall = networkService.getTourGPS(lat, lnt )
+        val tourGPSCall = networkService.getTourGPS(lat, lnt)
 //        val accomGPSCall = networkService.getAccomGPS(lat, lnt )
 
         tourGPSCall.enqueue(object : Callback<List<TourList>> {
