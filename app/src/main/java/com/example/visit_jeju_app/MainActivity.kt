@@ -79,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 //    var lnt : Double = 126.5601
 
     //페이징처리 1
-    var currentPage = 0
+    var page = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         val lat: Double? = pref.getString("lat", null)?.toDoubleOrNull()
         val lnt: Double? = pref.getString("lnt", null)?.toDoubleOrNull()
 
-        Log.d("Debug", "lat: $lat, lnt: $lnt")
+        Log.d("ljs", "공유 프리퍼런스 lat: $lat, lnt: $lnt")
 
         // 공유 프리퍼런스 파일이 존재하지 않으면 기본값으로 파일 생성
         if (lat == null || lnt == null) {
@@ -344,15 +344,16 @@ class MainActivity : AppCompatActivity() {
         // 투어 끝 ====== ======== ========= ========== ========== ========== ========== ========== ================ ======== ========= ========== ========== ========== ========== ========== ======================= ======== ========= ========== ========== ========== ========== ========== ==========
 
         // RecyclerView에 스크롤 리스너 추가
-//        binding.viewRecyclerTour.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
-//                    currentPage++ // 페이지 번호 증가
-//                    sendTourLocationToServer(lat, lnt, currentPage) // 서버에 새 페이지 데이터 요청
-//                }
-//            }
-//        })
+        binding.viewRecyclerTour.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
+                    page++ // 페이지 번호 증가
+                    sendTourLocationToServer(lat, lnt, page) // 서버에 새 페이지 데이터 요청
+                    Log.d("lsy", "Requesting page 확인1: $page")
+                }
+            }
+        })
     } //onCreate 끝
 
     // 위치 데이터 획득 추가 ---------------------------------------------------------
@@ -390,12 +391,12 @@ class MainActivity : AppCompatActivity() {
 //                    sendLocationToServer(lat, lnt)
 
                     //
-                    val tourListCall = (applicationContext as MyApplication).networkService.getTourGPS(lat,lnt)
+                    val tourListCall = (applicationContext as MyApplication).networkService.getTourGPS(lat,lnt,page)
 
-                    tourListCall.enqueue(object : Callback<List<TourList>> {
+                    tourListCall.enqueue(object : Callback<MutableList<TourList>> {
                         override fun onResponse(
-                            call: Call<List<TourList>>,
-                            response: Response<List<TourList>>
+                            call: Call<MutableList<TourList>>,
+                            response: Response<MutableList<TourList>>
 
                         )
                         {
@@ -414,10 +415,10 @@ class MainActivity : AppCompatActivity() {
                                     " ->onCreate 안에서 절차대로 실행 ")
 
                             // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
-                            sendTourLocationToServer(lat,lnt)
+                            sendTourLocationToServer(lat,lnt,page)
                         }
 
-                        override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+                        override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
                             Log.d("ljs", "fail")
                             Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
                         }
@@ -433,15 +434,14 @@ class MainActivity : AppCompatActivity() {
 
     // 백엔드 서버로 위치 데이터 전송 // -----------------------------------------------------------------------
     // Todo 확인 포인트
-    //, currentPage: Int?
-    private fun sendTourLocationToServer(lat: Double?, lnt: Double?) {
+    private fun sendTourLocationToServer(lat: Double?, lnt: Double?, page: Int?) {
         val networkService = (applicationContext as MyApplication).networkService
-        val tourGPSCall = networkService.getTourGPS(lat, lnt )
+        val tourGPSCall = networkService.getTourGPS(lat, lnt, page )
 
-        tourGPSCall.enqueue(object : Callback<List<TourList>> {
+        tourGPSCall.enqueue(object : Callback<MutableList<TourList>> {
             override fun onResponse
-                        (call: Call<List<TourList>>,
-                         response: Response<List<TourList>>) {
+                        (call: Call<MutableList<TourList>>,
+                         response: Response<MutableList<TourList>>) {
                 Log.d("ljs", "[원하는 실행 순서 3]")
                 Log.d("ljs", "현재 위치 업데이트 성공1: lat : ${lat}, lnt : ${lnt}" +
                         " -> onCreate 안에서 절차대로 실행2 \n -> sendTourLocationToServer()에 의해 실행 ")
@@ -453,6 +453,7 @@ class MainActivity : AppCompatActivity() {
                 Log.d(
                     "lsy", "통신 후 받아온 tourList 길이 값 : ${tourList?.size}"
                 )
+                Log.d("lsy", "Requesting page 확인2: $page")
 
                 val currentTime = System.currentTimeMillis()
 
@@ -470,19 +471,41 @@ class MainActivity : AppCompatActivity() {
                     TourAdapter_Main(this@MainActivity, tourList)
 
                 // 데이터 새로 불러오기
-//                val newTourList = response.body() ?: return
-//
-//                if (currentPage == 0) {
+                                val newTourList = response.body() ?: return
+
+                if (page == 1) {
+                    // 첫 페이지인 경우 데이터 세트 교체
+                    (binding.viewRecyclerTour.adapter as TourAdapter_Main).setData(newTourList)
+                } else {
+                    // 추가 페이지인 경우 데이터 추가
+                    (binding.viewRecyclerTour.adapter as TourAdapter_Main).appendData(newTourList)
+                }
+                Log.d("lsy","newTourList 값 : ${newTourList}")
+                Log.d("lsy", "newTourList 사이즈 : ${newTourList?.size}")
+                Log.d(
+                    "lsy", "통신 후 받아온 newTourList 길이 값 : ${newTourList?.size}"
+                )
+                Log.d("lsy", "Requesting page 확인3: $page")
+
+
+                // ===================================================================
+//                if (page == 1) {
 //                    // 첫 페이지인 경우 데이터 세트 교체
 //                    (binding.viewRecyclerTour.adapter as TourAdapter_Main).setData(newTourList)
 //                } else {
 //                    // 추가 페이지인 경우 데이터 추가
 //                    (binding.viewRecyclerTour.adapter as TourAdapter_Main).appendData(newTourList)
 //                }
+//                Log.d("lsy","newTourList 값 : ${newTourList}")
+//                Log.d("lsy", "newTourList 사이즈 : ${newTourList?.size}")
+//                Log.d(
+//                    "lsy", "통신 후 받아온 newTourList 길이 값 : ${newTourList?.size}"
+//                )
+//                Log.d("lsy", "Requesting page 확인3: $page")
 
             }
 
-            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+            override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
                 Log.d("ljs", "[원하는 실행 순서 3] : fail")
                 call.cancel()
             }
@@ -502,7 +525,7 @@ class MainActivity : AppCompatActivity() {
                     val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
                     val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
                     // Todo 확인 포인트
-                        sendLocationTourToServer(lat, lnt, currentPage)
+                        sendLocationTourToServer(lat, lnt, page)
                 }
             }
         }
@@ -511,19 +534,19 @@ class MainActivity : AppCompatActivity() {
 
     // 백엔드 서버로 위치 데이터 전송 하는 매서드 -----------------------------------------------------------------------
     // Todo 확인 포인트 -> 왜 두번이나 전송?
-    private fun sendLocationTourToServer(lat: Double?, lnt: Double?, currentPage: Int?) {
+    private fun sendLocationTourToServer(lat: Double?, lnt: Double?, page: Int?) {
         val networkService = (applicationContext as MyApplication).networkService
-        val tourGPSCall = networkService.getTourGPS(lat, lnt)
+        val tourGPSCall = networkService.getTourGPS(lat, lnt, page)
 //        val accomGPSCall = networkService.getAccomGPS(lat, lnt )
 
-        tourGPSCall.enqueue(object : Callback<List<TourList>> {
-            override fun onResponse(call: Call<List<TourList>>, response: Response<List<TourList>>) {
+        tourGPSCall.enqueue(object : Callback<MutableList<TourList>> {
+            override fun onResponse(call: Call<MutableList<TourList>>, response: Response<MutableList<TourList>>) {
                 Log.d("ljs", "[원하는 실행 순서 4]")
                 Log.d("ljs", "현재 위치 업데이트 성공2: lat : ${lat}, lnt : ${lnt}" +
                         " -> createLocationTourCallback()에 의해 실행")
             }
 
-            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+            override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
                 Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
             }
         })
