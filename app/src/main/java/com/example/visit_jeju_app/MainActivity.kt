@@ -81,12 +81,19 @@ class MainActivity : AppCompatActivity() {
     //페이징처리 1
     var page = 0
 
+    private lateinit var tourAdapter_Main: TourAdapter_Main
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         handler = Handler(Looper.getMainLooper())
+
+        // 투어 어댑터 초기화 및 설정
+        tourAdapter_Main = TourAdapter_Main(this, mutableListOf())
+        binding.viewRecyclerTour.adapter = tourAdapter_Main
+
 
         // 공유 프리퍼런스 파일이 존재하는지 확인
         val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
@@ -267,6 +274,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 메인 카테고리 더보기 링크
+        // 메인 카테고리 더보기 링크
         val moreAccomTextView: TextView = findViewById(R.id.mainItemMoreBtn1)
         val moreRestaurantTextView: TextView = findViewById(R.id.mainItemMoreBtn2)
         val moreTourTextView: TextView = findViewById(R.id.mainItemMoreBtn3)
@@ -343,7 +351,7 @@ class MainActivity : AppCompatActivity() {
 
         // 투어 끝 ====== ======== ========= ========== ========== ========== ========== ========== ================ ======== ========= ========== ========== ========== ========== ========== ======================= ======== ========= ========== ========== ========== ========== ========== ==========
 
-        // RecyclerView에 스크롤 리스너 추가
+        // RecyclerView에 스크롤 리스너 추가(오른쪽 끝에 닿았을 때, page 1씩 증가)
         binding.viewRecyclerTour.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -442,67 +450,44 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse
                         (call: Call<MutableList<TourList>>,
                          response: Response<MutableList<TourList>>) {
-                Log.d("ljs", "[원하는 실행 순서 3]")
-                Log.d("ljs", "현재 위치 업데이트 성공1: lat : ${lat}, lnt : ${lnt}" +
-                        " -> onCreate 안에서 절차대로 실행2 \n -> sendTourLocationToServer()에 의해 실행 ")
 
-                val tourList = response.body()
+                //
+                if (response.isSuccessful) {
+                    val tourList = response.body()
+                    tourList?.let {
+                        tourAdapter_Main.addData(it)
 
-                Log.d("lsy","getTourGPS로 불러온 tourList 값 : ${tourList}")
-                Log.d("lsy", "getTourGPS로 불러온 tourList 사이즈 : ${tourList?.size}")
-                Log.d(
-                    "lsy", "통신 후 받아온 tourList 길이 값 : ${tourList?.size}"
-                )
-                Log.d("lsy", "Requesting page 확인2: $page")
+                        Log.d("ljs", "[원하는 실행 순서 3]")
+                        Log.d(
+                            "ljs", "현재 위치 업데이트 성공1: lat : ${lat}, lnt : ${lnt}" +
+                                    " -> onCreate 안에서 절차대로 실행2 \n -> sendTourLocationToServer()에 의해 실행 "
+                        )
 
-                val currentTime = System.currentTimeMillis()
+//                val tourList = response.body()
 
-                // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
-                if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
-                    return
+                        Log.d("lsy", "getTourGPS로 불러온 tourList 값 : ${tourList}")
+                        Log.d("lsy", "getTourGPS로 불러온 tourList 사이즈 : ${tourList?.size}")
+                        Log.d(
+                            "lsy", "통신 후 받아온 tourList 길이 값 : ${tourList?.size}"
+                        )
+                        Log.d("lsy", "Requesting page 확인2: $page")
+
+                        val currentTime = System.currentTimeMillis()
+
+                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+                            return
+                        }
+
+                        lastUpdateTimestamp = currentTime
+
+                        val tourLayoutManager =
+                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                        binding.viewRecyclerTour.layoutManager = tourLayoutManager
+                        binding.viewRecyclerTour.adapter =
+                            TourAdapter_Main(this@MainActivity, tourList)
+                    }
                 }
-
-                lastUpdateTimestamp = currentTime
-
-                val tourLayoutManager =
-                    LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
-                binding.viewRecyclerTour.layoutManager = tourLayoutManager
-                binding.viewRecyclerTour.adapter =
-                    TourAdapter_Main(this@MainActivity, tourList)
-
-                // 데이터 새로 불러오기
-                                val newTourList = response.body() ?: return
-
-                if (page == 1) {
-                    // 첫 페이지인 경우 데이터 세트 교체
-                    (binding.viewRecyclerTour.adapter as TourAdapter_Main).setData(newTourList)
-                } else {
-                    // 추가 페이지인 경우 데이터 추가
-                    (binding.viewRecyclerTour.adapter as TourAdapter_Main).appendData(newTourList)
-                }
-                Log.d("lsy","newTourList 값 : ${newTourList}")
-                Log.d("lsy", "newTourList 사이즈 : ${newTourList?.size}")
-                Log.d(
-                    "lsy", "통신 후 받아온 newTourList 길이 값 : ${newTourList?.size}"
-                )
-                Log.d("lsy", "Requesting page 확인3: $page")
-
-
-                // ===================================================================
-//                if (page == 1) {
-//                    // 첫 페이지인 경우 데이터 세트 교체
-//                    (binding.viewRecyclerTour.adapter as TourAdapter_Main).setData(newTourList)
-//                } else {
-//                    // 추가 페이지인 경우 데이터 추가
-//                    (binding.viewRecyclerTour.adapter as TourAdapter_Main).appendData(newTourList)
-//                }
-//                Log.d("lsy","newTourList 값 : ${newTourList}")
-//                Log.d("lsy", "newTourList 사이즈 : ${newTourList?.size}")
-//                Log.d(
-//                    "lsy", "통신 후 받아온 newTourList 길이 값 : ${newTourList?.size}"
-//                )
-//                Log.d("lsy", "Requesting page 확인3: $page")
-
             }
 
             override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {

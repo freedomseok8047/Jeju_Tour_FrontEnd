@@ -21,6 +21,11 @@ import com.example.visit_jeju_app.tour.model.TourModel
 class TourViewHolder2(val binding: MainItem2Binding): RecyclerView.ViewHolder(binding.root)
 class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
+    fun addData(tourList: List<TourList>) {
+        datas?.addAll(tourList)
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int{
         return datas?.size ?: 0
         Log.d("lsy","datas?.size: ${datas?.size}")
@@ -71,6 +76,9 @@ class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): 
         }
 
     }
+
+
+}
     // 1조 코드보고 추가한 부분 ==========================
 //    fun addData(newDatas: List<TourList>) {
 //        datas?.addAll(newDatas)
@@ -79,21 +87,21 @@ class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): 
     // 1조 코드보고 추가한 부분 끝 ==========================
 
     // 새 데이터 세트로 전체 리스트를 교체
-    fun setData(newDatas: List<TourList>) {
-        datas?.clear()
-        datas?.addAll(newDatas)
-        notifyDataSetChanged()
-    }
+//    fun setData(newDatas: List<TourList>) {
+//        datas?.clear()
+//        datas?.addAll(newDatas)
+//        notifyDataSetChanged()
+//    }
+//
+//    // 기존 리스트에 새 데이터 추가
+//    fun appendData(newDatas: List<TourList>) {
+//        val oldSize = datas?.size ?: 0
+//        datas?.addAll(newDatas)
+//        notifyItemRangeInserted(oldSize, newDatas.size)
+//    }
 
-    // 기존 리스트에 새 데이터 추가
-    fun appendData(newDatas: List<TourList>) {
-        val oldSize = datas?.size ?: 0
-        datas?.addAll(newDatas)
-        notifyItemRangeInserted(oldSize, newDatas.size)
-    }
 
 
-}
 
     // 새 데이터 세트로 전체 리스트를 교체
 //    fun setData(newDatas: List<TourList>) {
