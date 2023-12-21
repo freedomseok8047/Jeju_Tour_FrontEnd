@@ -313,7 +313,7 @@ class TourActivity : AppCompatActivity() {
             ) {
                 val tourList = response.body()
 
-                Log.d("ljs","tourModel 값 : ${tourList}")
+                Log.d("lhs","tourModel 값 : ${tourList}")
 
                 val centerLatitude = mLastLocation.latitude
                 val centerLongitude = mLastLocation.longitude
@@ -357,7 +357,7 @@ class TourActivity : AppCompatActivity() {
 
 
             override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
-                Log.d("lsy", "fail")
+                Log.d("lhs", "fail")
                 call.cancel()
             }
         })
