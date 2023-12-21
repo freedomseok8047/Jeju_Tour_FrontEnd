@@ -331,17 +331,17 @@ class MainActivity : AppCompatActivity() {
 
         // 투어 끝 ====== ======== ========= ========== ========== ========== ========== ========== ================ ======== ========= ========== ========== ========== ========== ========== ======================= ======== ========= ========== ========== ========== ========== ========== ==========
 
-        // RecyclerView에 스크롤 리스너 추가(오른쪽 끝에 닿았을 때, page 1씩 증가)
-        binding.viewRecyclerTour.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
-                    page++ // 페이지 번호 증가
-                    sendTourLocationToServer2(lat, lnt, page) // 서버에 새 페이지 데이터 요청
-                    Log.d("lsy", "Requesting page 확인1: $page")
-                }
-            }
-        })
+//        // RecyclerView에 스크롤 리스너 추가(오른쪽 끝에 닿았을 때, page 1씩 증가)
+//        binding.viewRecyclerTour.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
+//                    page++ // 페이지 번호 증가
+//                    sendTourLocationToServer2(lat, lnt, page) // 서버에 새 페이지 데이터 요청
+//                    Log.d("lsy", "Requesting page 확인1: $page")
+//                }
+//            }
+//        })
     } //onCreate 끝
 
     // 위치 데이터 획득 추가 ---------------------------------------------------------
@@ -405,6 +405,21 @@ class MainActivity : AppCompatActivity() {
 
                             // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
                             sendTourLocationToServer(lat,lnt,page)
+
+                            // 이전 위치 정보의 페이지1부터 내용이 불러오던 것을 수정완료
+                            // (sendTourLocationToServer2 이것을 onCreate() 밖으로 빼서 sendTourLocationToServer 밑에 넣어 이것 다음으로 시작하도록 설계)
+                            // RecyclerView에 스크롤 리스너 추가(오른쪽 끝에 닿았을 때, page 1씩 증가)
+                            binding.viewRecyclerTour.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                                    super.onScrolled(recyclerView, dx, dy)
+                                    if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
+                                        page++ // 페이지 번호 증가
+                                        sendTourLocationToServer2(lat, lnt, page) // 서버에 새 페이지 데이터 요청
+                                        Log.d("lsy", "Requesting page 확인1: $page")
+                                    }
+                                }
+                            })
+
                         }
 
                         override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
