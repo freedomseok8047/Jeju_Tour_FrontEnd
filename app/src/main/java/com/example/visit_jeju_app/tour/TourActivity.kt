@@ -74,6 +74,10 @@ class TourActivity : AppCompatActivity() {
 
     //액션버튼 토글(공통 레이아웃 코드)
     lateinit var toggle: ActionBarDrawerToggle
+
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+    private var lastKnownLocation: Location? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTourBinding.inflate(layoutInflater)
@@ -265,10 +269,20 @@ class TourActivity : AppCompatActivity() {
             locationResult.lastLocation?.let { onLocationChanged(it) }
         }
     }
+
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
     private fun onLocationChanged(location: Location) {
+        if (lastKnownLocation == null || isLocationChanged(location, lastKnownLocation!!)) {
         mLastLocation = location
+        lastKnownLocation = location
         val coords = "${mLastLocation.longitude},${mLastLocation.latitude}"
         getTourListWithinRadius()
+    }
+   }
+
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+    private fun isLocationChanged(newLocation: Location, lastLocation: Location): Boolean {
+        return newLocation.latitude != lastLocation.latitude || newLocation.longitude != lastLocation.longitude
     }
 
     private fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {

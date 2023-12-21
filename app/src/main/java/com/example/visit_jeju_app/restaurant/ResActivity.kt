@@ -65,6 +65,9 @@ class ResActivity : AppCompatActivity() {
     //액션버튼 토글
     lateinit var toggle: ActionBarDrawerToggle
 
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+    private var lastKnownLocation: Location? = null
+
     // URL link
     private fun openWebPage(url: String) {
         val webpage = Uri.parse(url)
@@ -225,10 +228,20 @@ class ResActivity : AppCompatActivity() {
             locationResult.lastLocation?.let { onLocationChanged(it) }
         }
     }
+
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
     private fun onLocationChanged(location: Location) {
-        mLastLocation = location
-        val coords = "${mLastLocation.longitude},${mLastLocation.latitude}"
-        getResListWithinRadius(coords)
+        if (lastKnownLocation == null || isLocationChanged(location, lastKnownLocation!!)) {
+            mLastLocation = location
+            lastKnownLocation = location
+            val coords = "${mLastLocation.longitude},${mLastLocation.latitude}"
+            getResListWithinRadius(coords)
+        }
+    }
+
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+    private fun isLocationChanged(newLocation: Location, lastLocation: Location): Boolean {
+        return newLocation.latitude != lastLocation.latitude || newLocation.longitude != lastLocation.longitude
     }
 
     private fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
