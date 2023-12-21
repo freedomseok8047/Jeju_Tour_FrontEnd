@@ -24,6 +24,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.constraintlayout.motion.widget.Debug.getLocation2
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -343,6 +344,19 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        })
     } //onCreate 끝
+
+    // 싱글탑으로 메인 액티비티 재사용 시, 호출되는 데이터가 새로 반영되도록 하는 코드
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent) // 새 인텐트 설정
+
+        // TODO: 여기에서 데이터를 새로고침하거나 UI를 업데이트하는 로직을 추가하세요.
+        // 예시: 로그를 찍는 것으로 시작합니다.
+        Log.d("lsy", "onNewIntent 호출됨")
+
+        // 예를 들어, 사용자의 위치 데이터를 새로고침하는 메서드 호출
+        getLocation()
+    }
 
     // 위치 데이터 획득 추가 ---------------------------------------------------------
     private fun createLocationRequest() {
@@ -673,14 +687,15 @@ class MainActivity : AppCompatActivity() {
 
 
     // 위치 정보 업데이트 중지 -------------------------------------------------------------------------
-//    override fun onPause() {
-//        super.onPause()
-//        stopLocationUpdates()
-//    }
-//
-//    private fun stopLocationUpdates() {
-//        fusedLocationClient.removeLocationUpdates(locationCallback)
-//    }
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+        getLocation()
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
+    }
     //-------------------------------------------------------------------------------------------
 
 
