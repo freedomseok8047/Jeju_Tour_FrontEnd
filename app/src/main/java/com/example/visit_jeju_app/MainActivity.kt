@@ -114,9 +114,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fesAdapter_Main: FesAdapter_Main
     private lateinit var shopAdapter_Main: ShopAdapter_Main
 
-//    val recycler: RecyclerView by lazy {
-//        binding.viewRecyclerTour
-//    }
+    val TourRecycler: RecyclerView by lazy {
+        binding.viewRecyclerTour
+    }
+
+    val AccomRecycler: RecyclerView by lazy {
+        binding.viewRecyclerAccom
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -370,29 +374,13 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-
-        // 투어 끝 ====== ======== ========= ========== ========== ========== ========== ========== ================ ======== ========= ========== ========== ========== ========== ========== ======================= ======== ========= ========== ========== ========== ========== ========== ==========
-
-//        // RecyclerView에 스크롤 리스너 추가(오른쪽 끝에 닿았을 때, page 1씩 증가)
-//        binding.viewRecyclerTour.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
-//                    page++ // 페이지 번호 증가
-//                    sendTourLocationToServer2(lat, lnt, page) // 서버에 새 페이지 데이터 요청
-//                    Log.d("lsy", "Requesting page 확인1: $page")
-//                }
-//            }
-//        })
-    } //onCreate 끝
+    } //Todo onCreate 끝
 
     // 싱글탑으로 메인 액티비티 재사용 시, 호출되는 데이터가 새로 반영되도록 하는 코드
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         setIntent(intent) // 새 인텐트 설정
 
-        // TODO: 여기에서 데이터를 새로고침하거나 UI를 업데이트하는 로직을 추가하세요.
         // 예시: 로그를 찍는 것으로 시작합니다.
         Log.d("lsy", "onNewIntent 호출됨")
 
@@ -584,20 +572,38 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-    // 제네릭을 사용한 범용 데이터 처리 메서드
-    fun <T> getData2(
-        dataList: MutableList<T>,
-        newData: MutableList<T>?,
-        adapter: RecyclerView.Adapter<*>
-    ) {
-        Log.d("lsy", "getData2 함수 호출 시작. 현재 리스트 크기: ${dataList.size}")
-
-        newData?.let {
-            dataList.addAll(it)
-            adapter.notifyDataSetChanged()
+    fun getTourData2(datas2: MutableList<TourList>?) {
+        Log.d("lsy","getData2 함수 호출 시작.")
+        Log.d("lsy","getData2 함수 호출 시작2.datasSpring size 값 : ${TourData?.size} ")
+        TourData?.size?.let {
+            TourRecycler.adapter?.notifyItemInserted(
+                it.minus(1)
+            )
         }
+        if (TourData?.size != null){
+            TourData?.addAll(datas2 as Collection<TourList>)
+        }
+        TourRecycler.adapter?.notifyDataSetChanged()
+
     }
+
+
+    fun getAccomData2(datas2: MutableList<AccomList>?) {
+        Log.d("lsy","getData2 함수 호출 시작.")
+        Log.d("lsy","getData2 함수 호출 시작2.datasSpring size 값 : ${AccomData?.size} ")
+        AccomData?.size?.let {
+            AccomRecycler.adapter?.notifyItemInserted(
+                it.minus(1)
+            )
+        }
+        if (AccomData?.size != null){
+            AccomData?.addAll(datas2 as Collection<AccomList>)
+        }
+        AccomRecycler.adapter?.notifyDataSetChanged()
+
+    }
+
+
 
 
     // -----------------------------------------------------------------------------
@@ -616,7 +622,7 @@ class MainActivity : AppCompatActivity() {
                     val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
                     Log.d("lsy","createLocationCallback =2====================================")
                     // Todo 확인 포인트
-                    // 백에서 자동 불러오는 거 방지 해결 코드
+                    // 백에서 데이터 중복으로 불러오는 부분 주석 처리
 //                        sendLocationTourToServer(lat, lnt, page)
                     Log.d("lsy","createLocationCallback ==3===================================")
                 }
@@ -806,14 +812,14 @@ class MainActivity : AppCompatActivity() {
                     )
                     Log.d("lsy", "Requesting tourPage 확인2: $page")
 
-                    val currentTime = System.currentTimeMillis()
-
-                    // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
-                    if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
-                        return
-                    }
-
-                    lastUpdateTimestamp = currentTime
+//                    val currentTime = System.currentTimeMillis()
+//
+//                    // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+//                    if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+//                        return
+//                    }
+//
+//                    lastUpdateTimestamp = currentTime
 
                     val tourLayoutManager =
                         LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
@@ -856,14 +862,14 @@ class MainActivity : AppCompatActivity() {
                                 )
                                 Log.d("lsy", "Requesting accomPage 확인2: $page")
 
-                                val currentTime = System.currentTimeMillis()
-
-                                // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
-                                if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
-                                    return
-                                }
-
-                                lastUpdateTimestamp = currentTime
+//                                val currentTime = System.currentTimeMillis()
+//
+//                                // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+//                                if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+//                                    return
+//                                }
+//
+//                                lastUpdateTimestamp = currentTime
 
                                 val accomLayoutManager =
                                     LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
@@ -949,7 +955,7 @@ class MainActivity : AppCompatActivity() {
                         response: Response<MutableList<TourList>>
                     ) {
                         if (response.isSuccessful) {
-                            response.body()?.let { getData2(TourData, newTourData, tourAdapter_Main) }
+                            response.body()?.let { getTourData2(it) }
                         }
                     }
 
@@ -968,7 +974,7 @@ class MainActivity : AppCompatActivity() {
                         response: Response<MutableList<AccomList>>
                     ) {
                         if (response.isSuccessful) {
-                            response.body()?.let { getData2(AccomData, newAccomData, accomAdapter_Main) }
+                            response.body()?.let { getAccomData2(it) }
                         }
                     }
 
