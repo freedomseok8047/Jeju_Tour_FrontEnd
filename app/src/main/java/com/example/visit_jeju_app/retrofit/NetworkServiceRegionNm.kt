@@ -70,7 +70,7 @@ interface NetworkServiceRegionNm {
         @Query("lat") lat : Double?,
         @Query("lnt") lnt : Double?,
         @Query("page") page : Int?
-    ): Call<List<AccomList>>
+    ): Call<MutableList<AccomList>>
 
     @GET("res/resList/resByGPS")
     fun getResGPS(
