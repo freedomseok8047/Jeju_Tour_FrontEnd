@@ -572,35 +572,25 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun getTourData2(datas2: MutableList<TourList>?) {
-        Log.d("lsy","getData2 함수 호출 시작.")
-        Log.d("lsy","getData2 함수 호출 시작2.datasSpring size 값 : ${TourData?.size} ")
-        TourData?.size?.let {
-            TourRecycler.adapter?.notifyItemInserted(
-                it.minus(1)
-            )
-        }
-        if (TourData?.size != null){
-            TourData?.addAll(datas2 as Collection<TourList>)
-        }
-        TourRecycler.adapter?.notifyDataSetChanged()
+    // it : 새로 불러온 데이터
+    // TourData : 기존 데이터 리스트
+    fun <T> updateData(
+        newData: MutableList<T>?,
+        existingData: MutableList<T>?,
+        recycler: RecyclerView
+    ) {
+        Log.d("lsy","updateData 함수 호출 시작.")
+        Log.d("lsy","updateData 함수 호출 시작2.datasSpring size 값 : ${existingData?.size} ")
 
-    }
-
-
-    fun getAccomData2(datas2: MutableList<AccomList>?) {
-        Log.d("lsy","getData2 함수 호출 시작.")
-        Log.d("lsy","getData2 함수 호출 시작2.datasSpring size 값 : ${AccomData?.size} ")
-        AccomData?.size?.let {
-            AccomRecycler.adapter?.notifyItemInserted(
-                it.minus(1)
-            )
+        existingData?.size?.let {
+            recycler.adapter?.notifyItemInserted(it.minus(1))
         }
-        if (AccomData?.size != null){
-            AccomData?.addAll(datas2 as Collection<AccomList>)
-        }
-        AccomRecycler.adapter?.notifyDataSetChanged()
 
+        if (existingData != null && newData != null) {
+            existingData.addAll(newData)
+        }
+
+        recycler.adapter?.notifyDataSetChanged()
     }
 
 
@@ -955,7 +945,11 @@ class MainActivity : AppCompatActivity() {
                         response: Response<MutableList<TourList>>
                     ) {
                         if (response.isSuccessful) {
-                            response.body()?.let { getTourData2(it) }
+                            response.body()?.let {
+                                // it : 새로 불러온 데이터
+                                // TourData : 기존 데이터 리스트
+                                updateData(it, TourData, TourRecycler)
+                            }
                         }
                     }
 
@@ -974,7 +968,9 @@ class MainActivity : AppCompatActivity() {
                         response: Response<MutableList<AccomList>>
                     ) {
                         if (response.isSuccessful) {
-                            response.body()?.let { getAccomData2(it) }
+                            response.body()?.let {
+                                updateData(it, AccomData, AccomRecycler)
+                            }
                         }
                     }
 
@@ -986,8 +982,6 @@ class MainActivity : AppCompatActivity() {
             }
 //------------------------------------------------------------------------------------------------------------------------
         }
-
-
-
     }
+
 }
