@@ -38,13 +38,16 @@ import com.example.visit_jeju_app.community.activity.CommReadActivity
 import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
 import com.example.visit_jeju_app.festival.FesActivity
+import com.example.visit_jeju_app.festival.adapter.FesAdapter_Main
 import com.example.visit_jeju_app.festival.model.FesList
 import com.example.visit_jeju_app.gpt.GptActivity
 import com.example.visit_jeju_app.login.AuthActivity
 import com.example.visit_jeju_app.main.adapter.ImageSliderAdapter
 import com.example.visit_jeju_app.restaurant.ResActivity
+import com.example.visit_jeju_app.restaurant.adapter.ResAdapter_Main
 import com.example.visit_jeju_app.restaurant.model.ResList
 import com.example.visit_jeju_app.shopping.ShopActivity
+import com.example.visit_jeju_app.shopping.adapter.ShopAdapter_Main
 import com.example.visit_jeju_app.shopping.model.ShopList
 import com.example.visit_jeju_app.tour.TourActivity
 import com.example.visit_jeju_app.tour.adapter.TourAdapter_Main
@@ -63,11 +66,18 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
     // 페이징 설정 순서1 lsy
     // 페이징, 레스트로 부터 전달 받을 데이터 저장할 임시 리스트
-    lateinit var pageAccom: MutableList<AccomList>
-    lateinit var pageRes: MutableList<ResList>
-    lateinit var pageTour: MutableList<TourList>
-    lateinit var pageFes: MutableList<FesList>
-    lateinit var pageShop: MutableList<ShopList>
+    lateinit var AccomData: MutableList<AccomList>
+    lateinit var ResData: MutableList<ResList>
+    lateinit var TourData: MutableList<TourList>
+    lateinit var FesData: MutableList<FesList>
+    lateinit var ShopData: MutableList<ShopList>
+
+    lateinit var newAccomData: MutableList<AccomList>
+    lateinit var newResData: MutableList<ResList>
+    lateinit var newTourData: MutableList<TourList>
+    lateinit var newFesData: MutableList<FesList>
+    lateinit var newShopData: MutableList<ShopList>
+
 
     // 위치 정보 위한 변수 선언 -------------------------------------
     private var fusedLocationClient: FusedLocationProviderClient? = null
@@ -92,13 +102,21 @@ class MainActivity : AppCompatActivity() {
 //    var lnt : Double = 126.5601
 
     //페이징처리 1
-    var page = 0
+    var accomPage = 0
+    var resPage = 0
+    var tourPage = 0
+    var fesPage = 0
+    var shopPage = 0
 
+    private lateinit var accomAdapter_Main: AccomAdapter_Main
+    private lateinit var resAdapter_Main: ResAdapter_Main
     private lateinit var tourAdapter_Main: TourAdapter_Main
+    private lateinit var fesAdapter_Main: FesAdapter_Main
+    private lateinit var shopAdapter_Main: ShopAdapter_Main
 
-    val recycler: RecyclerView by lazy {
-        binding.viewRecyclerTour
-    }
+//    val recycler: RecyclerView by lazy {
+//        binding.viewRecyclerTour
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,10 +129,25 @@ class MainActivity : AppCompatActivity() {
         // 투어 어댑터 초기화 및 설정
         tourAdapter_Main = TourAdapter_Main(this, mutableListOf())
         binding.viewRecyclerTour.adapter = tourAdapter_Main
+        Log.d("lsy"," binding.viewRecyclerTour.adapter = tourAdapter_Main =====================================")
 
+        // 숙박 어댑터 초기화 및 설정?
+        accomAdapter_Main = AccomAdapter_Main(this, mutableListOf())
+        binding.viewRecyclerAccom.adapter = accomAdapter_Main
+        Log.d("lsy","    binding.viewRecyclerAccom.adapter = accomAdapter_Main =====================================")
 
         // 페이징 설정 순서2 lsy
-        pageTour = mutableListOf<TourList>()
+        AccomData = mutableListOf<AccomList>()
+        ResData = mutableListOf<ResList>()
+        TourData = mutableListOf<TourList>()
+        FesData = mutableListOf<FesList>()
+        ShopData = mutableListOf<ShopList>()
+
+        newAccomData = mutableListOf<AccomList>()
+        newResData = mutableListOf<ResList>()
+        newTourData = mutableListOf<TourList>()
+        newFesData = mutableListOf<FesList>()
+        newShopData = mutableListOf<ShopList>()
 
         // 공유 프리퍼런스 파일이 존재하는지 확인
         val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
@@ -130,11 +163,7 @@ class MainActivity : AppCompatActivity() {
             editor.putString("lnt", "기본위치값")
             editor.apply()
         }
-        // Todo 앱터지는 원인 밑에 4개 중 하나
-//        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-//        getLocation()
-//        createLocationRequest()
-//        createLocationCallback()
+
 
         // 위치 받아오기 위해 추가 ---------------------------------------------------------
         // 위치 권한 확인 및 요청
@@ -143,7 +172,11 @@ class MainActivity : AppCompatActivity() {
             // 위치 권한이 허용된 경우 위치 요청 초기화 및 업데이트 시작
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
             // 1번 호출
-            getLocation()
+
+            getLocation("Tour")
+            Log.d("lsy","        getLocation(\"Tour\") =====================================")
+            getLocation("Accom")
+            Log.d("lsy","        getLocation(\"Accom\") =====================================")
             createLocationRequest()
             // 1번 호출
             createLocationCallback()
@@ -364,7 +397,9 @@ class MainActivity : AppCompatActivity() {
         Log.d("lsy", "onNewIntent 호출됨")
 
         // 예를 들어, 사용자의 위치 데이터를 새로고침하는 메서드 호출
-        getLocation()
+        getLocation("Tour")
+        getLocation("Accom")
+
     }
 
     // 위치 데이터 획득 추가 ---------------------------------------------------------
@@ -377,126 +412,196 @@ class MainActivity : AppCompatActivity() {
 
     // 안드로이드 기기에서 위,경도 받아오는 메서드
     @SuppressLint("MissingPermission")
-    private fun getLocation() {
-        Log.d("lsy","getLocation =====================================")
+    private fun getLocation(dataType: String) {
+        Log.d("lsy", "getLocation: Fetching location for $dataType")
         val fusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(this)
 
         fusedLocationProviderClient.lastLocation
-            .addOnSuccessListener { success: Location? ->
-                success?.let { location ->
-//                    Log.d("ljs", "현재 위치 조회 : lat : ${location.latitude}, lnt : ${location.longitude}")
-                    lat = location.latitude
-                    lnt = location.longitude
-                    Log.d("ljs", "[원하는 실행 순서 1]")
-                    Log.d("ljs", "shared 저장 전: 현재 위치 조회 -> lat : ${lat}, lnt : ${lnt}" +
-                            " -> getLocation()에 의해 실행")
+            .addOnSuccessListener { location ->
+                location?.let {
+                    lat = it.latitude
+                    lnt = it.longitude
 
-                    // 앱 전체에서 위, 경도 값을 사용할 수 있도록 SharedPreferences 사용
+                    // 위치 정보를 SharedPreferences에 저장
+                    saveLocationToSharedPreferences(lat, lnt)
+
                     val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
-                    val editor = pref.edit()
+                    val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                    val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                    Log.d("ljs", "SharedPreferences에 현재위치 불러오기 ${lat}, ${lnt}")
 
-                    editor.putString("lat", "${lat}")
-                    editor.putString("lnt", "${lnt}")
-                    editor.commit()
-//                     위치 정보를 받아온 후, 서버로 전송
-//                    sendLocationToServer(lat, lnt)
+                    // 서버에 데이터 요청
+                    when (dataType) {
 
-                    // tourListCall 시작
-                    val tourListCall = (applicationContext as MyApplication).networkService.getTourGPS(lat,lnt,page)
-
-                    tourListCall.enqueue(object : Callback<MutableList<TourList>> {
-                        override fun onResponse(
-                            call: Call<MutableList<TourList>>,
-                            response: Response<MutableList<TourList>>
-
-                        )
-                        {
-                            // 메인 비주얼
-                            viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
-                            viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
-                            viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
-
-                            // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
-//                getLocation()
-                            val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
-                            val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
-                            val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
-                            Log.d("ljs", "[원하는 실행 순서 2]")
-                            Log.d("ljs", "shared 불러온 후 lat : ${lat}, lnt : ${lnt}" +
-                                    " ->onCreate 안에서 절차대로 실행 ")
-
-                            // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
-//                            sendTourLocationToServer(lat,lnt,page)
-                            sendTourLocationToServer1(lat,lnt,page)
-//                            sendAccomLocationToServer1(lat,lnt,page)
-
-
-                            // 이전 위치 정보의 페이지1부터 내용이 불러오던 것을 수정완료
-                            // (sendTourLocationToServer2 이것을 onCreate() 밖으로 빼서 sendTourLocationToServer 밑에 넣어 이것 다음으로 시작하도록 설계)
-                            // RecyclerView에 스크롤 리스너 추가(오른쪽 끝에 닿았을 때, page 1씩 증가)
-                            binding.viewRecyclerTour.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                                    super.onScrolled(recyclerView, dx, dy)
-                                    if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
-                                        page++ // 페이지 번호 증가
-                                        sendTourLocationToServer2(lat, lnt, page) // 서버에 새 페이지 데이터 요청
-                                        Log.d("lsy", "Requesting page 확인1: $page")
-                                    }
-                                }
-                            })
-
-                        }
-
-                        override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
-                            Log.d("ljs", "fail")
-                            Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
-                        }
-                    })
-                    // tourListCall 끝
+                        "Tour" -> fetchTourData(lat, lnt, tourPage)
+                        "Accom" -> fetchAccomData(lat, lnt, accomPage)
+                        // 기타 데이터 유형에 대한 처리를 추가할 수 있음
+                    }
                 }
             }
-            .addOnFailureListener { fail ->
+            .addOnFailureListener {
                 Log.d("ljs", "현재 위치 조회 실패")
             }
     }
+
+    private fun saveLocationToSharedPreferences(lat: Double?, lnt: Double?) {
+        Log.d("ljs", "[원하는 실행 순서 1]")
+        Log.d("ljs", "SharedPreferences에 현재위치 저장하기")
+        // 앱 전체에서 위, 경도 값을 사용할 수 있도록 SharedPreferences 사용
+        val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+        val editor = pref.edit()
+
+        editor.putString("lat", "${lat}")
+        editor.putString("lnt", "${lnt}")
+        editor.commit()
+    }
+
+    private fun fetchTourData(lat: Double?, lnt: Double?, page: Int) {
+        // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+        // Tour 데이터 요청 로직
+        // 예: networkService.getTourGPS(lat, lnt, page) 호출 및 처리
+        Log.d("lsy", "getLocation(Tour) 실행 됨 #######################")
+        val tourListCall = (applicationContext as MyApplication).networkService.getTourGPS(lat, lnt, tourPage)
+        tourListCall.enqueue(object : Callback<MutableList<TourList>> {
+            override fun onResponse(
+                call: Call<MutableList<TourList>>,
+                response: Response<MutableList<TourList>>
+
+            )
+            {
+                // 메인 비주얼
+                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+
+                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                Log.d("ljs", "[원하는 실행 순서 2]")
+                Log.d("ljs", "shared 불러온 후 lat : ${lat}, lnt : ${lnt}" +
+                        " ->onCreate 안에서 절차대로 실행 ")
+
+                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+                sendTourLocationToServer1(lat,lnt,tourPage)
+
+                // 이전 위치 정보의 페이지1부터 내용이 불러오던 것을 수정완료
+                // (sendTourLocationToServer2 이것을 onCreate() 밖으로 빼서 sendTourLocationToServer 밑에 넣어 이것 다음으로 시작하도록 설계)
+                // RecyclerView에 스크롤 리스너 추가(오른쪽 끝에 닿았을 때, page 1씩 증가)
+                binding.viewRecyclerTour.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
+                            tourPage++ // 페이지 번호 증가
+                            sendTourLocationToServer2(lat, lnt, tourPage) // 서버에 새 페이지 데이터 요청
+                            Log.d("lsy", "Requesting tourPage 확인1: $tourPage")
+                        }
+                    }
+                })
+
+            }
+
+            override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
+                Log.d("ljs", "fail")
+                Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+    }
+
+    private fun fetchAccomData(lat: Double?, lnt: Double?, page: Int) {
+        // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+        // Accom 데이터 요청 로직
+        // 예: networkService.getAccomGPS(lat, lnt, page) 호출 및 처리
+        Log.d("lsy", "getLocation(Accom) 실행 됨 #######################")
+        val accomListCall = (applicationContext as MyApplication).networkService.getAccomGPS(lat, lnt, accomPage)
+        accomListCall.enqueue(object : Callback<MutableList<AccomList>> {
+            override fun onResponse(
+                call: Call<MutableList<AccomList>>,
+                response: Response<MutableList<AccomList>>
+
+            )
+            {
+                // 메인 비주얼
+                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+
+                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                Log.d("ljs", "[원하는 실행 순서 2]")
+                Log.d("ljs", "shared 불러온 후 lat : ${lat}, lnt : ${lnt}" +
+                        " ->onCreate 안에서 절차대로 실행 ")
+
+                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+                sendAccomLocationToServer1(lat,lnt,accomPage)
+
+                // RecyclerView에 스크롤 리스너 추가(오른쪽 끝에 닿았을 때, page 1씩 증가)
+                binding.viewRecyclerAccom.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
+                            accomPage++ // 페이지 번호 증가
+                            sendAccomLocationToServer2(lat, lnt, accomPage) // 서버에 새 페이지 데이터 요청
+                            Log.d("lsy", "Requesting accomPage 확인1: $accomPage")
+                        }
+                    }
+                })
+
+            }
+
+            override fun onFailure(call: Call<MutableList<AccomList>>, t: Throwable) {
+                Log.d("ljs", "fail")
+                Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+    }
+
+
     private fun sendTourLocationToServer1(lat: Double?, lnt: Double?, tourPage: Int?) {
+        Log.d("lsy", "sendTourLocationToServer1 실행 됨 전 @@@@@@@@@@@@@@@@@")
         fetchLocationData("Tour", lat, lnt, tourPage)
+        Log.d("lsy", "sendTourLocationToServer1 실행 됨 후 @@@@@@@@@@@@@@@@@")
     }
 
     // 숙박 데이터 요청
     private fun sendAccomLocationToServer1(lat: Double?, lnt: Double?, accomPage: Int?) {
+        Log.d("lsy", "sendAccomLocationToServer1 실행 됨 전 @@@@@@@@@@@@@@@@@")
         fetchLocationData("Accom", lat, lnt, accomPage)
+        Log.d("lsy", "sendAccomLocationToServer1 실행 됨 후 @@@@@@@@@@@@@@@@@")
+    }
+
+    private fun sendTourLocationToServer2(lat: Double?, lnt: Double?, tourPage: Int?) {
+        Log.d("lsy", "sendTourLocationToServer2 실행 됨 #################")
+        fetchLocationData2( "Tour", lat, lnt, tourPage)
+    }
+
+    private fun sendAccomLocationToServer2(lat: Double?, lnt: Double?, tourPage: Int?) {
+        Log.d("lsy", "sendAccomLocationToServer2 실행 됨 #################")
+        fetchLocationData2( "Accom", lat, lnt, tourPage)
     }
 
 
-    private fun sendTourLocationToServer2(lat: Double?, lnt: Double?, page: Int?) {
-        val networkService = (applicationContext as MyApplication).networkService
-        val tourGPSCall = networkService.getTourGPS(lat, lnt, page )
 
-        tourGPSCall.enqueue(object : Callback<MutableList<TourList>> {
-            override fun onResponse
-                        (call: Call<MutableList<TourList>>,
-                         response: Response<MutableList<TourList>>) {
+    // 제네릭을 사용한 범용 데이터 처리 메서드
+    fun <T> getData2(
+        dataList: MutableList<T>,
+        newData: MutableList<T>?,
+        adapter: RecyclerView.Adapter<*>
+    ) {
+        Log.d("lsy", "getData2 함수 호출 시작. 현재 리스트 크기: ${dataList.size}")
 
-                //
-                if (response.isSuccessful) {
-                    val tourList = response.body()
-                    tourList?.let {
-                        //sendTourLocationToServer1과 다른 부분
-                        getData2(it)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
-                Log.d("ljs", "[원하는 실행 순서 3] : fail")
-                call.cancel()
-            }
-        })
-
+        newData?.let {
+            dataList.addAll(it)
+            adapter.notifyDataSetChanged()
+        }
     }
+
+
     // -----------------------------------------------------------------------------
+
 
     // Todo 확인 포인트 sendLocationTourToServer(lat, lnt)를 실행
     private fun createLocationCallback() {
@@ -520,20 +625,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     //--------------------------------------------------------------------------------------------
-    fun getData2(datas2: MutableList<TourList>?) {
-        Log.d("lsy","getData2 함수 호출 시작.")
-        Log.d("lsy","getData2 함수 호출 시작2.datasSpring size 값 : ${pageTour?.size} ")
-        pageTour?.size?.let {
-            recycler.adapter?.notifyItemInserted(
-                it.minus(1)
-            )
-        }
-        if (pageTour?.size != null){
-            pageTour?.addAll(datas2 as Collection<TourList>)
-        }
-        recycler.adapter?.notifyDataSetChanged()
-
-    }
 
     // 위치 정보 업데이트 ---------------------------------------------------------------------
     override fun onResume() {
@@ -569,7 +660,8 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
-        getLocation()
+        getLocation("Tour")
+        getLocation("Accom")
     }
 
     private fun stopLocationUpdates() {
@@ -699,7 +791,7 @@ class MainActivity : AppCompatActivity() {
                     // 데이터 변경 , 데이터를 추가 했을 때, ->
 
 
-                    pageTour.addAll(it)
+                    TourData.addAll(it)
 
                     Log.d("ljs", "[원하는 실행 순서 3]")
                     Log.d(
@@ -712,7 +804,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d(
                         "lsy", "통신 후 받아온 tourList 길이 값 : ${tourList?.size}"
                     )
-                    Log.d("lsy", "Requesting page 확인2: $page")
+                    Log.d("lsy", "Requesting tourPage 확인2: $page")
 
                     val currentTime = System.currentTimeMillis()
 
@@ -726,7 +818,7 @@ class MainActivity : AppCompatActivity() {
                     val tourLayoutManager =
                         LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                     binding.viewRecyclerTour.layoutManager = tourLayoutManager
-                    binding.viewRecyclerTour.adapter = TourAdapter_Main(this@MainActivity, pageTour)
+                    binding.viewRecyclerTour.adapter = TourAdapter_Main(this@MainActivity, TourData)
                 }
             }
                     }
@@ -749,7 +841,7 @@ class MainActivity : AppCompatActivity() {
                         if (response.isSuccessful) {
                             val accomList = response.body()
                             accomList?.let {
-                                pageAccom.addAll(it)
+                                AccomData.addAll(it)
 
                                 Log.d("ljs", "[원하는 실행 순서 3]")
                                 Log.d("ljs", "현재 위치 업데이트 성공1: lat : ${lat}, lnt : ${lnt}" +
@@ -757,12 +849,12 @@ class MainActivity : AppCompatActivity() {
                                 )
 
 
-                                Log.d("lsy", "getTourGPS로 불러온 accomList 값 : ${accomList}")
-                                Log.d("lsy", "getTourGPS로 불러온 accomList 사이즈 : ${accomList?.size}")
+                                Log.d("lsy", "getAccomGPS로 불러온 accomList 값 : ${accomList}")
+                                Log.d("lsy", "getAccomGPS로 불러온 accomList 사이즈 : ${accomList?.size}")
                                 Log.d(
                                     "lsy", "통신 후 받아온 accomList 길이 값 : ${accomList?.size}"
                                 )
-                                Log.d("lsy", "Requesting page 확인2: $page")
+                                Log.d("lsy", "Requesting accomPage 확인2: $page")
 
                                 val currentTime = System.currentTimeMillis()
 
@@ -776,7 +868,7 @@ class MainActivity : AppCompatActivity() {
                                 val accomLayoutManager =
                                     LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                                 binding.viewRecyclerAccom.layoutManager = accomLayoutManager
-                                binding.viewRecyclerAccom.adapter = AccomAdapter_Main(this@MainActivity, pageAccom)
+                                binding.viewRecyclerAccom.adapter = AccomAdapter_Main(this@MainActivity, AccomData)
                             }
                         }
                     }
@@ -787,6 +879,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
             }
+
 //----------------------------------------------------------------------------------------------------------------------------------
             // Res 자리
 //            "Res" -> {
@@ -840,6 +933,55 @@ class MainActivity : AppCompatActivity() {
 //----------------------------------------------------------------------------------------------------------------------------------
         }
     }
-    // ... 기타 메서드 및 클래스 내용 ...
 
+
+
+    // 투어 데이터를 가져오는 공통 메서드
+    private fun fetchLocationData2(type: String, lat: Double?, lnt: Double?, page: Int?) {
+        val networkService = (applicationContext as MyApplication).networkService
+        when (type) {
+//------------------------------------------------------------------------------------------------------------------------
+            "Tour" -> {
+                val tourGPSCall = networkService.getTourGPS(lat, lnt, page)
+                tourGPSCall.enqueue(object : Callback<MutableList<TourList>> {
+                    override fun onResponse(
+                        call: Call<MutableList<TourList>>,
+                        response: Response<MutableList<TourList>>
+                    ) {
+                        if (response.isSuccessful) {
+                            response.body()?.let { getData2(TourData, newTourData, tourAdapter_Main) }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
+                        Log.d("ljs", "[요청 실패] : $t")
+                        call.cancel()
+                    }
+                })
+            }
+//------------------------------------------------------------------------------------------------------------------------
+            "Accom" -> {
+                val accomGPSCall = networkService.getAccomGPS(lat, lnt, page)
+                accomGPSCall.enqueue(object : Callback<MutableList<AccomList>> {
+                    override fun onResponse(
+                        call: Call<MutableList<AccomList>>,
+                        response: Response<MutableList<AccomList>>
+                    ) {
+                        if (response.isSuccessful) {
+                            response.body()?.let { getData2(AccomData, newAccomData, accomAdapter_Main) }
+                        }
+                    }
+
+                    override fun onFailure(call: Call<MutableList<AccomList>>, t: Throwable) {
+                        Log.d("ljs", "[요청 실패] : $t")
+                        call.cancel()
+                    }
+                })
+            }
+//------------------------------------------------------------------------------------------------------------------------
+        }
+
+
+
+    }
 }
