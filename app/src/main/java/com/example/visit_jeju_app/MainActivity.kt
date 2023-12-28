@@ -572,30 +572,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    // it : 새로 불러온 데이터
-    // TourData : 기존 데이터 리스트
-    fun <T> updateData(
-        newData: MutableList<T>?,
-        existingData: MutableList<T>?,
-        recycler: RecyclerView
-    ) {
-        Log.d("lsy","updateData 함수 호출 시작.")
-        Log.d("lsy","updateData 함수 호출 시작2.datasSpring size 값 : ${existingData?.size} ")
-
-        existingData?.size?.let {
-            recycler.adapter?.notifyItemInserted(it.minus(1))
-        }
-
-        if (existingData != null && newData != null) {
-            existingData.addAll(newData)
-        }
-
-        recycler.adapter?.notifyDataSetChanged()
-    }
-
-
-
-
     // -----------------------------------------------------------------------------
 
 
@@ -764,6 +740,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // 네트워크 호출과 응답 처리 부분을 별도의 제네릭 함수로 분리
     private fun <T> fetchAndProcessData(
         call: Call<MutableList<T>>,
         processData: (MutableList<T>) -> Unit,
@@ -785,6 +762,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    // fetchLocationData 공통
     private fun fetchLocationData(type: String, lat: Double?, lnt: Double?, page: Int?) {
         val networkService = (applicationContext as MyApplication).networkService
 
@@ -844,25 +822,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 투어 데이터를 가져오는 공통 메서드
-    private fun fetchLocationData2(type: String, lat: Double?, lnt: Double?, page: Int?) {
-        val networkService = (applicationContext as MyApplication).networkService
-        when (type) {
-            "Tour" -> {
-                val tourGPSCall = networkService.getTourGPS(lat, lnt, 4.5, page)
-                fetchAndProcessLocationData(tourGPSCall) { newData ->
-                    updateData(newData, TourData, TourRecycler)
-                }
-            }
-            "Accom" -> {
-                val accomGPSCall = networkService.getAccomGPS(lat, lnt, page)
-                fetchAndProcessLocationData(accomGPSCall) { newData ->
-                    updateData(newData, AccomData, AccomRecycler)
-                }
-            }
-        }
-    }
-
+    // 네트워크 호출과 응답 처리 부분을 별도의 제네릭 함수로 분리
     private fun <T> fetchAndProcessLocationData(
         call: Call<MutableList<T>>,
         onSuccess: (MutableList<T>) -> Unit
@@ -883,4 +843,45 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+    // fetchLocationData2 공통
+    private fun fetchLocationData2(type: String, lat: Double?, lnt: Double?, page: Int?) {
+        val networkService = (applicationContext as MyApplication).networkService
+        when (type) {
+            "Tour" -> {
+                val tourGPSCall = networkService.getTourGPS(lat, lnt, 4.5, page)
+                fetchAndProcessLocationData(tourGPSCall) { newData ->
+                    updateData(newData, TourData, TourRecycler)
+                }
+            }
+            "Accom" -> {
+                val accomGPSCall = networkService.getAccomGPS(lat, lnt, page)
+                fetchAndProcessLocationData(accomGPSCall) { newData ->
+                    updateData(newData, AccomData, AccomRecycler)
+                }
+            }
+        }
+    }
+
+    // it : 새로 불러온 데이터
+    // TourData : 기존 데이터 리스트
+    fun <T> updateData(
+        newData: MutableList<T>?,
+        existingData: MutableList<T>?,
+        recycler: RecyclerView
+    ) {
+        Log.d("lsy","updateData 함수 호출 시작.")
+        Log.d("lsy","updateData 함수 호출 시작2.datasSpring size 값 : ${existingData?.size} ")
+
+        existingData?.size?.let {
+            recycler.adapter?.notifyItemInserted(it.minus(1))
+        }
+
+        if (existingData != null && newData != null) {
+            existingData.addAll(newData)
+        }
+
+        recycler.adapter?.notifyDataSetChanged()
+    }
+
+
 }
