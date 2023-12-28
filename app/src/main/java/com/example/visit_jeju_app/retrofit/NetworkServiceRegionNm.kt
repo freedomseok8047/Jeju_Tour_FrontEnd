@@ -11,6 +11,21 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface NetworkServiceRegionNm {
+
+    // 디테일 --------------------------------------------------------
+    @GET("accom/accomDtl")
+    fun getAccomDtl(
+        @Path("accomId") accomId: Long
+    ): Call<List<AccomList>>
+
+    @GET("tour/tourDtl")
+    fun getTourDtl(
+        @Path("tourId") tourId: Long
+    ): Call<List<TourList>>
+
+    // 디테일 -------------------------------------------------------- 끝
+
+    // 지역별 -----------------------------------------------------
     @GET("tour/tourList/{itemsRegion2CdValue}")
     fun getList(
         @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
@@ -36,7 +51,10 @@ interface NetworkServiceRegionNm {
         @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
     ): Call<List<FesList>>
 
+    // 지역별 ----------------------------------------------------- 끝
 
+
+    // AllList-----------------------------------------------------
     @GET("tour/tourAllList")
     fun GetTourList(): Call<List<TourList>>
 
@@ -51,19 +69,19 @@ interface NetworkServiceRegionNm {
 
     @GET("fes/fesAllList")
     fun GetFesList(): Call<List<FesList>>
-//
-//    @GET("fes/fesAllList")
-//    fun GetFesList(): Call<List<FesList>>
 
+    // AllList----------------------------------------------------- 끝
 
+    // ByGPS-----------------------------------------------------
     @GET("tour/tourList/tourByGPS")
     fun getTourGPS(
         @Query("lat") lat : Double?,
         @Query("lnt") lnt : Double?,
+        @Query("radius") radius : Double?,
         @Query("page") page : Int?
     ): Call<MutableList<TourList>>
 
-//    http://10.100.104.32:8083/tour/tourList/tourByGPS/?lat=33.4&lnt=126.2?page=1
+            //http://10.100.104.32:8083/tour/tourList/tourByGPS/?lat=33.4&lnt=126.2?page=1
 
     @GET("accom/accomList/accomByGPS")
     fun getAccomGPS(
@@ -94,7 +112,7 @@ interface NetworkServiceRegionNm {
     ): Call<MutableList<ShopList>>
 
 
-
+    // ByGPS----------------------------------------------------- 끝
 
 
 }
