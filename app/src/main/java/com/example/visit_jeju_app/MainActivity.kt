@@ -147,11 +147,6 @@ class MainActivity : AppCompatActivity() {
         FesData = mutableListOf<FesList>()
         ShopData = mutableListOf<ShopList>()
 
-        newAccomData = mutableListOf<AccomList>()
-        newResData = mutableListOf<ResList>()
-        newTourData = mutableListOf<TourList>()
-        newFesData = mutableListOf<FesList>()
-        newShopData = mutableListOf<ShopList>()
 
         // 공유 프리퍼런스 파일이 존재하는지 확인
         val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
