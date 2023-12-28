@@ -87,6 +87,7 @@ interface NetworkServiceRegionNm {
     fun getAccomGPS(
         @Query("lat") lat : Double?,
         @Query("lnt") lnt : Double?,
+        @Query("radius") radius : Double?,
         @Query("page") page : Int?
     ): Call<MutableList<AccomList>>
 
@@ -94,6 +95,7 @@ interface NetworkServiceRegionNm {
     fun getResGPS(
         @Query("lat") lat : Double?,
         @Query("lnt") lnt : Double?,
+        @Query("radius") radius : Double?,
         @Query("page") page : Int?
     ): Call<MutableList<ResList>>
 
@@ -101,6 +103,7 @@ interface NetworkServiceRegionNm {
     fun getFesGPS(
         @Query("lat") lat : Double?,
         @Query("lnt") lnt : Double?,
+        @Query("radius") radius : Double?,
         @Query("page") page : Int?
     ): Call<MutableList<FesList>>
 
@@ -108,6 +111,7 @@ interface NetworkServiceRegionNm {
     fun getShopGPS(
         @Query("lat") lat : Double?,
         @Query("lnt") lnt : Double?,
+        @Query("radius") radius : Double?,
         @Query("page") page : Int?
     ): Call<MutableList<ShopList>>
 
