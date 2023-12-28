@@ -72,13 +72,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var FesData: MutableList<FesList>
     lateinit var ShopData: MutableList<ShopList>
 
-    lateinit var newAccomData: MutableList<AccomList>
-    lateinit var newResData: MutableList<ResList>
-    lateinit var newTourData: MutableList<TourList>
-    lateinit var newFesData: MutableList<FesList>
-    lateinit var newShopData: MutableList<ShopList>
-
-
     // 위치 정보 위한 변수 선언 -------------------------------------
     private var fusedLocationClient: FusedLocationProviderClient? = null
     lateinit var locationRequest: LocationRequest
@@ -122,6 +115,21 @@ class MainActivity : AppCompatActivity() {
         binding.viewRecyclerAccom
     }
 
+    val ResRecycler: RecyclerView by lazy {
+        binding.viewRecyclerRestaurant
+    }
+
+    val FesRecycler: RecyclerView by lazy {
+        binding.viewRecyclerFestival
+    }
+
+    val ShopRecycler: RecyclerView by lazy {
+        binding.viewRecyclerShopping
+    }
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -139,6 +147,21 @@ class MainActivity : AppCompatActivity() {
         accomAdapter_Main = AccomAdapter_Main(this, mutableListOf())
         binding.viewRecyclerAccom.adapter = accomAdapter_Main
         Log.d("lsy","    binding.viewRecyclerAccom.adapter = accomAdapter_Main =====================================")
+
+        // 레스토랑 어댑터 초기화 및 설정?
+        resAdapter_Main = ResAdapter_Main(this, mutableListOf())
+        binding.viewRecyclerRestaurant.adapter = resAdapter_Main
+        Log.d("lsy","    binding.viewRecyclerRestaurant.adapter = resAdapter_Main =====================================")
+
+        // 페스티벌 어댑터 초기화 및 설정?
+        fesAdapter_Main = FesAdapter_Main(this, mutableListOf())
+        binding.viewRecyclerFestival.adapter = fesAdapter_Main
+        Log.d("lsy","    binding.viewRecyclerFestival.adapter = fesAdapter_Main =====================================")
+
+        // 쇼핑 어댑터 초기화 및 설정?
+        shopAdapter_Main = ShopAdapter_Main(this, mutableListOf())
+        binding.viewRecyclerShopping.adapter = shopAdapter_Main
+        Log.d("lsy","    binding.viewRecyclerShopping.adapter = shopAdapter_Main =====================================")
 
         // 페이징 설정 순서2 lsy
         AccomData = mutableListOf<AccomList>()
@@ -176,6 +199,12 @@ class MainActivity : AppCompatActivity() {
             Log.d("lsy","        getLocation(\"Tour\") =====================================")
             getLocation("Accom")
             Log.d("lsy","        getLocation(\"Accom\") =====================================")
+            getLocation("Res")
+            Log.d("lsy","        getLocation(\"Res\") =====================================")
+            getLocation("Fes")
+            Log.d("lsy","        getLocation(\"Fes\") =====================================")
+            getLocation("Shop")
+            Log.d("lsy","        getLocation(\"Shop\") =====================================")
             createLocationRequest()
             // 1번 호출
             createLocationCallback()
@@ -382,6 +411,9 @@ class MainActivity : AppCompatActivity() {
         // 예를 들어, 사용자의 위치 데이터를 새로고침하는 메서드 호출
         getLocation("Tour")
         getLocation("Accom")
+        getLocation("Res")
+        getLocation("Fes")
+        getLocation("Shop")
 
     }
 
@@ -419,6 +451,9 @@ class MainActivity : AppCompatActivity() {
 
                         "Tour" -> fetchTourData(lat, lnt, tourPage)
                         "Accom" -> fetchAccomData(lat, lnt, accomPage)
+                        "Res" -> fetchResData(lat, lnt, resPage)
+                        "Fes" -> fetchFesData(lat, lnt, fesPage)
+                        "Shop" -> fetchShopData(lat, lnt, shopPage)
                         // 기타 데이터 유형에 대한 처리를 추가할 수 있음
                     }
                 }
@@ -542,6 +577,160 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun fetchResData(lat: Double?, lnt: Double?, page: Int) {
+        // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+        // Accom 데이터 요청 로직
+        // 예: networkService.getAccomGPS(lat, lnt, page) 호출 및 처리
+        Log.d("lsy", "getLocation(Accom) 실행 됨 #######################")
+        val resListCall = (applicationContext as MyApplication).networkService.getResGPS(lat, lnt, 4.5, resPage)
+        resListCall.enqueue(object : Callback<MutableList<ResList>> {
+            override fun onResponse(
+                call: Call<MutableList<ResList>>,
+                response: Response<MutableList<ResList>>
+
+            )
+            {
+                // 메인 비주얼
+                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+
+                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                Log.d("ljs", "[원하는 실행 순서 2]")
+                Log.d("ljs", "shared 불러온 후 lat : ${lat}, lnt : ${lnt}" +
+                        " ->onCreate 안에서 절차대로 실행 ")
+
+                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+                sendResLocationToServer1(lat,lnt,resPage)
+
+                // RecyclerView에 스크롤 리스너 추가(오른쪽 끝에 닿았을 때, page 1씩 증가)
+                binding.viewRecyclerRestaurant.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
+                            resPage++ // 페이지 번호 증가
+                            sendResLocationToServer2(lat, lnt, resPage) // 서버에 새 페이지 데이터 요청
+                            Log.d("lsy", "Requesting accomPage 확인1: $resPage")
+                        }
+                    }
+                })
+
+            }
+
+            override fun onFailure(call: Call<MutableList<ResList>>, t: Throwable) {
+                Log.d("ljs", "fail")
+                Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+    }
+
+    // fetchfesData 추가
+
+    private fun fetchFesData(lat: Double?, lnt: Double?, page: Int) {
+        // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+        // Accom 데이터 요청 로직
+        // 예: networkService.getAccomGPS(lat, lnt, page) 호출 및 처리
+        Log.d("lsy", "getLocation(Accom) 실행 됨 #######################")
+        val fesListCall = (applicationContext as MyApplication).networkService.getFesGPS(lat, lnt, 4.5, fesPage)
+        fesListCall.enqueue(object : Callback<MutableList<FesList>> {
+            override fun onResponse(
+                call: Call<MutableList<FesList>>,
+                response: Response<MutableList<FesList>>
+
+            )
+            {
+                // 메인 비주얼
+                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+
+                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                Log.d("ljs", "[원하는 실행 순서 2]")
+                Log.d("ljs", "shared 불러온 후 lat : ${lat}, lnt : ${lnt}" +
+                        " ->onCreate 안에서 절차대로 실행 ")
+
+                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+                sendFesLocationToServer1(lat,lnt,fesPage)
+
+                // RecyclerView에 스크롤 리스너 추가(오른쪽 끝에 닿았을 때, page 1씩 증가)
+                binding.viewRecyclerFestival.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
+                            fesPage++ // 페이지 번호 증가
+                            sendFesLocationToServer2(lat, lnt, fesPage) // 서버에 새 페이지 데이터 요청
+                            Log.d("lsy", "Requesting accomPage 확인1: $fesPage")
+                        }
+                    }
+                })
+
+            }
+
+            override fun onFailure(call: Call<MutableList<FesList>>, t: Throwable) {
+                Log.d("ljs", "fail")
+                Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+    }
+
+    // fetchShopData 추가
+
+    private fun fetchShopData(lat: Double?, lnt: Double?, page: Int) {
+        // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+        // Accom 데이터 요청 로직
+        // 예: networkService.getAccomGPS(lat, lnt, page) 호출 및 처리
+        Log.d("lsy", "getLocation(Accom) 실행 됨 #######################")
+        val shopListCall = (applicationContext as MyApplication).networkService.getShopGPS(lat, lnt, 4.5, shopPage)
+        shopListCall.enqueue(object : Callback<MutableList<ShopList>> {
+            override fun onResponse(
+                call: Call<MutableList<ShopList>>,
+                response: Response<MutableList<ShopList>>
+
+            )
+            {
+                // 메인 비주얼
+                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+
+                // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
+                val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                Log.d("ljs", "[원하는 실행 순서 2]")
+                Log.d("ljs", "shared 불러온 후 lat : ${lat}, lnt : ${lnt}" +
+                        " ->onCreate 안에서 절차대로 실행 ")
+
+                // [변경 사항] 제주 투어 받아온 데이터 백으로 보내기
+                sendShopLocationToServer1(lat,lnt,shopPage)
+
+                // RecyclerView에 스크롤 리스너 추가(오른쪽 끝에 닿았을 때, page 1씩 증가)
+                binding.viewRecyclerShopping.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        if (!recyclerView.canScrollHorizontally(1)) { // 목록의 끝에 도달했는지 확인
+                            shopPage++ // 페이지 번호 증가
+                            sendShopLocationToServer2(lat, lnt, shopPage) // 서버에 새 페이지 데이터 요청
+                            Log.d("lsy", "Requesting accomPage 확인1: $shopPage")
+                        }
+                    }
+                })
+
+            }
+
+            override fun onFailure(call: Call<MutableList<ShopList>>, t: Throwable) {
+                Log.d("ljs", "fail")
+                Log.d("ljs", "현재 위치 업데이트 실패: lat : ${lat}, lnt : ${lnt}")
+            }
+        })
+    }
+
 
     private fun sendTourLocationToServer1(lat: Double?, lnt: Double?, tourPage: Int?) {
         Log.d("lsy", "sendTourLocationToServer1 실행 됨 전 @@@@@@@@@@@@@@@@@")
@@ -556,14 +745,47 @@ class MainActivity : AppCompatActivity() {
         Log.d("lsy", "sendAccomLocationToServer1 실행 됨 후 @@@@@@@@@@@@@@@@@")
     }
 
+    private fun sendResLocationToServer1(lat: Double?, lnt: Double?, resPage: Int?) {
+        Log.d("lsy", "sendAccomLocationToServer1 실행 됨 전 @@@@@@@@@@@@@@@@@")
+        fetchLocationData("Res", lat, lnt, resPage)
+        Log.d("lsy", "sendAccomLocationToServer1 실행 됨 후 @@@@@@@@@@@@@@@@@")
+    }
+
+    private fun sendFesLocationToServer1(lat: Double?, lnt: Double?, fesPage: Int?) {
+        Log.d("lsy", "sendAccomLocationToServer1 실행 됨 전 @@@@@@@@@@@@@@@@@")
+        fetchLocationData("Fes", lat, lnt, fesPage)
+        Log.d("lsy", "sendAccomLocationToServer1 실행 됨 후 @@@@@@@@@@@@@@@@@")
+    }
+
+    private fun sendShopLocationToServer1(lat: Double?, lnt: Double?, shopPage: Int?) {
+        Log.d("lsy", "sendAccomLocationToServer1 실행 됨 전 @@@@@@@@@@@@@@@@@")
+        fetchLocationData("Shop", lat, lnt, shopPage)
+        Log.d("lsy", "sendAccomLocationToServer1 실행 됨 후 @@@@@@@@@@@@@@@@@")
+    }
+
     private fun sendTourLocationToServer2(lat: Double?, lnt: Double?, tourPage: Int?) {
         Log.d("lsy", "sendTourLocationToServer2 실행 됨 #################")
         fetchLocationData2( "Tour", lat, lnt, tourPage)
     }
 
-    private fun sendAccomLocationToServer2(lat: Double?, lnt: Double?, tourPage: Int?) {
+    private fun sendAccomLocationToServer2(lat: Double?, lnt: Double?, accomPage: Int?) {
         Log.d("lsy", "sendAccomLocationToServer2 실행 됨 #################")
-        fetchLocationData2( "Accom", lat, lnt, tourPage)
+        fetchLocationData2( "Accom", lat, lnt, accomPage)
+    }
+
+    private fun sendResLocationToServer2(lat: Double?, lnt: Double?, resPage: Int?) {
+        Log.d("lsy", "sendResLocationToServer2 실행 됨 #################")
+        fetchLocationData2( "Res", lat, lnt, resPage)
+    }
+
+    private fun sendFesLocationToServer2(lat: Double?, lnt: Double?, fesPage: Int?) {
+        Log.d("lsy", "sendFesLocationToServer2 실행 됨 #################")
+        fetchLocationData2( "Fes", lat, lnt, fesPage)
+    }
+
+    private fun sendShopLocationToServer2(lat: Double?, lnt: Double?, shopPage: Int?) {
+        Log.d("lsy", "sendShopLocationToServer2 실행 됨 #################")
+        fetchLocationData2( "Shop", lat, lnt, shopPage)
     }
 
 
@@ -629,6 +851,9 @@ class MainActivity : AppCompatActivity() {
         stopLocationUpdates()
         getLocation("Tour")
         getLocation("Accom")
+        getLocation("Res")
+        getLocation("Fes")
+        getLocation("Shop")
     }
 
     private fun stopLocationUpdates() {
@@ -797,6 +1022,57 @@ class MainActivity : AppCompatActivity() {
                         binding.viewRecyclerAccom.adapter = AccomAdapter_Main(this@MainActivity, AccomData)
                     }
                 }
+                "Res" -> {
+                    (dataList as? MutableList<ResList>)?.let { resList ->
+                        ResData.addAll(resList)
+                        Log.d("ljs", "[원하는 실행 순서 3]")
+                        Log.d("ljs", "현재 위치 업데이트 성공1: lat : ${lat}, lnt : ${lnt}" +
+                                " -> onCreate 안에서 절차대로 실행2 \n -> sendResLocationToServer1()에 의해 실행 ")
+                        Log.d("lsy", "getResGPS로 불러온 resList 값 : ${resList}")
+                        Log.d("lsy", "getResGPS로 불러온 resList 사이즈 : ${resList.size}")
+                        Log.d("lsy", "통신 후 받아온 resList 길이 값 : ${resList.size}")
+                        Log.d("lsy", "Requesting resPage 확인2: $page")
+
+                        val resLayoutManager =
+                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                        binding.viewRecyclerRestaurant.layoutManager = resLayoutManager
+                        binding.viewRecyclerRestaurant.adapter = ResAdapter_Main(this@MainActivity, ResData)
+                    }
+                }
+                "Fes" -> {
+                    (dataList as? MutableList<FesList>)?.let { fesList ->
+                        FesData.addAll(fesList)
+                        Log.d("ljs", "[원하는 실행 순서 3]")
+                        Log.d("ljs", "현재 위치 업데이트 성공1: lat : ${lat}, lnt : ${lnt}" +
+                                " -> onCreate 안에서 절차대로 실행2 \n -> sendFesLocationToServer1()에 의해 실행 ")
+                        Log.d("lsy", "getFesGPS로 불러온 fesList 값 : ${fesList}")
+                        Log.d("lsy", "getFesGPS로 불러온 fesList 사이즈 : ${fesList.size}")
+                        Log.d("lsy", "통신 후 받아온 fesList 길이 값 : ${fesList.size}")
+                        Log.d("lsy", "Requesting fesPage 확인2: $page")
+
+                        val fesLayoutManager =
+                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                        binding.viewRecyclerFestival.layoutManager = fesLayoutManager
+                        binding.viewRecyclerFestival.adapter = FesAdapter_Main(this@MainActivity, FesData)
+                    }
+                }
+                "Shop" -> {
+                    (dataList as? MutableList<ShopList>)?.let { shopList ->
+                        ShopData.addAll(shopList)
+                        Log.d("ljs", "[원하는 실행 순서 3]")
+                        Log.d("ljs", "현재 위치 업데이트 성공1: lat : ${lat}, lnt : ${lnt}" +
+                                " -> onCreate 안에서 절차대로 실행2 \n -> sendShopLocationToServer1()에 의해 실행 ")
+                        Log.d("lsy", "getShopGPS로 불러온 shopList 값 : ${shopList}")
+                        Log.d("lsy", "getShopGPS로 불러온 shopList 사이즈 : ${shopList.size}")
+                        Log.d("lsy", "통신 후 받아온 shopList 길이 값 : ${shopList.size}")
+                        Log.d("lsy", "Requesting shopPage 확인2: $page")
+
+                        val shopLayoutManager =
+                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                        binding.viewRecyclerShopping.layoutManager = shopLayoutManager
+                        binding.viewRecyclerShopping.adapter = ShopAdapter_Main(this@MainActivity, ShopData)
+                    }
+                }
             }
         }
 
@@ -813,6 +1089,18 @@ class MainActivity : AppCompatActivity() {
             "Accom" -> {
                 val accomGPSCall = networkService.getAccomGPS(lat, lnt, 4.5, page)
                 fetchAndProcessData(accomGPSCall, processData, onFailure)
+            }
+            "Res" -> {
+                val resGPSCall = networkService.getResGPS(lat, lnt, 4.5, page)
+                fetchAndProcessData(resGPSCall, processData, onFailure)
+            }
+            "Fes" -> {
+                val fesGPSCall = networkService.getFesGPS(lat, lnt, 4.5, page)
+                fetchAndProcessData(fesGPSCall, processData, onFailure)
+            }
+            "Shop" -> {
+                val shopGPSCall = networkService.getShopGPS(lat, lnt, 4.5, page)
+                fetchAndProcessData(shopGPSCall, processData, onFailure)
             }
         }
     }
@@ -852,6 +1140,24 @@ class MainActivity : AppCompatActivity() {
                 val accomGPSCall = networkService.getAccomGPS(lat, lnt, 4.5, page)
                 fetchAndProcessLocationData(accomGPSCall) { newData ->
                     updateData(newData, AccomData, AccomRecycler)
+                }
+            }
+            "Res" -> {
+                val resGPSCall = networkService.getResGPS(lat, lnt, 4.5, page)
+                fetchAndProcessLocationData(resGPSCall) { newData ->
+                    updateData(newData, ResData, ResRecycler)
+                }
+            }
+            "Fes" -> {
+                val fesGPSCall = networkService.getFesGPS(lat, lnt, 4.5, page)
+                fetchAndProcessLocationData(fesGPSCall) { newData ->
+                    updateData(newData, FesData, FesRecycler)
+                }
+            }
+            "Shop" -> {
+                val shopGPSCall = networkService.getShopGPS(lat, lnt, 4.5, page)
+                fetchAndProcessLocationData(shopGPSCall) { newData ->
+                    updateData(newData, ShopData, ShopRecycler)
                 }
             }
         }
