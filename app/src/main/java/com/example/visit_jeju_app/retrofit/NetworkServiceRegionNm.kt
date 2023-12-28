@@ -116,6 +116,7 @@ interface NetworkServiceRegionNm {
     ): Call<MutableList<ShopList>>
 
 
+
     // ByGPS----------------------------------------------------- 끝
 
 
