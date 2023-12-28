@@ -22,6 +22,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.camp.campingapp.model.NaverReverseGeocodeResponse
 import com.example.visit_jeju_app.MainActivity
 import com.example.visit_jeju_app.MyApplication
+import com.example.visit_jeju_app.MyApplication.Companion.lat
+import com.example.visit_jeju_app.MyApplication.Companion.lnt
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.accommodation.AccomActivity
 import com.example.visit_jeju_app.chat.ChatActivity
@@ -62,13 +64,10 @@ class TourActivity : AppCompatActivity() {
     private val updateDelayMillis = 40000
     //리사이클러 뷰 업데이트 딜레이 업데이트 주기 생성
 
-    lateinit var mLocationRequest: com.google.android.gms.location.LocationRequest // 위치 정보 요청의 매개변수를 저장하는
+    lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
 
-//    private var mapX : String = ""
-//    private var mapY : String= ""
-//    private var coords: String = ""
-
+    var tourPage : Int = 0
 
     lateinit var binding: ActivityTourBinding
 
@@ -91,6 +90,8 @@ class TourActivity : AppCompatActivity() {
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
+
+        Log.d("ljs", "공유 프리퍼런스 lat: $lat, lnt: $lnt")
 
         headerLogoutBtn.setOnClickListener {
             // 로그아웃 로직
@@ -275,8 +276,11 @@ class TourActivity : AppCompatActivity() {
         if (lastKnownLocation == null || isLocationChanged(location, lastKnownLocation!!)) {
         mLastLocation = location
         lastKnownLocation = location
-        val coords = "${mLastLocation.longitude},${mLastLocation.latitude}"
-        getTourListWithinRadius()
+            val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+            val lat: Double? = pref.getString("lat", null)?.toDoubleOrNull()
+            val lnt: Double? = pref.getString("lnt", null)?.toDoubleOrNull()
+
+        getTourListWithinRadius(lat, lnt, 7.0, tourPage)
     }
    }
 
@@ -285,52 +289,20 @@ class TourActivity : AppCompatActivity() {
         return newLocation.latitude != lastLocation.latitude || newLocation.longitude != lastLocation.longitude
     }
 
-    private fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        // 반경 필터링
-        val R = 6371.0 // 지구의 반지름 (단위: km)
-
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-
-        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2)
-        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-        return R * c
-    }
-
-    private fun getTourListWithinRadius() {
+    private fun getTourListWithinRadius(lat: Double?, lnt: Double?, radius : Double, tourPage : Int) {
 
         val networkService = (applicationContext as MyApplication).networkService
-        val tourListCall = networkService.GetTourList()
+        val tourListCall = networkService.getTourGPS(lat, lnt, radius , tourPage)
 
-        tourListCall.enqueue(object : Callback<List<TourList>> {
+        tourListCall.enqueue(object : Callback<MutableList<TourList>> {
             override fun onResponse(
-                call: Call<List<TourList>>,
-                response: Response<List<TourList>>
+                call: Call<MutableList<TourList>>,
+                response: Response<MutableList<TourList>>
 
             ) {
                 val tourList = response.body()
 
-                Log.d("lhs","tourModel 값 : ${tourList}")
-
-                val centerLatitude = mLastLocation.latitude
-                val centerLongitude = mLastLocation.longitude
-                val radius = 5.0 // 5km 반경
-
-
-                val touristSpotsWithinRadius = tourList?.mapNotNull { spot ->
-                    val distance = haversineDistance(
-                        centerLatitude, centerLongitude,
-                        spot.itemsLatitude, spot.itemsLongitude
-                    )
-                    if (distance <= radius) {
-                        spot // 관광지 데이터 객체 자체를 반환
-                    } else {
-                        null
-                    }
-                }
+                Log.d("ljs","tourModel 값 : ${tourList}")
 
                 val currentTime = System.currentTimeMillis()
 
@@ -346,7 +318,7 @@ class TourActivity : AppCompatActivity() {
                 binding.recyclerView.layoutManager = layoutManager
 
                 binding.recyclerView.adapter =
-                    TourAdapter(this@TourActivity,touristSpotsWithinRadius)
+                    TourAdapter(this@TourActivity,tourList)
 
 
                 binding.recyclerView.addItemDecoration(
@@ -356,8 +328,8 @@ class TourActivity : AppCompatActivity() {
             }
 
 
-            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
-                Log.d("lhs", "fail")
+            override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
+                Log.d("ljs", "fail")
                 call.cancel()
             }
         })
