@@ -497,7 +497,7 @@ class MainActivity : AppCompatActivity() {
         // Accom 데이터 요청 로직
         // 예: networkService.getAccomGPS(lat, lnt, page) 호출 및 처리
         Log.d("lsy", "getLocation(Accom) 실행 됨 #######################")
-        val accomListCall = (applicationContext as MyApplication).networkService.getAccomGPS(lat, lnt,4.5, accomPage)
+        val accomListCall = (applicationContext as MyApplication).networkService.getAccomGPS(lat, lnt, 4.5, accomPage)
         accomListCall.enqueue(object : Callback<MutableList<AccomList>> {
             override fun onResponse(
                 call: Call<MutableList<AccomList>>,
