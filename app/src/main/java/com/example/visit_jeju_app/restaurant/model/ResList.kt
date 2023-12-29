@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class ResList(
     // o1 "resId": 1,
-    @SerializedName("resid")
-    var resId: Int? = null,
+    @SerializedName("fndId")
+    var fndId: Long? = null,
 
     // o2 "itemsTitle": "몽story",
     @SerializedName("itemsTitle")
