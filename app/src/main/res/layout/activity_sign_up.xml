@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
+        android:layout_marginTop="60dp"
+        android:text="회원가입"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/authMainTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#555"
+        android:textSize="16sp"
+        android:text="아직 회원이 아니라면 회원가입 해 주세요."/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#eee"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="22dp"
+        android:layout_marginTop="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <CheckBox
+                android:id="@+id/checkboxUserAgreement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이용약관 동의"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/btnUserAgreement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="자세히 보기"
+                android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
+                android:textColor="#777"
+                android:gravity="center|right"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="openFragment" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:id="@+id/checkboxPrivacyPolicy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="개인정보 처리방침 동의"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/btnPrivacyPolicy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="자세히 보기"
+                android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
+                android:textColor="#777"
+                android:gravity="center|right"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="openFragment" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <!--이메일-->
+    <EditText
+        android:id="@+id/authEmailEditView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="이메일"
+        android:inputType="textEmailAddress"
+        android:visibility="visible" />
+
+
+    <!-- 비밀번호-->
+    <EditText
+        android:id="@+id/authPasswordEditView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="비밀번호 - 6자 이상"
+        android:inputType="textPassword"
+        android:visibility="visible" />
+
+
+    <!--    이름-->
+    <EditText
+        android:id="@+id/authUsernameEditView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="이름"
+        android:inputType="text"
+        android:visibility="visible" />
+
+
+    <android.widget.Button
+        android:id="@+id/signBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="가입"
+        android:visibility="visible"
+        style="@style/buttonStyle2"/>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>

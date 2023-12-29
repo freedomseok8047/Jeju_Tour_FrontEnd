@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
+        android:layout_marginTop="60dp"
+        android:text="본인인증"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/authMainTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#555"
+        android:textSize="16sp"
+        android:text="전화번호 인증을 해 주세요."/>
+
+    <LinearLayout
+        android:id="@+id/phoneBox"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLoginText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp">
+        <EditText
+            android:id="@+id/inputPhone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:hint="전화번호를 입력"
+            android:layout_weight="1"
+            android:inputType="phone"
+
+            android:layout_marginEnd="10dp"/>
+        <Button
+            android:id="@+id/reqAuth"
+            android:layout_width="136dp"
+            android:layout_height="wrap_content"
+            style="@style/buttonStyle"
+            android:textColor="@color/white"
+            android:text="인증요청"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/authBox"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/phoneBox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+        <EditText
+            android:id="@+id/inputAuthNum"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:hint="인증번호"
+            android:layout_weight="1"
+            android:inputType="phone"
+            android:layout_marginEnd="20dp"/>
+        <Button
+            android:id="@+id/checkAuth"
+            android:layout_width="136dp"
+            android:layout_height="wrap_content"
+            style="@style/buttonStyle"
+            android:textColor="@color/white"
+            android:text="인증번호 확인"
+            />
+    </LinearLayout>
+
+</LinearLayout>
+
+
+
