@@ -193,8 +193,9 @@ class AccomDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
         val networkService = (applicationContext as MyApplication).networkService
-        val mapListCall = networkService.GetAccomList()
-
+        val accomId : Long = intent.getLongExtra("accomId",Long.MIN_VALUE)
+        Log.d("ljs", "intent로 받아온 accomId 값 확인 : ${accomId}")
+        val mapListCall = networkService.getAccomDtl(accomId)
         val uiSettings = Companion.naverMap?.uiSettings
         uiSettings?.isCompassEnabled = true
         uiSettings?.isLocationButtonEnabled = true
@@ -221,6 +222,8 @@ class AccomDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 val lat: Double = intent.getDoubleExtra("itemsLatitude", Double.MAX_VALUE)
                 val lnt: Double = intent.getDoubleExtra("itemsLongitude", Double.MAX_VALUE)
 
+                Log.d("ljs", "intent로 받아온 lat 값 확인 : ${lat}")
+                Log.d("ljs", "intent로 받아온 lnt 값 확인 : ${lnt}")
 
                 // 가져온 위도, 경도 값으로 position 세팅
                 marker.setPosition(LatLng(lat, lnt))

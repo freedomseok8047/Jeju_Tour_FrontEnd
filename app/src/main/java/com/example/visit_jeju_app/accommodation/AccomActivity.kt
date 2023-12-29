@@ -59,10 +59,6 @@ class AccomActivity : AppCompatActivity() {
     lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
 
-    private var mapX : String = ""
-    private var mapY : String= ""
-    private var coords: String = ""
-
     //액션버튼 토글
     lateinit var toggle: ActionBarDrawerToggle
 

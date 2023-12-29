@@ -50,6 +50,7 @@ class AccomAdapter(val context: AccomActivity, val datas:List<AccomList>?): Recy
         //클릭시 관광지 상세정보 페이지에 정보넘기기
         holder.binding.root.setOnClickListener {
             val intent = Intent(holder.binding.root?.context, AccomDetailActivity::class.java)
+            intent.putExtra("accomId", model?.accomId)
             intent.putExtra("itemsLatitude", model?.itemsLatitude)
             intent.putExtra("itemsLongitude", model?.itemsLongitude)
             intent.putExtra("itemsTitle", model?.itemsTitle)
