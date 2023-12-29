@@ -200,8 +200,9 @@ class regionNmDetailFesActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(naverMap: NaverMap) {
 
         val networkService = (applicationContext as MyApplication).networkService
-        var jejuRegionCode = intent.getIntExtra("itemsRegion2CdValue",11)
-        val mapListCall = jejuRegionCode?.let { networkService.getFesList(it) }
+        val fesId : Long = intent.getLongExtra("festivalId",Long.MIN_VALUE)
+        Log.d("ljs", "intent로 받아온 fesId 값 확인 : ${fesId}")
+        val mapListCall = networkService.getFesDtl(fesId)
 
 
         mapListCall?.enqueue(object : retrofit2.Callback<List<FesList>> {
