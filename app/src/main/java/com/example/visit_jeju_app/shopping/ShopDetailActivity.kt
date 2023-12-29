@@ -193,7 +193,9 @@ class ShopDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
         val networkService = (applicationContext as MyApplication).networkService
-        val mapListCall = networkService.GetShopList()
+        val shopId : Long = intent.getLongExtra("shopId",Long.MIN_VALUE)
+        Log.d("ljs", "intent로 받아온 shopId 값 확인 : ${shopId}")
+        val mapListCall = networkService.getShopDtl(shopId)
 
         val uiSettings = Companion.naverMap?.uiSettings
         uiSettings?.isCompassEnabled = true

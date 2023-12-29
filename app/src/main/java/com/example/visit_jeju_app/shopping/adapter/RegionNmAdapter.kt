@@ -55,6 +55,7 @@ class RegionNmAdapter(val context: ShopRegionNmActivity, val datas: List<ShopLis
         // 클릭시 관광지 상세 정보 페이지
         holder.binding.root.setOnClickListener {
             val intent = Intent(holder.binding.root?.context, regionNmDetailShopActivity::class.java)
+            intent.putExtra("shopId", model?.shopId)
             intent.putExtra("itemsTitle", model.itemsTitle)
             intent.putExtra("itemsContentsCdLabel", model.itemsContentsCdLabel)
             intent.putExtra("itemsRepPhotoPhotoidImgPath", model.itemsRepPhotoPhotoidImgPath)
