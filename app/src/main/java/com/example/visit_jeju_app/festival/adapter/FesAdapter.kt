@@ -50,6 +50,7 @@ class FesAdapter(val context: FesActivity, val datas:List<FesList>?): RecyclerVi
         //클릭시 관광지 상세정보 페이지에 정보넘기기
         holder.binding.root.setOnClickListener {
             val intent = Intent(holder.binding.root?.context, FesDetailActivity::class.java)
+            intent.putExtra("festivalId", model?.festivalId)
             intent.putExtra("itemsLatitude", model?.itemsLatitude)
             intent.putExtra("itemsLongitude", model?.itemsLongitude)
             intent.putExtra("itemsTitle", model?.itemsTitle)

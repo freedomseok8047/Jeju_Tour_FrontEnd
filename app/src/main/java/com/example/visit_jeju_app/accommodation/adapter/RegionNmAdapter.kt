@@ -55,6 +55,7 @@ class RegionNmAdapter(val context: AccomRegionNmActivity, val datas: List<AccomL
         // 클릭시 관광지 상세 정보 페이지
         holder.binding.root.setOnClickListener {
             val intent = Intent(holder.binding.root?.context, regionNmDetailAccomActivity::class.java)
+            intent.putExtra("accomId", model?.accomId)
             intent.putExtra("itemsTitle", model.itemsTitle)
             intent.putExtra("itemsContentsCdLabel", model.itemsContentsCdLabel)
             intent.putExtra("itemsRepPhotoPhotoidImgPath", model.itemsRepPhotoPhotoidImgPath)

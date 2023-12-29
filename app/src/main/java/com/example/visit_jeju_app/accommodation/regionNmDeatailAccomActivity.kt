@@ -200,9 +200,9 @@ class regionNmDetailAccomActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(naverMap: NaverMap) {
 
         val networkService = (applicationContext as MyApplication).networkService
-        var jejuRegionCode = intent.getIntExtra("itemsRegion2CdValue",11)
-        val mapListCall = jejuRegionCode?.let { networkService.getAccomList(it) }
-
+        val accomId : Long = intent.getLongExtra("accomId",Long.MIN_VALUE)
+        Log.d("ljs", "intent로 받아온 accomId 값 확인 : ${accomId}")
+        val mapListCall = networkService.getAccomDtl(accomId)
 
         mapListCall?.enqueue(object : retrofit2.Callback<List<AccomList>> {
             override fun onResponse(

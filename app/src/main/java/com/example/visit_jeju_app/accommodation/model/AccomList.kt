@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class AccomList(
     // o1 "accomId": 1,
-    @SerializedName("accomid")
-    var accomId: Int? = null,
+    @SerializedName("accomId")
+    var accomId: Long? = null,
 
     // o2 "itemsTitle": "몽story",
     @SerializedName("itemsTitle")

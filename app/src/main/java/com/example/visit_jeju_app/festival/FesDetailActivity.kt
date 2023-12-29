@@ -192,8 +192,9 @@ class FesDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
         val networkService = (applicationContext as MyApplication).networkService
-        val mapListCall = networkService.GetFesList()
-
+        val fesId : Long = intent.getLongExtra("festivalId",Long.MIN_VALUE)
+        Log.d("ljs", "intent로 받아온 fesId 값 확인 : ${fesId}")
+        val mapListCall = networkService.getFesDtl(fesId)
         val uiSettings = Companion.naverMap?.uiSettings
         uiSettings?.isCompassEnabled = true
         uiSettings?.isLocationButtonEnabled = true
