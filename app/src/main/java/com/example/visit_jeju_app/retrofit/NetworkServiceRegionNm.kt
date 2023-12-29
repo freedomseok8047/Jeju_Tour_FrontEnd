@@ -13,15 +13,30 @@ import retrofit2.http.Query
 interface NetworkServiceRegionNm {
 
     // 디테일 --------------------------------------------------------
-    @GET("accom/accomDtl")
+    @GET("accom/accomDtl/{accomId}")
     fun getAccomDtl(
         @Path("accomId") accomId: Long
     ): Call<List<AccomList>>
 
-    @GET("tour/tourDtl")
+    @GET("res/resDtl/{resId}")
+    fun getResDtl(
+        @Path("resId") resId: Long
+    ): Call<List<ResList>>
+
+    @GET("tour/tourDtl/{tourId}")
     fun getTourDtl(
         @Path("tourId") tourId: Long
     ): Call<List<TourList>>
+
+    @GET("fes/fesDtl/{fesId}")
+    fun getFesDtl(
+        @Path("fesId") fesId: Long
+    ): Call<List<FesList>>
+
+    @GET("shop/shopDtl/{shopId}")
+    fun getShopDtl(
+        @Path("shopId") shopId: Long
+    ): Call<List<ShopList>>
 
     // 디테일 -------------------------------------------------------- 끝
 
