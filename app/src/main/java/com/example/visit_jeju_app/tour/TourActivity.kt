@@ -17,17 +17,12 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.camp.campingapp.model.NaverReverseGeocodeResponse
 import com.example.visit_jeju_app.MainActivity
 import com.example.visit_jeju_app.MyApplication
-import com.example.visit_jeju_app.MyApplication.Companion.lat
-import com.example.visit_jeju_app.MyApplication.Companion.lnt
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.accommodation.AccomActivity
-import com.example.visit_jeju_app.chat.ChatActivity
 import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.community.activity.CommReadActivity
 import com.example.visit_jeju_app.databinding.ActivityTourBinding
@@ -35,25 +30,18 @@ import com.example.visit_jeju_app.festival.FesActivity
 import com.example.visit_jeju_app.gpt.GptActivity
 import com.example.visit_jeju_app.login.AuthActivity
 import com.example.visit_jeju_app.restaurant.ResActivity
-import com.example.visit_jeju_app.retrofit.NaverNetworkService
 import com.example.visit_jeju_app.shopping.ShopActivity
 import com.example.visit_jeju_app.tour.adapter.TourAdapter
 import com.example.visit_jeju_app.tour.model.TourList
-import com.example.visit_jeju_app.tour.model.TourModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
-import com.google.android.gms.location.Priority
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class TourActivity : AppCompatActivity() {
@@ -95,6 +83,12 @@ class TourActivity : AppCompatActivity() {
 
         // 페이징 설정 순서2 lsy
         TourListData = mutableListOf<TourList>()
+
+        val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+        val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+        val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+        Log.d("ljs", "SharedPreferences에 현재위치 불러오기 ${lat}, ${lnt}")
+
 
         // 공통 레이아웃 시작 -------------------------------------------------------------
         setSupportActionBar(binding.toolbar)
@@ -238,25 +232,19 @@ class TourActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // RecyclerView에 스크롤 리스너 추가(맨 아래에 닿았을 때, page 1씩 증가)
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val totalItemCount = layoutManager.itemCount
-                Log.d("lsy", "totalItemCount 확인: $totalItemCount")
-                val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-//                if (!recyclerView.canScrollVertically(1) ) { // 스크롤이 끝에 도달했는지 확인
-                    if (!recyclerView.canScrollVertically(1) && lastVisibleItemPosition == totalItemCount - 1) { // 스크롤이 끝에 도달했는지 확인
-
-                    tourPage++
-                    Log.d("lsy", "Requesting tourPage 확인1: $tourPage")
-                    //새 데이터 로드하는 함수
-                    getTourListWithinRadius2(lat, lnt, 7.0, tourPage)
-
+                if (!recyclerView.canScrollVertically(1)) { // 목록의 끝에 도달했는지 확인
+                    tourPage++ // 페이지 번호 증가
+                    getTourListWithinRadius2(lat, lnt, 7.0, tourPage) // 서버에 새 페이지 데이터 요청
+                    Log.d("lsy", "Requesting page 확인1: $tourPage")
                 }
             }
         })
-    }//oncreate
+
+    }//onCreate
 
     // 함수 구현 ---------------------------------------------------------------------------
 
@@ -400,6 +388,14 @@ class TourActivity : AppCompatActivity() {
                         Log.d("lsy", "Requesting tourPage 확인2: $tourPage")
 
                         getData2(it)
+
+//                        val currentTime = System.currentTimeMillis()
+//
+//                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+//                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+//                            return
+//                        }
+//                        lastUpdateTimestamp = currentTime
 
 
                         val layoutManager = LinearLayoutManager(this@TourActivity)

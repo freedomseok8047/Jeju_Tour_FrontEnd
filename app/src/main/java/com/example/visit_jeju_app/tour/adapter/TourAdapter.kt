@@ -27,8 +27,8 @@ class TourAdapter(val context: TourActivity, val datas:MutableList<TourList>?): 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as TourViewHolder).binding
-        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
-        holder.binding.root.animation = animation
+//        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
+//        holder.binding.root.animation = animation
 
         //add......................................
         val model = datas?.get(position)

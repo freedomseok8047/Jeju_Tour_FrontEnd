@@ -798,14 +798,7 @@ class MainActivity : AppCompatActivity() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 for (location in locationResult.locations){
-                    // 여기서 위치 정보를 사용하세요.
-                    val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
-                    val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
-                    val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
                     Log.d("lsy","createLocationCallback =2====================================")
-                    // Todo 확인 포인트
-                    // 백에서 데이터 중복으로 불러오는 부분 주석 처리
-//                        sendLocationTourToServer(lat, lnt, page)
                     Log.d("lsy","createLocationCallback ==3===================================")
                 }
             }

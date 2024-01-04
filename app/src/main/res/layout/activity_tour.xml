@@ -7,8 +7,8 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:fitsSystemWindows="true">
+<!--    tools:openDrawer="start">-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -73,14 +73,19 @@
         android:text="가고 싶은 곳, 지역 별로 보기!"/>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="620dp"
+                        >
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-</LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
 
             </androidx.core.widget.NestedScrollView>
 
