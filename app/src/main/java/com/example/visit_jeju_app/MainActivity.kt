@@ -24,7 +24,6 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.constraintlayout.motion.widget.Debug.getLocation2
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -77,8 +76,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private lateinit var handler: Handler
-    private var lastUpdateTimestamp = 0L
-    private val updateDelayMillis = 40000
+//    private var lastUpdateTimestamp = 0L
+//    private val updateDelayMillis = 40000
     private val REQUEST_PERMISSION_LOCATION = 10
     // -----------------------------------------------------------
 
