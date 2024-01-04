@@ -24,7 +24,6 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.constraintlayout.motion.widget.Debug.getLocation2
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -77,8 +76,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private lateinit var handler: Handler
-    private var lastUpdateTimestamp = 0L
-    private val updateDelayMillis = 40000
+//    private var lastUpdateTimestamp = 0L
+//    private val updateDelayMillis = 40000
     private val REQUEST_PERMISSION_LOCATION = 10
     // -----------------------------------------------------------
 
@@ -799,14 +798,7 @@ class MainActivity : AppCompatActivity() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 for (location in locationResult.locations){
-                    // 여기서 위치 정보를 사용하세요.
-                    val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
-                    val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
-                    val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
                     Log.d("lsy","createLocationCallback =2====================================")
-                    // Todo 확인 포인트
-                    // 백에서 데이터 중복으로 불러오는 부분 주석 처리
-//                        sendLocationTourToServer(lat, lnt, page)
                     Log.d("lsy","createLocationCallback ==3===================================")
                 }
             }
