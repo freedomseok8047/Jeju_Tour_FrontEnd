@@ -199,8 +199,9 @@ class regionNmDetailShopActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(naverMap: NaverMap) {
 
         val networkService = (applicationContext as MyApplication).networkService
-        var jejuRegionCode = intent.getIntExtra("itemsRegion2CdValue",11)
-        val mapListCall = jejuRegionCode?.let { networkService.getShopList(it) }
+        val shopId : Long = intent.getLongExtra("shopId",Long.MIN_VALUE)
+        Log.d("ljs", "intent로 받아온 shopId 값 확인 : ${shopId}")
+        val mapListCall = networkService.getShopDtl(shopId)
 
 
         mapListCall?.enqueue(object : retrofit2.Callback<List<ShopList>> {

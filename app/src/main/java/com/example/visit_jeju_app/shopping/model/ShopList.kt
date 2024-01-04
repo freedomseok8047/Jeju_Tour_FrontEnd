@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class ShopList(
     // o1 "shopId": 1,
-    @SerializedName("shopid")
-    var shopId: Int? = null,
+    @SerializedName("shopId")
+    var shopId: Long? = null,
 
     // o2 "itemsTitle": "몽story",
     @SerializedName("itemsTitle")
