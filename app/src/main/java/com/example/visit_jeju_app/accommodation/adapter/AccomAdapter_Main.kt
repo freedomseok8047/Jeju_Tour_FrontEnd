@@ -14,16 +14,11 @@ import com.example.visit_jeju_app.accommodation.AccomActivity
 import com.example.visit_jeju_app.databinding.ItemAccomBinding
 import com.example.visit_jeju_app.accommodation.AccomDetailActivity
 import com.example.visit_jeju_app.accommodation.model.AccomList
-<<<<<<< HEAD
-
-class AccomViewHolder2(val binding: ItemAccomBinding): RecyclerView.ViewHolder(binding.root)
-class AccomAdapter_Main(val context: Context, val datas:MutableList<AccomList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-=======
 import com.example.visit_jeju_app.databinding.MainItemBinding
+
 
 class AccomViewHolder2(val binding: MainItemBinding): RecyclerView.ViewHolder(binding.root)
 class AccomAdapter_Main(val context: Context, val datas:List<AccomList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
->>>>>>> visit_jeju_MK15(mid_test2)
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -31,15 +26,7 @@ class AccomAdapter_Main(val context: Context, val datas:List<AccomList>?): Recyc
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
-<<<<<<< HEAD
-            = AccomViewHolder2(ItemAccomBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val binding=(holder as AccomViewHolder2).binding
-        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
-        holder.binding.root.animation = animation
-=======
-            = AccomViewHolder2(MainItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+  = AccomViewHolder2(MainItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as AccomViewHolder2).binding
@@ -47,17 +34,12 @@ class AccomAdapter_Main(val context: Context, val datas:List<AccomList>?): Recyc
         // 애니매이션 일단 주석
 //        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
 //        holder.binding.root.animation = animation
->>>>>>> visit_jeju_MK15(mid_test2)
+
 
         //add......................................
         val model = datas?.get(position)
         binding.name.text = model?.itemsTitle
-<<<<<<< HEAD
-        binding.addr1.text = model?.itemsAddaccoms
-        binding.addr2.text = model?.itemsRoadAddaccoms
-=======
         binding.addr2.text = model?.itemsRoadAddress
->>>>>>> visit_jeju_MK15(mid_test2)
         binding.tel.text = model?.itemsPhoneNo
         Log.d("ljs","model?.itemsTitle: ${model?.itemsTitle}")
 
@@ -65,11 +47,7 @@ class AccomAdapter_Main(val context: Context, val datas:List<AccomList>?): Recyc
         //방법2)
         Glide.with(context)
             //load 실제 URL 주소 직접 넣기.
-<<<<<<< HEAD
-            .load(model?.itemsRepPhotoPhotoidThumbnailPath)
-=======
             .load(model?.itemsRepPhotoPhotoidImgPath)
->>>>>>> visit_jeju_MK15(mid_test2)
             .override(150,150)
             .into(binding.thumbNailPhoto)
 
@@ -84,13 +62,8 @@ class AccomAdapter_Main(val context: Context, val datas:List<AccomList>?): Recyc
             intent.putExtra("itemsRegion1CdLabel", model?.itemsRegion1CdLabel)
             intent.putExtra("itemsRegion2CdLabel", model?.itemsRegion2CdLabel)
             intent.putExtra("itemsRegion2CdValue", model?.itemsRegion2CdValue)
-<<<<<<< HEAD
-            intent.putExtra("itemsAddaccoms", model?.itemsAddaccoms)
-            intent.putExtra("itemsRoadAddaccoms", model?.itemsRoadAddaccoms)
-=======
             intent.putExtra("itemsAddaccoms", model?.itemsAddress)
             intent.putExtra("itemsRoadAddaccoms", model?.itemsRoadAddress)
->>>>>>> visit_jeju_MK15(mid_test2)
             intent.putExtra("itemsIntroduction", model?.itemsIntroduction)
             intent.putExtra("itemsAllTag", model?.itemsAllTag)
             intent.putExtra("itemsPhoneNo", model?.itemsPhoneNo)

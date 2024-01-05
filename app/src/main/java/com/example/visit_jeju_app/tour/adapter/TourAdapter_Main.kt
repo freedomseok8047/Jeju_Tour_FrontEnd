@@ -11,21 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.databinding.ItemTourBinding
-<<<<<<< HEAD
-=======
 import com.example.visit_jeju_app.databinding.MainItem2Binding
 import com.example.visit_jeju_app.databinding.MainItemBinding
->>>>>>> visit_jeju_MK15(mid_test2)
 import com.example.visit_jeju_app.tour.TourActivity
 import com.example.visit_jeju_app.tour.TourDetailActivity
 import com.example.visit_jeju_app.tour.model.TourList
 import com.example.visit_jeju_app.tour.model.TourModel
 
-<<<<<<< HEAD
-class TourViewHolder2(val binding: ItemTourBinding): RecyclerView.ViewHolder(binding.root)
-class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
-
-=======
 class TourViewHolder2(val binding: MainItem2Binding): RecyclerView.ViewHolder(binding.root)
 class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
@@ -34,51 +26,32 @@ class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): 
         notifyDataSetChanged()
     }
 
->>>>>>> visit_jeju_MK15(mid_test2)
     override fun getItemCount(): Int{
         return datas?.size ?: 0
         Log.d("lsy","datas?.size: ${datas?.size}")
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
-<<<<<<< HEAD
-            = TourViewHolder2(ItemTourBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val binding=(holder as TourViewHolder2).binding
-        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
-        holder.binding.root.animation = animation
-=======
             = TourViewHolder2(MainItem2Binding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as TourViewHolder2).binding
 //        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
 //        holder.binding.root.animation = animation
->>>>>>> visit_jeju_MK15(mid_test2)
 
         //add......................................
         val model = datas?.get(position)
         binding.name.text = model?.itemsTitle
-<<<<<<< HEAD
-        binding.addr1.text = model?.itemsAddress
-        binding.addr2.text = model?.itemsRoadAddress
-        binding.tel.text = model?.itemsPhoneNo
-=======
         binding.reg1.text = model?.itemsRegion1CdLabel
         binding.reg2.text = model?.itemsRegion2CdLabel
->>>>>>> visit_jeju_MK15(mid_test2)
+
         Log.d("lsy","model?.itemsTitle: ${model?.itemsTitle}")
 
         // glide 통해서, 이미지 를 직접 가져와서 처리하는 부분.
         //방법2)
         Glide.with(context)
             //load 실제 URL 주소 직접 넣기.
-<<<<<<< HEAD
-            .load(model?.itemsRepPhotoPhotoidThumbnailPath)
-=======
             .load(model?.itemsRepPhotoPhotoidImgPath)
->>>>>>> visit_jeju_MK15(mid_test2)
             .override(150,150)
             .into(binding.thumbNailPhoto)
 
@@ -86,10 +59,7 @@ class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): 
         //클릭시 관광지 상세정보 페이지에 정보넘기기
         holder.binding.root.setOnClickListener {
             val intent = Intent(holder.binding.root?.context, TourDetailActivity::class.java)
-<<<<<<< HEAD
-=======
             intent.putExtra("tourId", model?.tourId)
->>>>>>> visit_jeju_MK15(mid_test2)
             intent.putExtra("itemsLatitude", model?.itemsLatitude)
             intent.putExtra("itemsLongitude", model?.itemsLongitude)
             intent.putExtra("itemsTitle", model?.itemsTitle)
@@ -109,9 +79,6 @@ class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): 
 
     }
 
-<<<<<<< HEAD
-}
-=======
 
 }
     // 1조 코드보고 추가한 부분 ==========================
@@ -153,4 +120,4 @@ class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): 
 //    }
 
 //}
->>>>>>> visit_jeju_MK15(mid_test2)
+
