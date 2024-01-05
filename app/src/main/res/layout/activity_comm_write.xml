@@ -14,234 +14,233 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- 앱바 구성 (툴바 포함) -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <!-- 앱바 구성 (툴바 포함) -->
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appBar"
+            <!-- tool bar -->
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/jejutourPoint">
 
-                <!-- tool bar -->
-                <com.google.android.material.appbar.CollapsingToolbarLayout
+                <!--툴바 뷰 생성 -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/jejutourPoint">
-
-                    <!--툴바 뷰 생성 -->
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        style="@style/ToolBarCss"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        app:layout_collapseMode="pin" />
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
-            </com.google.android.material.appbar.AppBarLayout>
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
 
-            <!-- ScrollView로 감싼 LinearLayout -->
-            <!--    앱바에 LinearLayout 태그 내 내용이 가려지는 부분 해결-->
-            <androidx.core.widget.NestedScrollView
+        <!-- ScrollView로 감싼 LinearLayout -->
+        <!--    앱바에 LinearLayout 태그 내 내용이 가려지는 부분 해결-->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:padding="16dp"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="16dp"
-                    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:fontFamily="@font/sans_medium"
+        android:text="제주관광 커뮤니티"
+        />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/sans_medium"
-                        android:text="제주관광 커뮤니티"
-                        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:textStyle="italic"
+        android:fontFamily="@font/sans_medium"
+        android:text="다양한 사람들과 자유롭게 정보를 공유해봐요"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="center"
-                        android:textStyle="italic"
-                        android:fontFamily="@font/sans_medium"
-                        android:text="다양한 사람들과 자유롭게 정보를 공유해봐요"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/sans_medium"
+        android:text="🗂️ 카테고리 선택"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/sans_medium"
-                        android:text="🗂️ 카테고리 선택"/>
+    <RadioGroup
+        android:id="@+id/categoryRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-                    <RadioGroup
-                        android:id="@+id/categoryRadioGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/radioTour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:text="관광지"
+            android:textSize="10sp"/>
 
-                        <RadioButton
-                            android:id="@+id/radioTour"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/sans_medium"
-                            android:text="관광지"
-                            android:textSize="10sp"/>
+        <RadioButton
+            android:id="@+id/radioRestaurant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:text="음식점"
+            android:textSize="10sp"/>
 
-                        <RadioButton
-                            android:id="@+id/radioRestaurant"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/sans_medium"
-                            android:text="음식점"
-                            android:textSize="10sp"/>
+        <RadioButton
+            android:id="@+id/radioAccommodation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:text="숙박"
+            android:textSize="10sp"/>
 
-                        <RadioButton
-                            android:id="@+id/radioAccommodation"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/sans_medium"
-                            android:text="숙박"
-                            android:textSize="10sp"/>
+        <RadioButton
+            android:id="@+id/radioShopping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:text="쇼핑"
+            android:textSize="10sp"/>
 
-                        <RadioButton
-                            android:id="@+id/radioShopping"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/sans_medium"
-                            android:text="쇼핑"
-                            android:textSize="10sp"/>
+        <RadioButton
+            android:id="@+id/radioFestival"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_medium"
+            android:text="축제"
+            android:textSize="10sp"/>
 
-                        <RadioButton
-                            android:id="@+id/radioFestival"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/sans_medium"
-                            android:text="축제"
-                            android:textSize="10sp"/>
+        <RadioButton
+            android:id="@+id/radioOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:fontFamily="@font/sans_medium"
+            android:text="기타"
+            android:textSize="10sp"/>
 
-                        <RadioButton
-                            android:id="@+id/radioOther"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:fontFamily="@font/sans_medium"
-                            android:text="기타"
-                            android:textSize="10sp"/>
+    </RadioGroup>
 
-                    </RadioGroup>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:fontFamily="@font/sans_medium"
+        android:text="📜🖊️ 글 작성"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/sans_medium"
-                        android:text="📜🖊️ 글 작성"/>
+    <EditText
+        android:id="@+id/title"
+        android:background="#eeeeee"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:fontFamily="@font/sans_medium"
+        android:hint="제목을 입력하세요."
+        />
 
-                    <EditText
-                        android:id="@+id/title"
-                        android:background="#eeeeee"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/sans_medium"
-                        android:hint="제목을 입력하세요."
-                        />
+    <EditText
+        android:id="@+id/addEditView"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:background="#eeeeee"
+        android:hint="내용을 입력하세요."
+        android:fontFamily="@font/sans_medium"
+        android:scrollbars="vertical" />
 
-                    <EditText
-                        android:id="@+id/addEditView"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:layout_weight="1"
-                        android:layout_marginTop="10dp"
-                        android:background="#eeeeee"
-                        android:hint="내용을 입력하세요."
-                        android:fontFamily="@font/sans_medium"
-                        android:scrollbars="vertical" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/sans_medium"
+        android:text="🖼️ 사진 첨부"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/sans_medium"
-                        android:text="🖼️ 사진 첨부"/>
+    <Button
+        android:id="@+id/upload"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:background="#FF9800"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/sans_medium"
+        android:text="사진 업로드"
+        android:textColor="@color/white"/>
 
-                    <Button
-                        android:id="@+id/upload"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"
-                        android:background="#FF9800"
-                        android:layout_marginTop="5dp"
-                        android:fontFamily="@font/sans_medium"
-                        android:text="사진 업로드"
-                        android:textColor="@color/white"/>
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="252dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/imageupload1"
+        android:scaleType="centerCrop"
+        />
 
-                    <ImageView
-                        android:id="@+id/imageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="252dp"
-                        android:layout_marginTop="20dp"
-                        android:src="@drawable/imageupload1"
-                        android:scaleType="centerCrop"
-                        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/sans_medium"
+        android:text="🔒 작성자명 공개 체크"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/sans_medium"
-                        android:text="🔒 작성자명 공개 체크"/>
+    <RadioGroup
+        android:id="@+id/writerRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-                    <RadioGroup
-                        android:id="@+id/writerRadioGroup"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+    <RadioButton
+        android:id="@+id/radioUsed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sans_medium"
+        android:text="동의" />
 
-                        <RadioButton
-                            android:id="@+id/radioUsed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/sans_medium"
-                            android:text="동의" />
+    <RadioButton
+        android:id="@+id/radioNotused"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:fontFamily="@font/sans_medium"
+        android:text="비동의" />
 
-                        <RadioButton
-                            android:id="@+id/radioNotused"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:fontFamily="@font/sans_medium"
-                            android:text="비동의" />
+    </RadioGroup>
 
-                    </RadioGroup>
+    <Button
+        android:id="@+id/postbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/sans_medium"
+        android:text="작성 완료"
+        android:textColor="@color/white"
+        android:background="#FF9800"/>
 
-                    <Button
-                        android:id="@+id/postbtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="5dp"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/sans_medium"
-                        android:text="작성 완료"
-                        android:textColor="@color/white"
-                        android:background="#FF9800"/>
+</LinearLayout>
 
-                </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-            </androidx.core.widget.NestedScrollView>
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </RelativeLayout>
 
