@@ -231,6 +231,7 @@ class TourActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // 페이징 설정 순서5
         // RecyclerView에 스크롤 리스너 추가(맨 아래에 닿았을 때, page 1씩 증가)
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -295,6 +296,7 @@ class TourActivity : AppCompatActivity() {
         if (lastKnownLocation == null || isLocationChanged(location, lastKnownLocation!!)) {
         mLastLocation = location
         lastKnownLocation = location
+            // 페이징 설정 순서6
             val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
             val lat: Double? = pref.getString("lat", null)?.toDoubleOrNull()
             val lnt: Double? = pref.getString("lnt", null)?.toDoubleOrNull()

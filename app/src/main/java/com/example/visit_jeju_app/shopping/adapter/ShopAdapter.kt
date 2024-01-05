@@ -15,7 +15,7 @@ import com.example.visit_jeju_app.shopping.ShopDetailActivity
 import com.example.visit_jeju_app.shopping.model.ShopList
 
 class ShopViewHolder(val binding: ItemShopBinding): RecyclerView.ViewHolder(binding.root)
-class ShopAdapter(val context: ShopActivity, val datas:List<ShopList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ShopAdapter(val context: ShopActivity, val datas:MutableList<ShopList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -27,8 +27,8 @@ class ShopAdapter(val context: ShopActivity, val datas:List<ShopList>?): Recycle
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as ShopViewHolder).binding
-        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
-        holder.binding.root.animation = animation
+//        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
+//        holder.binding.root.animation = animation
 
         //add......................................
         val model = datas?.get(position)

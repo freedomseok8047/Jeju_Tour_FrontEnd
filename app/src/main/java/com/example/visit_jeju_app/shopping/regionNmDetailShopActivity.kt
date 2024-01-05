@@ -198,18 +198,18 @@ class regionNmDetailShopActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
 
-        val networkService = (applicationContext as MyApplication).networkService
-        val shopId : Long = intent.getLongExtra("shopId",Long.MIN_VALUE)
-        Log.d("ljs", "intent로 받아온 shopId 값 확인 : ${shopId}")
-        val mapListCall = networkService.getShopDtl(shopId)
-
-
-        mapListCall?.enqueue(object : retrofit2.Callback<List<ShopList>> {
-            override fun onResponse(
-                call: Call<List<ShopList>>,
-                response: Response<List<ShopList>>
-            ) {
-                var ShopList = response.body()
+//        val networkService = (applicationContext as MyApplication).networkService
+//        val shopId : Long = intent.getLongExtra("shopId",Long.MIN_VALUE)
+//        Log.d("ljs", "intent로 받아온 shopId 값 확인 : ${shopId}")
+//        val mapListCall = networkService.getShopDtl(shopId)
+//
+//
+//        mapListCall?.enqueue(object : retrofit2.Callback<List<ShopList>> {
+//            override fun onResponse(
+//                call: Call<List<ShopList>>,
+//                response: Response<List<ShopList>>
+//            ) {
+//                var ShopList = response.body()
 
                 // 마커 객체 생성
                 val marker = Marker()
@@ -229,13 +229,13 @@ class regionNmDetailShopActivity : AppCompatActivity(), OnMapReadyCallback {
                 naverMap.cameraPosition = cameraPosition
 
 
-            }
-
-            override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
-                call.cancel()
-            }
-
-        })
+//            }
+//
+//            override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
+//                call.cancel()
+//            }
+//
+//        })
 
     }
     // menu 기능

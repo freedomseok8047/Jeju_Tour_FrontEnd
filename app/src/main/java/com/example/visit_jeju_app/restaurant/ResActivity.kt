@@ -19,8 +19,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.visit_jeju_app.MainActivity
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.R
@@ -52,11 +52,23 @@ class ResActivity : AppCompatActivity() {
     lateinit var mLastLocation: Location // 위치 값을 가지고 있는 객체
     private lateinit var handler: Handler
     private var lastUpdateTimestamp = 0L
-    private val updateDelayMillis = 40000
+    private val updateDelayMillis = 60000
     //리사이클러 뷰 업데이트 딜레이 업데이트 주기 생성
 
     lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
+
+    // 페이징 설정 순서0 lsy
+    // page 변수 생성
+    var resPage : Int = 0
+
+    // 페이징 설정 순서1 lsy
+    // 페이징, 레스트로 부터 전달 받을 데이터 저장할 임시 리스트
+    lateinit var ResListData : MutableList<ResList>
+
+    val recycler: RecyclerView by lazy {
+        binding.recyclerView
+    }
 
     //액션버튼 토글
     lateinit var toggle: ActionBarDrawerToggle
@@ -79,6 +91,14 @@ class ResActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityResBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 페이징 설정 순서2 lsy
+        ResListData = mutableListOf<ResList>()
+
+        val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+        val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+        val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+        Log.d("ljs", "SharedPreferences에 현재위치 불러오기 ${lat}, ${lnt}")
 
         handler = Handler(Looper.getMainLooper())
 
@@ -195,6 +215,19 @@ class ResActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        // 페이징 설정 순서5
+        // RecyclerView에 스크롤 리스너 추가(맨 아래에 닿았을 때, page 1씩 증가)
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1)) { // 목록의 끝에 도달했는지 확인
+                    resPage++ // 페이지 번호 증가
+                    getResListWithinRadius2(lat, lnt, 7.0, resPage) // 서버에 새 페이지 데이터 요청
+                    Log.d("lsy", "Requesting page 확인1: $resPage")
+                }
+            }
+        })
     }//oncreate
 
 
@@ -230,8 +263,12 @@ class ResActivity : AppCompatActivity() {
         if (lastKnownLocation == null || isLocationChanged(location, lastKnownLocation!!)) {
             mLastLocation = location
             lastKnownLocation = location
-            val coords = "${mLastLocation.longitude},${mLastLocation.latitude}"
-            getResListWithinRadius(coords)
+            // 페이징 설정 순서6
+            val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+            val lat: Double? = pref.getString("lat", null)?.toDoubleOrNull()
+            val lnt: Double? = pref.getString("lnt", null)?.toDoubleOrNull()
+
+            getResListWithinRadius(lat, lnt, 7.0, resPage)
         }
     }
 
@@ -240,82 +277,129 @@ class ResActivity : AppCompatActivity() {
         return newLocation.latitude != lastLocation.latitude || newLocation.longitude != lastLocation.longitude
     }
 
-    private fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        // 반경 필터링
-        val R = 6371.0 // 지구의 반지름 (단위: km)
-
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-
-        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2)
-        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-        return R * c
-    }
-
-    private fun getResListWithinRadius(coords: String) {
+    private fun getResListWithinRadius(lat: Double?, lnt: Double?, radius : Double, resPage : Int) {
 
         val networkService = (applicationContext as MyApplication).networkService
-        val resListCall = networkService.GetResList()
+        val resListCall = networkService.getResGPS(lat, lnt, radius , resPage)
 
-        resListCall.enqueue(object : Callback<List<ResList>> {
+        resListCall.enqueue(object : Callback<MutableList<ResList>> {
             override fun onResponse(
-                call: Call<List<ResList>>,
-                response: Response<List<ResList>>
+                call: Call<MutableList<ResList>>,
+                response: Response<MutableList<ResList>>
 
             ) {
-                val resList = response.body()
+                // 페이징 설정 순서3 lsy
+                if (response.isSuccessful) {
+                    val resList = response.body()
+                    resList?.let {
+                        Log.d("lsy", "getResListWithinRadius1 불러온 resList 값 : ${resList}")
+                        Log.d("lsy", "getResListWithinRadius1 불러온 resList 사이즈 : ${resList.size}")
+                        Log.d("lsy", "통신 후 받아온 resList 길이 값 : ${resList.size}")
+                        Log.d("lsy", "Requesting resPage 확인2: $resPage")
+                        // 받아온 데이터를 임시로 저장할 리스트를 전역 하나 만들고,
+                        // 최초로 5개를 받아와서, 전역에 넣고,
+                        // 페이징 되서, 2번째 페이지의 데이터 5개를 받아오면, 그 데이터를
+                        // 다시, 전역에 선언한 리스트에 다시 담고
+                        // 어댑터에 연결하기, 어댑터 객체에 다시 리스트를 인자로 넣고
+                        // 데이터 변경 , 데이터를 추가 했을 때, ->
 
-                Log.d("ljs","resModel 값 : ${resList}")
+                        ResListData.addAll(it)
 
-                val centerLatitude = mLastLocation.latitude
-                val centerLongitude = mLastLocation.longitude
-                val radius = 5.0 // 5km 반경
+                        val currentTime = System.currentTimeMillis()
 
+                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+                            return
+                        }
 
-                val resistSpotsWithinRadius = resList?.mapNotNull { spot ->
-                    val distance = haversineDistance(
-                        centerLatitude, centerLongitude,
-                        spot.itemsLatitude, spot.itemsLongitude
-                    )
-                    if (distance <= radius) {
-                        spot // 관광지 데이터 객체 자체를 반환
-                    } else {
-                        null
+                        lastUpdateTimestamp = currentTime
+
+                        val layoutManager = LinearLayoutManager(this@ResActivity)
+
+                        binding.recyclerView.layoutManager = layoutManager
+
+                        binding.recyclerView.adapter =
+                            ResAdapter(this@ResActivity, ResListData)
+
+//                        binding.recyclerView1234.addItemDecoration(
+//                            DividerItemDecoration(this@ResActivity, LinearLayoutManager.VERTICAL)
+//                        )
+
                     }
                 }
-
-                val currentTime = System.currentTimeMillis()
-
-                // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
-                if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
-                    return
-                }
-
-                lastUpdateTimestamp = currentTime
-
-                val layoutManager = LinearLayoutManager(this@ResActivity)
-
-                binding.recyclerView.layoutManager = layoutManager
-
-                binding.recyclerView.adapter =
-                    ResAdapter(this@ResActivity,resistSpotsWithinRadius)
-
-
-                binding.recyclerView.addItemDecoration(
-                    DividerItemDecoration(this@ResActivity, LinearLayoutManager.VERTICAL)
-                )
-
             }
-
-
-            override fun onFailure(call: Call<List<ResList>>, t: Throwable) {
-                Log.d("lsy", "fail")
+            override fun onFailure(call: Call<MutableList<ResList>>, t: Throwable) {
+                Log.d("ljs", "fail")
                 call.cancel()
             }
         })
+    }
+
+    // 페이징 설정 순서4 lsy
+    private fun getResListWithinRadius2(lat: Double?, lnt: Double?, radius : Double, resPage : Int) {
+        Log.d("lsy", "getResListWithinRadius2 실행")
+        val networkService = (applicationContext as MyApplication).networkService
+        val resListCall = networkService.getResGPS(lat, lnt, radius , resPage)
+
+        resListCall.enqueue(object : Callback<MutableList<ResList>> {
+            override fun onResponse(
+                call: Call<MutableList<ResList>>,
+                response: Response<MutableList<ResList>>
+
+            ) {
+                if (response.isSuccessful) {
+                    val resList = response.body()
+                    resList?.let {
+                        Log.d("lsy", "getResListWithinRadius2 불러온 새 resList 값 : ${resList}")
+                        Log.d("lsy", "getResListWithinRadius2 불러온 새 resList 사이즈 : ${resList.size}")
+                        Log.d("lsy", "통신 후 받아온 resList 길이 값 : ${resList.size}")
+                        Log.d("lsy", "Requesting resPage 확인2: $resPage")
+
+                        getData2(it)
+
+                        val currentTime = System.currentTimeMillis()
+
+                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+                            return
+                        }
+                        lastUpdateTimestamp = currentTime
+
+
+                        val layoutManager = LinearLayoutManager(this@ResActivity)
+
+                        binding.recyclerView.layoutManager = layoutManager
+
+                        binding.recyclerView.adapter =
+                            ResAdapter(this@ResActivity, ResListData)
+
+//                        binding.recyclerView1234.addItemDecoration(
+//                            DividerItemDecoration(this@ResActivity, LinearLayoutManager.VERTICAL)
+//                        )
+
+                    }
+                }
+            }
+            override fun onFailure(call: Call<MutableList<ResList>>, t: Throwable) {
+                Log.d("ljs", "fail")
+                call.cancel()
+            }
+        })
+    }
+
+    fun getData2(datas2: MutableList<ResList>?) {
+        Log.d("lsy","getData2 함수 호출 시작.")
+        Log.d("lsy","getData2 함수 호출 시작2.datasSpring size 값 : ${ResListData?.size} ")
+        ResListData?.size?.let {
+            recycler.adapter?.notifyItemInserted(
+                it.minus(1)
+            )
+        }
+        if (ResListData?.size != null){
+            ResListData?.addAll(datas2 as Collection<ResList>)
+        }
+        recycler.adapter?.notifyDataSetChanged()
+
     }
 
     private fun checkPermissionForLocation(context: Context): Boolean {
