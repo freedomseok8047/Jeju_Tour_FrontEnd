@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="28sp"
+        android:layout_marginTop="60dp"
+        android:text="로그인"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/authMainTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#555"
+        android:textSize="16sp"/>
+
+    <android.widget.Button
+        android:id="@+id/logoutBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="로그아웃"
+        android:visibility="visible"
+        style="@style/buttonStyle"/>
+
+
+    <!--이메일-->
+    <EditText
+        android:id="@+id/authEmailEditView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="이메일"
+        android:inputType="textEmailAddress"
+        android:visibility="visible" />
+
+
+    <!--    비밀번호-->
+    <EditText
+        android:id="@+id/authPasswordEditView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="비밀번호 - 6자 이상"
+        android:inputType="textPassword"
+        android:visibility="visible" />
+
+
+    <android.widget.Button
+        android:id="@+id/loginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        android:text="로그인"
+        android:visibility="visible"
+        style="@style/buttonStyle"/>
+
+
+</LinearLayout>

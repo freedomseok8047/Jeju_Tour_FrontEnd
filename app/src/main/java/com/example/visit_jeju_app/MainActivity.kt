@@ -3,14 +3,11 @@ package com.example.visit_jeju_app
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,7 +16,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -36,6 +32,7 @@ import com.example.visit_jeju_app.accommodation.AccomActivity
 import com.example.visit_jeju_app.accommodation.adapter.AccomAdapter_Main
 import com.example.visit_jeju_app.accommodation.model.AccomList
 import com.example.visit_jeju_app.community.activity.CommReadActivity
+import com.example.visit_jeju_app.chat.ChatActivity
 import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.databinding.ActivityMainBinding
 import com.example.visit_jeju_app.festival.FesActivity
@@ -44,6 +41,7 @@ import com.example.visit_jeju_app.festival.model.FesList
 import com.example.visit_jeju_app.gpt.GptActivity
 import com.example.visit_jeju_app.login.AuthActivity
 import com.example.visit_jeju_app.main.adapter.ImageSliderAdapter
+import com.example.visit_jeju_app.main.adapter.RecyclerView
 import com.example.visit_jeju_app.restaurant.ResActivity
 import com.example.visit_jeju_app.restaurant.adapter.ResAdapter_Main
 import com.example.visit_jeju_app.restaurant.model.ResList
@@ -382,6 +380,7 @@ class MainActivity : AppCompatActivity() {
             this@MainActivity.startActivity(intent)
         }
 
+        // 메인 카테고리 더보기 링크
         // 메인 카테고리 더보기 링크
         val moreAccomTextView: TextView = findViewById(R.id.mainItemMoreBtn1)
         val moreRestaurantTextView: TextView = findViewById(R.id.mainItemMoreBtn2)
