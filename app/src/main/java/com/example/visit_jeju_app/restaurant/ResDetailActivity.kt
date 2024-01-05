@@ -195,20 +195,22 @@ class ResDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(naverMap: NaverMap) {
-        val networkService = (applicationContext as MyApplication).networkService
-        val mapListCall = networkService.GetResList()
-
-        val uiSettings = Companion.naverMap?.uiSettings
-        uiSettings?.isCompassEnabled = true
-        uiSettings?.isLocationButtonEnabled = true
-
-        mapListCall.enqueue(object : Callback<List<ResList>> {
-            override fun onResponse(
-                call: Call<List<ResList>>,
-                response: Response<List<ResList>>
-
-            ) {
-                var resModel = response.body()
+//        val networkService = (applicationContext as MyApplication).networkService
+//        val fndId : Long = intent.getLongExtra("fndId",Long.MIN_VALUE)
+//        Log.d("ljs", "intent로 받아온 resId 값 확인 : ${fndId}")
+//        val mapListCall = networkService.getResDtl(fndId)
+//
+//        val uiSettings = Companion.naverMap?.uiSettings
+//        uiSettings?.isCompassEnabled = true
+//        uiSettings?.isLocationButtonEnabled = true
+//
+//        mapListCall.enqueue(object : Callback<List<ResList>> {
+//            override fun onResponse(
+//                call: Call<List<ResList>>,
+//                response: Response<List<ResList>>
+//
+//            ) {
+//                var resModel = response.body()
 
                 // 마커 객체 생성
                 val marker = Marker()
@@ -236,14 +238,14 @@ class ResDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 naverMap.cameraPosition = cameraPosition
 
 
-            }
-
-            override fun onFailure(call: Call<List<ResList>>, t: Throwable) {
-                call.cancel()
-            }
-
-
-        })
+//            }
+//
+//            override fun onFailure(call: Call<List<ResList>>, t: Throwable) {
+//                call.cancel()
+//            }
+//
+//
+//        })
 
 
     }

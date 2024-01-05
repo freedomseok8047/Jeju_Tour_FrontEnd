@@ -203,17 +203,17 @@ class regionNmDetailAccomActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
 
-        val networkService = (applicationContext as MyApplication).networkService
-        var jejuRegionCode = intent.getIntExtra("itemsRegion2CdValue",11)
-        val mapListCall = jejuRegionCode?.let { networkService.getAccomList(it) }
-
-
-        mapListCall?.enqueue(object : retrofit2.Callback<List<AccomList>> {
-            override fun onResponse(
-                call: Call<List<AccomList>>,
-                accomponse: Response<List<AccomList>>
-            ) {
-                var AccomList = accomponse.body()
+//        val networkService = (applicationContext as MyApplication).networkService
+//        val accomId : Long = intent.getLongExtra("accomId",Long.MIN_VALUE)
+//        Log.d("ljs", "intent로 받아온 accomId 값 확인 : ${accomId}")
+//        val mapListCall = networkService.getAccomDtl(accomId)
+//
+//        mapListCall?.enqueue(object : retrofit2.Callback<List<AccomList>> {
+//            override fun onResponse(
+//                call: Call<List<AccomList>>,
+//                accomponse: Response<List<AccomList>>
+//            ) {
+//                var AccomList = accomponse.body()
 
                 // 마커 객체 생성
                 val marker = Marker()
@@ -233,13 +233,13 @@ class regionNmDetailAccomActivity : AppCompatActivity(), OnMapReadyCallback {
                 naverMap.cameraPosition = cameraPosition
 
 
-            }
-
-            override fun onFailure(call: Call<List<AccomList>>, t: Throwable) {
-                call.cancel()
-            }
-
-        })
+//            }
+//
+//            override fun onFailure(call: Call<List<AccomList>>, t: Throwable) {
+//                call.cancel()
+//            }
+//
+//        })
 
     }
     // menu 기능

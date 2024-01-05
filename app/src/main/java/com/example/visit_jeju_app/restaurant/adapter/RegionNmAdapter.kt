@@ -13,7 +13,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.example.visit_jeju_app.databinding.ItemRegionnmBinding
 import com.example.visit_jeju_app.restaurant.ResRegionNmActivity
 import com.example.visit_jeju_app.restaurant.model.ResList
-import com.example.visit_jeju_app.tour.regionNmDetailActivity
+import com.example.visit_jeju_app.restaurant.regionNmDetailResActivity
 
 
 class RegionNmViewHolder(val binding: ItemRegionnmBinding) : RecyclerView.ViewHolder(binding.root)
@@ -54,7 +54,8 @@ class RegionNmAdapter(val context: ResRegionNmActivity, val datas: List<ResList>
 
         // 클릭시 관광지 상세 정보 페이지
         holder.binding.root.setOnClickListener {
-            val intent = Intent(holder.binding.root?.context, regionNmDetailActivity::class.java)
+            val intent = Intent(holder.binding.root?.context, regionNmDetailResActivity::class.java)
+            intent.putExtra("fndId", model?.fndId)
             intent.putExtra("itemsTitle", model.itemsTitle)
             intent.putExtra("itemsContentsCdLabel", model.itemsContentsCdLabel)
             intent.putExtra("itemsRepPhotoPhotoidImgPath", model.itemsRepPhotoPhotoidImgPath)

@@ -21,6 +21,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.visit_jeju_app.MainActivity
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.R
@@ -52,15 +53,23 @@ class ShopActivity : AppCompatActivity() {
     lateinit var mLastLocation: Location // 위치 값을 가지고 있는 객체
     private lateinit var handler: Handler
     private var lastUpdateTimestamp = 0L
-    private val updateDelayMillis = 40000
+    private val updateDelayMillis = 60000
     //리사이클러 뷰 업데이트 딜레이 업데이트 주기 생성
 
     lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
 
-    private var mapX : String = ""
-    private var mapY : String= ""
-    private var coords: String = ""
+    // 페이징 설정 순서0 lsy
+    // page 변수 생성
+    var shopPage : Int = 0
+
+    // 페이징 설정 순서1 lsy
+    // 페이징, 레스트로 부터 전달 받을 데이터 저장할 임시 리스트
+    lateinit var ShopListData : MutableList<ShopList>
+
+    val recycler: RecyclerView by lazy {
+        binding.recyclerView
+    }
 
     //액션버튼 토글
     lateinit var toggle: ActionBarDrawerToggle
@@ -74,12 +83,22 @@ class ShopActivity : AppCompatActivity() {
         }
     }
 
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+    private var lastKnownLocation: Location? = null
 
     lateinit var binding: ActivityShopBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityShopBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 페이징 설정 순서2 lsy
+        ShopListData = mutableListOf<ShopList>()
+
+        val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+        val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+        val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+        Log.d("ljs", "SharedPreferences에 현재위치 불러오기 ${lat}, ${lnt}")
 
         handler = Handler(Looper.getMainLooper())
 
@@ -200,6 +219,19 @@ class ShopActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        // 페이징 설정 순서5
+        // RecyclerView에 스크롤 리스너 추가(맨 아래에 닿았을 때, page 1씩 증가)
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1)) { // 목록의 끝에 도달했는지 확인
+                    shopPage++ // 페이지 번호 증가
+                    getShopListWithinRadius2(lat, lnt, 7.0, shopPage) // 서버에 새 페이지 데이터 요청
+                    Log.d("lsy", "Requesting page 확인1: $shopPage")
+                }
+            }
+        })
     }//oncreate
 
 
@@ -229,89 +261,150 @@ class ShopActivity : AppCompatActivity() {
             locationResult.lastLocation?.let { onLocationChanged(it) }
         }
     }
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
     private fun onLocationChanged(location: Location) {
-        mLastLocation = location
-        val coords = "${mLastLocation.longitude},${mLastLocation.latitude}"
-        getShopListWithinRadius(coords)
+        if (lastKnownLocation == null || isLocationChanged(location, lastKnownLocation!!)) {
+            mLastLocation = location
+            lastKnownLocation = location
+            // 페이징 설정 순서6
+            val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+            val lat: Double? = pref.getString("lat", null)?.toDoubleOrNull()
+            val lnt: Double? = pref.getString("lnt", null)?.toDoubleOrNull()
+
+            getShopListWithinRadius(lat, lnt, 7.0, shopPage)
+        }
     }
+        // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+        private fun isLocationChanged(newLocation: Location, lastLocation: Location): Boolean {
+            return newLocation.latitude != lastLocation.latitude || newLocation.longitude != lastLocation.longitude
+        }
 
-    private fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        // 반경 필터링
-        val R = 6371.0 // 지구의 반지름 (단위: km)
-
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-
-        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2)
-        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-        return R * c
-    }
-
-    private fun getShopListWithinRadius(coords: String) {
+    private fun getShopListWithinRadius(lat: Double?, lnt: Double?, radius : Double, shopPage : Int) {
 
         val networkService = (applicationContext as MyApplication).networkService
-        val shopListCall = networkService.GetShopList()
+        val shopListCall = networkService.getShopGPS(lat, lnt, radius , shopPage)
 
-        shopListCall.enqueue(object : Callback<List<ShopList>> {
+        shopListCall.enqueue(object : Callback<MutableList<ShopList>> {
             override fun onResponse(
-                call: Call<List<ShopList>>,
-                response: Response<List<ShopList>>
+                call: Call<MutableList<ShopList>>,
+                response: Response<MutableList<ShopList>>
 
             ) {
-                val shopList = response.body()
+                // 페이징 설정 순서3 lsy
+                if (response.isSuccessful) {
+                    val shopList = response.body()
+                    shopList?.let {
+                        Log.d("lsy", "getShopListWithinRadius1 불러온 shopList 값 : ${shopList}")
+                        Log.d("lsy", "getShopListWithinRadius1 불러온 shopList 사이즈 : ${shopList.size}")
+                        Log.d("lsy", "통신 후 받아온 shopList 길이 값 : ${shopList.size}")
+                        Log.d("lsy", "Requesting shopPage 확인2: $shopPage")
+                        // 받아온 데이터를 임시로 저장할 리스트를 전역 하나 만들고,
+                        // 최초로 5개를 받아와서, 전역에 넣고,
+                        // 페이징 되서, 2번째 페이지의 데이터 5개를 받아오면, 그 데이터를
+                        // 다시, 전역에 선언한 리스트에 다시 담고
+                        // 어댑터에 연결하기, 어댑터 객체에 다시 리스트를 인자로 넣고
+                        // 데이터 변경 , 데이터를 추가 했을 때, ->
 
-                Log.d("ljs","shopModel 값 : ${shopList}")
+                        ShopListData.addAll(it)
 
-                val centerLatitude = mLastLocation.latitude
-                val centerLongitude = mLastLocation.longitude
-                val radius = 5.0 // 5km 반경
+                        val currentTime = System.currentTimeMillis()
 
+                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+                            return
+                        }
 
-                val shopistSpotsWithinRadius = shopList?.mapNotNull { spot ->
-                    val distance = haversineDistance(
-                        centerLatitude, centerLongitude,
-                        spot.itemsLatitude, spot.itemsLongitude
-                    )
-                    if (distance <= radius) {
-                        spot // 관광지 데이터 객체 자체를 반환
-                    } else {
-                        null
+                        lastUpdateTimestamp = currentTime
+
+                        val layoutManager = LinearLayoutManager(this@ShopActivity)
+
+                        binding.recyclerView.layoutManager = layoutManager
+
+                        binding.recyclerView.adapter =
+                            ShopAdapter(this@ShopActivity, ShopListData)
+
+//                        binding.recyclerView1234.addItemDecoration(
+//                            DividerItemDecoration(this@ShopActivity, LinearLayoutManager.VERTICAL)
+//                        )
+
                     }
                 }
-
-                val currentTime = System.currentTimeMillis()
-
-                // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
-                if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
-                    return
-                }
-
-                lastUpdateTimestamp = currentTime
-
-                val layoutManager = LinearLayoutManager(this@ShopActivity)
-
-                binding.recyclerView.layoutManager = layoutManager
-
-                binding.recyclerView.adapter =
-                    ShopAdapter(this@ShopActivity,shopistSpotsWithinRadius)
-
-
-                binding.recyclerView.addItemDecoration(
-                    DividerItemDecoration(this@ShopActivity, LinearLayoutManager.VERTICAL)
-                )
-
             }
-
-
-            override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
-                Log.d("lsy", "fail")
+            override fun onFailure(call: Call<MutableList<ShopList>>, t: Throwable) {
+                Log.d("ljs", "fail")
                 call.cancel()
             }
         })
     }
+
+
+    // 페이징 설정 순서4 lsy
+    private fun getShopListWithinRadius2(lat: Double?, lnt: Double?, radius : Double, shopPage : Int) {
+        Log.d("lsy", "getShopListWithinRadius2 실행")
+        val networkService = (applicationContext as MyApplication).networkService
+        val shopListCall = networkService.getShopGPS(lat, lnt, radius , shopPage)
+
+        shopListCall.enqueue(object : Callback<MutableList<ShopList>> {
+            override fun onResponse(
+                call: Call<MutableList<ShopList>>,
+                response: Response<MutableList<ShopList>>
+
+            ) {
+                if (response.isSuccessful) {
+                    val shopList = response.body()
+                    shopList?.let {
+                        Log.d("lsy", "getShopListWithinRadius2 불러온 새 shopList 값 : ${shopList}")
+                        Log.d("lsy", "getShopListWithinRadius2 불러온 새 shopList 사이즈 : ${shopList.size}")
+                        Log.d("lsy", "통신 후 받아온 shopList 길이 값 : ${shopList.size}")
+                        Log.d("lsy", "Requesting shopPage 확인2: $shopPage")
+
+                        getData2(it)
+
+                        val currentTime = System.currentTimeMillis()
+
+                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+                            return
+                        }
+                        lastUpdateTimestamp = currentTime
+
+
+                        val layoutManager = LinearLayoutManager(this@ShopActivity)
+
+                        binding.recyclerView.layoutManager = layoutManager
+
+                        binding.recyclerView.adapter =
+                            ShopAdapter(this@ShopActivity, ShopListData)
+
+//                        binding.recyclerView1234.addItemDecoration(
+//                            DividerItemDecoration(this@ShopActivity, LinearLayoutManager.VERTICAL)
+//                        )
+
+                    }
+                }
+            }
+            override fun onFailure(call: Call<MutableList<ShopList>>, t: Throwable) {
+                Log.d("ljs", "fail")
+                call.cancel()
+            }
+        })
+    }
+
+    fun getData2(datas2: MutableList<ShopList>?) {
+        Log.d("lsy","getData2 함수 호출 시작.")
+        Log.d("lsy","getData2 함수 호출 시작2.datasSpring size 값 : ${ShopListData?.size} ")
+        ShopListData?.size?.let {
+            recycler.adapter?.notifyItemInserted(
+                it.minus(1)
+            )
+        }
+        if (ShopListData?.size != null){
+            ShopListData?.addAll(datas2 as Collection<ShopList>)
+        }
+        recycler.adapter?.notifyDataSetChanged()
+
+    }
+
 
     private fun checkPermissionForLocation(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

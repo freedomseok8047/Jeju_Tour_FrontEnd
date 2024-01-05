@@ -11,6 +11,36 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface NetworkServiceRegionNm {
+
+    // 디테일 --------------------------------------------------------
+    @GET("accom/accomDtl/{accomId}")
+    fun getAccomDtl(
+        @Path("accomId") accomId: Long
+    ): Call<List<AccomList>>
+
+    @GET("res/resDtl/{resId}")
+    fun getResDtl(
+        @Path("resId") resId: Long
+    ): Call<List<ResList>>
+
+    @GET("tour/tourDtl/{tourId}")
+    fun getTourDtl(
+        @Path("tourId") tourId: Long
+    ): Call<List<TourList>>
+
+    @GET("fes/fesDtl/{fesId}")
+    fun getFesDtl(
+        @Path("fesId") fesId: Long
+    ): Call<List<FesList>>
+
+    @GET("shop/shopDtl/{shopId}")
+    fun getShopDtl(
+        @Path("shopId") shopId: Long
+    ): Call<List<ShopList>>
+
+    // 디테일 -------------------------------------------------------- 끝
+
+    // 지역별 -----------------------------------------------------
     @GET("tour/tourList/{itemsRegion2CdValue}")
     fun getList(
         @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
@@ -36,7 +66,10 @@ interface NetworkServiceRegionNm {
         @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
     ): Call<List<FesList>>
 
+    // 지역별 ----------------------------------------------------- 끝
 
+
+    // AllList-----------------------------------------------------
     @GET("tour/tourAllList")
     fun GetTourList(): Call<List<TourList>>
 
@@ -51,45 +84,55 @@ interface NetworkServiceRegionNm {
 
     @GET("fes/fesAllList")
     fun GetFesList(): Call<List<FesList>>
-//
-//    @GET("fes/fesAllList")
-//    fun GetFesList(): Call<List<FesList>>
 
+    // AllList----------------------------------------------------- 끝
 
+    // ByGPS-----------------------------------------------------
     @GET("tour/tourList/tourByGPS")
     fun getTourGPS(
         @Query("lat") lat : Double?,
-        @Query("lnt") lnt : Double?
-    ): Call<List<TourList>>
+        @Query("lnt") lnt : Double?,
+        @Query("radius") radius : Double?,
+        @Query("page") page : Int?
+    ): Call<MutableList<TourList>>
 
-//    http://10.100.104.32:8083/tour/tourList/tourByGPS?lat=33.4&lnt=126.2
+            //http://10.100.104.32:8083/tour/tourList/tourByGPS/?lat=33.4&lnt=126.2?page=1
 
     @GET("accom/accomList/accomByGPS")
     fun getAccomGPS(
         @Query("lat") lat : Double?,
-        @Query("lnt") lnt : Double?
-    ): Call<List<AccomList>>
+        @Query("lnt") lnt : Double?,
+        @Query("radius") radius : Double?,
+        @Query("page") page : Int?
+    ): Call<MutableList<AccomList>>
 
     @GET("res/resList/resByGPS")
     fun getResGPS(
         @Query("lat") lat : Double?,
-        @Query("lnt") lnt : Double?
-    ): Call<List<ResList>>
+        @Query("lnt") lnt : Double?,
+        @Query("radius") radius : Double?,
+        @Query("page") page : Int?
+    ): Call<MutableList<ResList>>
 
     @GET("fes/fesList/fesByGPS")
     fun getFesGPS(
         @Query("lat") lat : Double?,
-        @Query("lnt") lnt : Double?
-    ): Call<List<FesList>>
+        @Query("lnt") lnt : Double?,
+        @Query("radius") radius : Double?,
+        @Query("page") page : Int?
+    ): Call<MutableList<FesList>>
 
     @GET("shop/shopList/shopByGPS")
     fun getShopGPS(
         @Query("lat") lat : Double?,
-        @Query("lnt") lnt : Double?
-    ): Call<List<ShopList>>
+        @Query("lnt") lnt : Double?,
+        @Query("radius") radius : Double?,
+        @Query("page") page : Int?
+    ): Call<MutableList<ShopList>>
 
 
 
+    // ByGPS----------------------------------------------------- 끝
 
 
 }

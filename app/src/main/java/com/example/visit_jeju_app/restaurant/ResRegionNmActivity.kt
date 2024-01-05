@@ -209,6 +209,8 @@ class ResRegionNmActivity : AppCompatActivity() {
             ) {
                 val ResList = response.body()
 
+                Log.d("ljs","resModel 값 : ${ResList}")
+
                 binding.recyclerView.adapter =
                     RegionNmAdapter(this@ResRegionNmActivity, ResList)
 
