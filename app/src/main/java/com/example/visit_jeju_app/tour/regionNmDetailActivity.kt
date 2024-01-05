@@ -271,17 +271,17 @@ class regionNmDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
 
-        val networkService = (applicationContext as MyApplication).networkService
-        val tourId : Long = intent.getLongExtra("tourId",Long.MIN_VALUE)
-        Log.d("ljs", "intent로 받아온 tourId 값 확인 : ${tourId}")
-        val mapListCall = networkService.getTourDtl(tourId)
-
-        mapListCall?.enqueue(object : retrofit2.Callback<List<TourList>> {
-            override fun onResponse(
-                call: Call<List<TourList>>,
-                response: Response<List<TourList>>
-            ) {
-                var TourList = response.body()
+//        val networkService = (applicationContext as MyApplication).networkService
+//        val tourId : Long = intent.getLongExtra("tourId",Long.MIN_VALUE)
+//        Log.d("ljs", "intent로 받아온 tourId 값 확인 : ${tourId}")
+//        val mapListCall = networkService.getTourDtl(tourId)
+//
+//        mapListCall?.enqueue(object : retrofit2.Callback<List<TourList>> {
+//            override fun onResponse(
+//                call: Call<List<TourList>>,
+//                response: Response<List<TourList>>
+//            ) {
+//                var TourList = response.body()
 
                 // 마커 객체 생성
                 val marker = Marker()
@@ -301,13 +301,13 @@ class regionNmDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 naverMap.cameraPosition = cameraPosition
 
 
-            }
-
-            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
-                call.cancel()
-            }
-
-        })
+//            }
+//
+//            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+//                call.cancel()
+//            }
+//
+//        })
 
     }
 

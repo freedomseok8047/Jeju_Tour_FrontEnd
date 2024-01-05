@@ -50,7 +50,7 @@ class TourActivity : AppCompatActivity() {
     lateinit var mLastLocation: Location // 위치 값을 가지고 있는 객체
     private lateinit var handler: Handler
     private var lastUpdateTimestamp = 0L
-    private val updateDelayMillis = 40000
+    private val updateDelayMillis = 60000
     //리사이클러 뷰 업데이트 딜레이 업데이트 주기 생성
 
     lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
@@ -98,7 +98,6 @@ class TourActivity : AppCompatActivity() {
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
 
-        Log.d("ljs", "공유 프리퍼런스 lat: $lat, lnt: $lnt")
 
         headerLogoutBtn.setOnClickListener {
             // 로그아웃 로직
@@ -337,14 +336,14 @@ class TourActivity : AppCompatActivity() {
 
                         TourListData.addAll(it)
 
-//                        val currentTime = System.currentTimeMillis()
-//
-//                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
-//                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
-//                            return
-//                        }
-//
-//                        lastUpdateTimestamp = currentTime
+                        val currentTime = System.currentTimeMillis()
+
+                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+                            return
+                        }
+
+                        lastUpdateTimestamp = currentTime
 
                         val layoutManager = LinearLayoutManager(this@TourActivity)
 
@@ -389,13 +388,13 @@ class TourActivity : AppCompatActivity() {
 
                         getData2(it)
 
-//                        val currentTime = System.currentTimeMillis()
-//
-//                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
-//                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
-//                            return
-//                        }
-//                        lastUpdateTimestamp = currentTime
+                        val currentTime = System.currentTimeMillis()
+
+                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+                            return
+                        }
+                        lastUpdateTimestamp = currentTime
 
 
                         val layoutManager = LinearLayoutManager(this@TourActivity)

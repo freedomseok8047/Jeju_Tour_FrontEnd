@@ -841,11 +841,11 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
-        getLocation("Tour")
-        getLocation("Accom")
-        getLocation("Res")
-        getLocation("Fes")
-        getLocation("Shop")
+//        getLocation("Tour")
+//        getLocation("Accom")
+//        getLocation("Res")
+//        getLocation("Fes")
+//        getLocation("Shop")
     }
 
     private fun stopLocationUpdates() {
