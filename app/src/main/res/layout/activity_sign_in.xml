@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:textSize="28sp"
         android:layout_marginTop="60dp"
-        android:text="로그인"/>
+    android:text="로그인"
+    android:textStyle="bold"/>
+
 
     <TextView
         android:id="@+id/authMainTextView"
@@ -22,14 +24,15 @@
         android:textColor="#555"
         android:textSize="16sp"/>
 
-    <Button
-        android:id="@+id/logoutBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="로그아웃"
-        android:visibility="visible"
-        style="@style/buttonStyle2"/>
+    <android.widget.Button
+    android:id="@+id/logoutBtn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="30dp"
+    android:text="로그아웃"
+    android:visibility="visible"
+    style="@style/buttonStyle"/>
+
 
 
     <!--이메일-->
@@ -53,16 +56,15 @@
         android:inputType="textPassword"
         android:visibility="visible" />
 
-
-    <Button
-        android:id="@+id/loginBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="40dp"
-        android:text="로그인"
-        android:visibility="visible"
-        style="@style/buttonStyle"/>
+    <android.widget.Button
+    android:id="@+id/loginBtn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="40dp"
+    android:text="로그인"
+    android:visibility="visible"
+    style="@style/buttonStyle"/>
 
 
 </LinearLayout>

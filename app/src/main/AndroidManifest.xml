@@ -27,9 +27,6 @@
             android:name=".login.PhoneAuthActivity"
             android:exported="true" />
         <activity
-            android:name=".login.Auth_back_Activity"
-            android:exported="false" />
-        <activity
             android:name=".login.SignUpActivity"
             android:exported="true" />
         <activity

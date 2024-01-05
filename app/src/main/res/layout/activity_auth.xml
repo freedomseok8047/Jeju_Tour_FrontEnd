@@ -25,9 +25,9 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="80dp"
             android:text="어서오세요.\nJeju Tour입니다."
-            android:textSize="28sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="36sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView2"
@@ -37,9 +37,9 @@
             android:layout_marginTop="40dp"
             android:text="실시간 위치기반으로 여행에 필요한 \n모든 정보를 제공하고 있습니다. "
             android:textColor="#888"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
     </LinearLayout>
 
     <LinearLayout
@@ -73,66 +73,4 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-<!--
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".login.AuthActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:text="어서오세요.\nJeju Tour입니다."
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView"
-            android:textSize="28sp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="80dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="40dp" />
-
-        <TextView
-            android:text="실시간 위치기반으로 여행에 필요한 \n모든 정보를 제공하고 있습니다. "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView2"
-            android:textSize="16sp"
-            android:textColor="#888"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="40dp" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="25dp"
-        android:orientation="vertical">
-
-        <android.widget.Button
-            android:id="@+id/signInBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="회원이면 로그인하세요"
-            style="@style/buttonStyle"/>
-
-        <android.widget.Button
-            android:id="@+id/signUpBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="아직 회원이 아니신가요?"
-            style="@style/buttonStyle2"
-            app:layout_constraintTop_toBottomOf="@+id/signInBtn"
-            android:layout_marginTop="8dp" />
-    </LinearLayout>
-</LinearLayout>-->
