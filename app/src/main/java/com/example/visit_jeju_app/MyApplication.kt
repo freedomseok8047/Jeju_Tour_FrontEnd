@@ -1,7 +1,12 @@
 package com.example.visit_jeju_app
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.location.Location
+import android.util.Log
 import androidx.multidex.MultiDexApplication
 import com.example.visit_jeju_app.retrofit.NetworkServiceRegionNm
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -23,6 +28,8 @@ class MyApplication : MultiDexApplication() {
         lateinit var rdb: DatabaseReference
         //인증할 이메일
         var email : String? = null
+        var lat : Double? = null
+        var lnt : Double? = null
 
         // 이미지 저장소 , 인스턴스 도구
         lateinit var storage: FirebaseStorage
@@ -40,6 +47,9 @@ class MyApplication : MultiDexApplication() {
                 false
             }
         }
+
+
+
     } //companion
 
 

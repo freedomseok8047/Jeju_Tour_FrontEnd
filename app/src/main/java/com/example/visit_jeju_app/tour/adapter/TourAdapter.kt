@@ -50,6 +50,7 @@ class TourAdapter(val context: TourActivity, val datas:List<TourList>?): Recycle
         //클릭시 관광지 상세정보 페이지에 정보넘기기
         holder.binding.root.setOnClickListener {
             val intent = Intent(holder.binding.root?.context, TourDetailActivity::class.java)
+            intent.putExtra("tourId", model?.tourId)
             intent.putExtra("itemsLatitude", model?.itemsLatitude)
             intent.putExtra("itemsLongitude", model?.itemsLongitude)
             intent.putExtra("itemsTitle", model?.itemsTitle)

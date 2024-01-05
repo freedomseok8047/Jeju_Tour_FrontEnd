@@ -19,7 +19,7 @@ class RecyclerView(val datas : MutableList<String>) : RecyclerView.Adapter<Recyc
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding = (holder as MyViewHolder).binding
-        binding.testText.text = datas[position]
+        //binding.testText.text = datas[position]
     }
 
 }

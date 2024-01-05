@@ -98,5 +98,12 @@ dependencies {
     // 카드뷰
     implementation ("androidx.cardview:cardview:1.0.0")
 
+    // 슬라이딩 패널
+    implementation ("com.sothree.slidinguppanel:library:3.4.0")
+
+    // Java language implementation
+    implementation "androidx.preference:preference:1.2.1"
+    // 공유 프레퍼런스
+    implementation "androidx.preference:preference-ktx:1.2.1"
 
 }

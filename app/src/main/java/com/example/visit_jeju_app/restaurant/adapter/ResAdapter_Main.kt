@@ -11,12 +11,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.databinding.ItemResBinding
+<<<<<<< HEAD
+=======
+import com.example.visit_jeju_app.databinding.MainItemBinding
+>>>>>>> visit_jeju_MK15(mid_test2)
 import com.example.visit_jeju_app.restaurant.ResActivity
 import com.example.visit_jeju_app.restaurant.ResDetailActivity
 import com.example.visit_jeju_app.restaurant.model.ResList
 
+<<<<<<< HEAD
 class ResViewHolder2(val binding: ItemResBinding): RecyclerView.ViewHolder(binding.root)
 class ResAdapter_Main(val context: Context, val datas:MutableList<ResList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+=======
+class ResViewHolder2(val binding: MainItemBinding): RecyclerView.ViewHolder(binding.root)
+class ResAdapter_Main(val context: Context, val datas:List<ResList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+>>>>>>> visit_jeju_MK15(mid_test2)
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -24,17 +33,29 @@ class ResAdapter_Main(val context: Context, val datas:MutableList<ResList>?): Re
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
+<<<<<<< HEAD
             = ResViewHolder2(ItemResBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as ResViewHolder2).binding
         val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
         holder.binding.root.animation = animation
+=======
+            = ResViewHolder2(MainItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val binding=(holder as ResViewHolder2).binding
+//        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
+//        holder.binding.root.animation = animation
+>>>>>>> visit_jeju_MK15(mid_test2)
 
         //add......................................
         val model = datas?.get(position)
         binding.name.text = model?.itemsTitle
+<<<<<<< HEAD
         binding.addr1.text = model?.itemsAddress
+=======
+>>>>>>> visit_jeju_MK15(mid_test2)
         binding.addr2.text = model?.itemsRoadAddress
         binding.tel.text = model?.itemsPhoneNo
         Log.d("ljs","model?.itemsTitle: ${model?.itemsTitle}")
@@ -43,7 +64,11 @@ class ResAdapter_Main(val context: Context, val datas:MutableList<ResList>?): Re
         //방법2)
         Glide.with(context)
             //load 실제 URL 주소 직접 넣기.
+<<<<<<< HEAD
             .load(model?.itemsRepPhotoPhotoidThumbnailPath)
+=======
+            .load(model?.itemsRepPhotoPhotoidImgPath)
+>>>>>>> visit_jeju_MK15(mid_test2)
             .override(150,150)
             .into(binding.thumbNailPhoto)
 

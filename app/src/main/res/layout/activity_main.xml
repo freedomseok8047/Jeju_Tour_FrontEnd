@@ -70,8 +70,7 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager_mainVisual"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:background="#eee"/>
+                    android:layout_height="match_parent"/>
                 <!-- //메인 비쥬얼 슬라이더 -->
 
 
@@ -92,7 +91,7 @@
                         android:textStyle="bold"
                         android:layout_marginLeft="30dp" />
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/viewRecyclerAccom"
+                        android:id="@+id/viewRecyclerHotel"
                         android:layout_width="match_parent"
                         android:layout_height="320dp" />
 
