@@ -17,6 +17,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -134,6 +135,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 카테고리 버튼 참조 및 OnClickListener 설정
+        findViewById<Button>(R.id.accommodationCategoryButton).setOnClickListener {
+            scrollToSection(R.id.viewRecyclerAccom)
+        }
+
+        findViewById<Button>(R.id.restaurantCategoryButton).setOnClickListener {
+            scrollToSection(R.id.viewRecyclerRestaurant)
+        }
+
+        findViewById<Button>(R.id.tourCategoryButton).setOnClickListener {
+            scrollToSection(R.id.viewRecyclerTour)
+        }
+
+        findViewById<Button>(R.id.shoppingCategoryButton).setOnClickListener {
+            scrollToSection(R.id.viewRecyclerShopping)
+        }
+
+        findViewById<Button>(R.id.festivalCategoryButton).setOnClickListener {
+            scrollToSection(R.id.viewRecyclerFestival)
+        }
 
         handler = Handler(Looper.getMainLooper())
         Log.d("lsy","Handler   Looper.getMainLooper() =====================================")
@@ -358,7 +380,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 메인 카테고리 더보기 링크
-        // 메인 카테고리 더보기 링크
         val moreAccomTextView: TextView = findViewById(R.id.mainItemMoreBtn1)
         val moreRestaurantTextView: TextView = findViewById(R.id.mainItemMoreBtn2)
         val moreTourTextView: TextView = findViewById(R.id.mainItemMoreBtn3)
@@ -396,6 +417,27 @@ class MainActivity : AppCompatActivity() {
             intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
             startActivity(intent)
         }
+
+        // 메인 비주얼
+        viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
+        viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
+        viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
+
+        val NUM_PAGES = 4 // 전체 페이지 수
+        var currentPage = 0
+
+        // 자동 스크롤을 위한 Handler 생성
+        val handler = Handler(Looper.getMainLooper())
+        val runnable = object : Runnable {
+            override fun run() {
+                currentPage = (currentPage + 1) % NUM_PAGES // 다음 페이지로 이동
+                viewPager_mainVisual.setCurrentItem(currentPage, true) // 다음 페이지로 슬라이드
+
+                handler.postDelayed(this, 3000) // 3초 후에 다음 페이지로 이동
+            }
+        }
+        // 자동 스크롤 시작
+        handler.postDelayed(runnable, 3000) // 3초 후에 첫 번째 페이지로 이동
 
 
     } //Todo onCreate 끝
@@ -488,10 +530,6 @@ class MainActivity : AppCompatActivity() {
 
             )
             {
-                // 메인 비주얼
-                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
-                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
-                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
 
                 // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
                 val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
@@ -540,10 +578,6 @@ class MainActivity : AppCompatActivity() {
 
             )
             {
-                // 메인 비주얼
-                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
-                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
-                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
 
                 // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
                 val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
@@ -590,10 +624,6 @@ class MainActivity : AppCompatActivity() {
 
             )
             {
-                // 메인 비주얼
-                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
-                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
-                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
 
                 // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
                 val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
@@ -642,10 +672,6 @@ class MainActivity : AppCompatActivity() {
 
             )
             {
-                // 메인 비주얼
-                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
-                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
-                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
 
                 // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
                 val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
@@ -694,10 +720,6 @@ class MainActivity : AppCompatActivity() {
 
             )
             {
-                // 메인 비주얼
-                viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
-                viewPager_mainVisual.adapter = ImageSliderAdapter(getMainvisual()) // 어댑터 생성
-                viewPager_mainVisual.orientation = ViewPager2.ORIENTATION_HORIZONTAL // 방향을 가로로
 
                 // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
                 val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
@@ -1182,6 +1204,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         recycler.adapter?.notifyDataSetChanged()
+    }
+
+    private fun scrollToSection(sectionId: Int) {
+        val sectionView = findViewById<View>(sectionId)
+        binding.scroll.smoothScrollTo(0, sectionView.top)
     }
 
 

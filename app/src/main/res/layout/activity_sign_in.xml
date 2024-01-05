@@ -23,14 +23,14 @@
         android:textColor="#555"
         android:textSize="16sp"/>
 
-    <Button
+    <android.widget.Button
         android:id="@+id/logoutBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:text="로그아웃"
         android:visibility="visible"
-        style="@style/buttonStyle2"/>
+        style="@style/buttonStyle"/>
 
 
     <!--이메일-->
@@ -55,7 +55,7 @@
         android:visibility="visible" />
 
 
-    <Button
+    <android.widget.Button
         android:id="@+id/loginBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
