@@ -2,22 +2,22 @@
 <LinearLayout
     android:id="@+id/item_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="240dp"
+    android:layout_width="220dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
     android:paddingTop="12dp"
     android:layout_marginBottom="30dp">
 
     <ImageView
         android:id="@+id/thumbNailPhoto"
-        android:layout_width="220dp"
-        android:layout_height="164dp"
+        android:layout_width="200dp"
+        android:layout_height="148dp"
         android:src="@drawable/noimg"
         android:scaleType="centerCrop"/>
 
     <LinearLayout
-        android:layout_width="220dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="10dp">
@@ -27,7 +27,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="title"
-            android:layout_marginBottom="6dp"
             style="@style/subTitleStyle"/>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -38,15 +37,15 @@
                 android:id="@+id/reg1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:drawableStart="@drawable/baseline_location_on_24"
+                android:textSize="14sp"
+                android:drawableStart="@drawable/map_pin"
                 android:drawablePadding="8dp"
                 android:text="region1" />
             <TextView
                 android:id="@+id/reg2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:text=" &gt; region2" />
         </LinearLayout>
 

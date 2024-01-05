@@ -74,6 +74,8 @@ class ShopActivity : AppCompatActivity() {
         }
     }
 
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+    private var lastKnownLocation: Location? = null
 
     lateinit var binding: ActivityShopBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -225,11 +227,19 @@ class ShopActivity : AppCompatActivity() {
             locationResult.lastLocation?.let { onLocationChanged(it) }
         }
     }
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
     private fun onLocationChanged(location: Location) {
-        mLastLocation = location
-        val coords = "${mLastLocation.longitude},${mLastLocation.latitude}"
-        getShopListWithinRadius(coords)
+        if (lastKnownLocation == null || isLocationChanged(location, lastKnownLocation!!)) {
+            mLastLocation = location
+            lastKnownLocation = location
+            val coords = "${mLastLocation.longitude},${mLastLocation.latitude}"
+            getShopListWithinRadius(coords)
+        }
     }
+        // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+        private fun isLocationChanged(newLocation: Location, lastLocation: Location): Boolean {
+            return newLocation.latitude != lastLocation.latitude || newLocation.longitude != lastLocation.longitude
+        }
 
     private fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         // 반경 필터링

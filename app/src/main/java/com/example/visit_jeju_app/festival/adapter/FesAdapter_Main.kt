@@ -18,7 +18,7 @@ import com.example.visit_jeju_app.festival.FesDetailActivity
 import com.example.visit_jeju_app.festival.model.FesList
 
 class FesViewHolder2(val binding: MainItem2Binding): RecyclerView.ViewHolder(binding.root)
-class FesAdapter_Main(val context: Context, val datas:MutableList<FesList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class FesAdapter_Main(val context: Context, val datas:List<FesList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0

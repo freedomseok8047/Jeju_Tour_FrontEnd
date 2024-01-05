@@ -22,9 +22,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.camp.campingapp.model.NaverReverseGeocodeResponse
 import com.example.visit_jeju_app.MainActivity
 import com.example.visit_jeju_app.MyApplication
+import com.example.visit_jeju_app.MyApplication.Companion.lat
+import com.example.visit_jeju_app.MyApplication.Companion.lnt
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.accommodation.AccomActivity
 import com.example.visit_jeju_app.chat.ChatActivity
+import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.community.activity.CommReadActivity
 import com.example.visit_jeju_app.databinding.ActivityTourBinding
 import com.example.visit_jeju_app.festival.FesActivity
@@ -61,18 +64,19 @@ class TourActivity : AppCompatActivity() {
     private val updateDelayMillis = 40000
     //리사이클러 뷰 업데이트 딜레이 업데이트 주기 생성
 
-    lateinit var mLocationRequest: com.google.android.gms.location.LocationRequest // 위치 정보 요청의 매개변수를 저장하는
+    lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
 
-//    private var mapX : String = ""
-//    private var mapY : String= ""
-//    private var coords: String = ""
-
+    var tourPage : Int = 0
 
     lateinit var binding: ActivityTourBinding
 
     //액션버튼 토글(공통 레이아웃 코드)
     lateinit var toggle: ActionBarDrawerToggle
+
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+    private var lastKnownLocation: Location? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTourBinding.inflate(layoutInflater)
@@ -86,6 +90,8 @@ class TourActivity : AppCompatActivity() {
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
+
+        Log.d("ljs", "공유 프리퍼런스 lat: $lat, lnt: $lnt")
 
         headerLogoutBtn.setOnClickListener {
             // 로그아웃 로직
@@ -115,36 +121,55 @@ class TourActivity : AppCompatActivity() {
         //버튼 클릭스 동기화 : 드로워 열어주기(공통 레이아웃 코드)
         toggle.syncState()
 
-        // NavigationView 메뉴 아이템 클릭 리스너 설정(공통 레이아웃 코드)
+        // NavigationView 메뉴 아이템 클릭 리스너 설정
         binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.accommodation -> {
-                    startActivity(Intent(this, AccomActivity::class.java))
+                    val intent = Intent(this, AccomActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.restaurant -> {
-                    startActivity(Intent(this, ResActivity::class.java))
+                    val intent = Intent(this, ResActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.tour -> {
-                    startActivity(Intent(this, TourActivity::class.java))
+                    val intent = Intent(this, TourActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.festival -> {
-                    startActivity(Intent(this, FesActivity::class.java))
+                    val intent = Intent(this, FesActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.shopping -> {
-                    startActivity(Intent(this, ShopActivity::class.java))
+                    val intent = Intent(this, ShopActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.community -> {
-                    // '커뮤니티' 메뉴 아이템 클릭 시 CommReadActivity로 이동
-                    startActivity(Intent(this, CommReadActivity::class.java))
+                    val intent = Intent(this, CommReadActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.chatting -> {
-                    startActivity(Intent(this, ChatActivity::class.java))
+                    val intent = Intent(this, ChatMainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
 
@@ -245,58 +270,39 @@ class TourActivity : AppCompatActivity() {
             locationResult.lastLocation?.let { onLocationChanged(it) }
         }
     }
+
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
     private fun onLocationChanged(location: Location) {
+        if (lastKnownLocation == null || isLocationChanged(location, lastKnownLocation!!)) {
         mLastLocation = location
-        val coords = "${mLastLocation.longitude},${mLastLocation.latitude}"
-        getTourListWithinRadius()
+        lastKnownLocation = location
+            val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+            val lat: Double? = pref.getString("lat", null)?.toDoubleOrNull()
+            val lnt: Double? = pref.getString("lnt", null)?.toDoubleOrNull()
+
+        getTourListWithinRadius(lat, lnt, 7.0, tourPage)
+    }
+   }
+
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+    private fun isLocationChanged(newLocation: Location, lastLocation: Location): Boolean {
+        return newLocation.latitude != lastLocation.latitude || newLocation.longitude != lastLocation.longitude
     }
 
-    private fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        // 반경 필터링
-        val R = 6371.0 // 지구의 반지름 (단위: km)
-
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-
-        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2)
-        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-        return R * c
-    }
-
-    private fun getTourListWithinRadius() {
+    private fun getTourListWithinRadius(lat: Double?, lnt: Double?, radius : Double, tourPage : Int) {
 
         val networkService = (applicationContext as MyApplication).networkService
-        val tourListCall = networkService.GetTourList()
+        val tourListCall = networkService.getTourGPS(lat, lnt, radius , tourPage)
 
-        tourListCall.enqueue(object : Callback<List<TourList>> {
+        tourListCall.enqueue(object : Callback<MutableList<TourList>> {
             override fun onResponse(
-                call: Call<List<TourList>>,
-                response: Response<List<TourList>>
+                call: Call<MutableList<TourList>>,
+                response: Response<MutableList<TourList>>
 
             ) {
                 val tourList = response.body()
 
                 Log.d("ljs","tourModel 값 : ${tourList}")
-
-                val centerLatitude = mLastLocation.latitude
-                val centerLongitude = mLastLocation.longitude
-                val radius = 5.0 // 5km 반경
-
-
-                val touristSpotsWithinRadius = tourList?.mapNotNull { spot ->
-                    val distance = haversineDistance(
-                        centerLatitude, centerLongitude,
-                        spot.itemsLatitude, spot.itemsLongitude
-                    )
-                    if (distance <= radius) {
-                        spot // 관광지 데이터 객체 자체를 반환
-                    } else {
-                        null
-                    }
-                }
 
                 val currentTime = System.currentTimeMillis()
 
@@ -312,7 +318,7 @@ class TourActivity : AppCompatActivity() {
                 binding.recyclerView.layoutManager = layoutManager
 
                 binding.recyclerView.adapter =
-                    TourAdapter(this@TourActivity,touristSpotsWithinRadius)
+                    TourAdapter(this@TourActivity,tourList)
 
 
                 binding.recyclerView.addItemDecoration(
@@ -322,8 +328,8 @@ class TourActivity : AppCompatActivity() {
             }
 
 
-            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
-                Log.d("lsy", "fail")
+            override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
+                Log.d("ljs", "fail")
                 call.cancel()
             }
         })

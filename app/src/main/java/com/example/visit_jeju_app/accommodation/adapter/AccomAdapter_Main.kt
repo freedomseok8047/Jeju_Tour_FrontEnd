@@ -16,8 +16,9 @@ import com.example.visit_jeju_app.accommodation.AccomDetailActivity
 import com.example.visit_jeju_app.accommodation.model.AccomList
 import com.example.visit_jeju_app.databinding.MainItemBinding
 
+
 class AccomViewHolder2(val binding: MainItemBinding): RecyclerView.ViewHolder(binding.root)
-class AccomAdapter_Main(val context: Context, val datas:MutableList<AccomList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class AccomAdapter_Main(val context: Context, val datas:List<AccomList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -25,7 +26,7 @@ class AccomAdapter_Main(val context: Context, val datas:MutableList<AccomList>?)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
-            = AccomViewHolder2(MainItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+  = AccomViewHolder2(MainItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as AccomViewHolder2).binding
@@ -33,6 +34,7 @@ class AccomAdapter_Main(val context: Context, val datas:MutableList<AccomList>?)
         // 애니매이션 일단 주석
 //        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
 //        holder.binding.root.animation = animation
+
 
         //add......................................
         val model = datas?.get(position)

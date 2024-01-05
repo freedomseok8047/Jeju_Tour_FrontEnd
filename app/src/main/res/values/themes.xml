@@ -1,22 +1,40 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.Visit_Jeju_App" parent="Theme.Material3.DayNight.NoActionBar">
-<!--    <style name="Base.Theme.Visit_Jeju_App" parent="Theme.AppCompat.Light.NoActionBar">-->
+<!--            <style name="Base.Theme.Visit_Jeju_App" parent="Theme.AppCompat.Light.NoActionBar">-->
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
         <!-- Primary brand color -->
+        <item name="android:windowBackground">@color/white</item>
         <item name="colorPrimary">@color/jejutourPoint</item>  <!-- 액션바(타이틀바)의 색상 결정-->
         <item name="colorPrimaryDark">@color/jejutourBase</item> <!-- 상태바(시간 및 LTE보여주는 바)의 색상 결정-->
+        <item name="colorOnPrimary">@color/white</item>
         <!--        <item name="colorAccent">@color/colorAccent</item>-->
         <item name="android:textColor">#000000</item>   <!-- 텍스트 색상 -->
+<!--        <item name="android:actionMenuTextColor">@color/white</item>-->
+
+        <!-- 메뉴 아이콘 색상 -->
+<!--        <item name="android:textColorSecondary">#FF0000</item>-->
+<!--        &lt;!&ndash; 메뉴 텍스트 색상 &ndash;&gt;-->
+<!--        <item name="android:textColorPrimary">#00FF00</item>-->
+<!--        &lt;!&ndash; 메뉴 텍스트 크기 &ndash;&gt;-->
+<!--        <item name="android:textSize">22sp</item>-->
+
+        <!--custom font-family 적용-->
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
 
     </style>
 
-    <style name="Theme.Visit_Jeju_App" parent="Base.Theme.Visit_Jeju_App" />
+    <style name="Theme.Visit_Jeju_App" parent="Base.Theme.Visit_Jeju_App"/>
 
     <style name="DrawerStyle" parent="Base.Theme.Visit_Jeju_App">
         <item name="color">#EA4A17</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <style name="ToolBarCss">
@@ -24,27 +42,5 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:background">@color/jejutourPoint</item>
     </style>
-
-    <!-- main -->
-    <style name="mainTitleStyle">
-        <item name="android:textColor">#333</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="subTitleStyle">
-        <item name="android:textColor">#444</item>
-        <item name="android:textSize">22sp</item>
-<!--        <item name="android:textStyle">bold</item>-->
-    </style>
-
-    <!-- Button -->
-    <style name="buttonStyle">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-
-
 
 </resources>
