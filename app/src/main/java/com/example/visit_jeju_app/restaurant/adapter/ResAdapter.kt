@@ -15,7 +15,7 @@ import com.example.visit_jeju_app.restaurant.ResDetailActivity
 import com.example.visit_jeju_app.restaurant.model.ResList
 
 class ResViewHolder(val binding: ItemResBinding): RecyclerView.ViewHolder(binding.root)
-class ResAdapter(val context: ResActivity, val datas:List<ResList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ResAdapter(val context: ResActivity, val datas:MutableList<ResList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -27,8 +27,8 @@ class ResAdapter(val context: ResActivity, val datas:List<ResList>?): RecyclerVi
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as ResViewHolder).binding
-        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
-        holder.binding.root.animation = animation
+//        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
+//        holder.binding.root.animation = animation
 
         //add......................................
         val model = datas?.get(position)

@@ -15,7 +15,7 @@ import com.example.visit_jeju_app.festival.FesDetailActivity
 import com.example.visit_jeju_app.festival.model.FesList
 
 class FesViewHolder(val binding: ItemFesBinding): RecyclerView.ViewHolder(binding.root)
-class FesAdapter(val context: FesActivity, val datas:List<FesList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class FesAdapter(val context: FesActivity, val datas:MutableList<FesList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -27,8 +27,8 @@ class FesAdapter(val context: FesActivity, val datas:List<FesList>?): RecyclerVi
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as FesViewHolder).binding
-        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
-        holder.binding.root.animation = animation
+//        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
+//        holder.binding.root.animation = animation
 
         //add......................................
         val model = datas?.get(position)

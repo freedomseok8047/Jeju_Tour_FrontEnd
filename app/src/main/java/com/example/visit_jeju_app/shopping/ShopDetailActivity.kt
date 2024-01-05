@@ -192,22 +192,22 @@ class ShopDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(naverMap: NaverMap) {
-        val networkService = (applicationContext as MyApplication).networkService
-        val shopId : Long = intent.getLongExtra("shopId",Long.MIN_VALUE)
-        Log.d("ljs", "intent로 받아온 shopId 값 확인 : ${shopId}")
-        val mapListCall = networkService.getShopDtl(shopId)
-
-        val uiSettings = Companion.naverMap?.uiSettings
-        uiSettings?.isCompassEnabled = true
-        uiSettings?.isLocationButtonEnabled = true
-
-        mapListCall.enqueue(object : Callback<List<ShopList>> {
-            override fun onResponse(
-                call: Call<List<ShopList>>,
-                response: Response<List<ShopList>>
-
-            ) {
-                var shopModel = response.body()
+//        val networkService = (applicationContext as MyApplication).networkService
+//        val shopId : Long = intent.getLongExtra("shopId",Long.MIN_VALUE)
+//        Log.d("ljs", "intent로 받아온 shopId 값 확인 : ${shopId}")
+//        val mapListCall = networkService.getShopDtl(shopId)
+//
+//        val uiSettings = Companion.naverMap?.uiSettings
+//        uiSettings?.isCompassEnabled = true
+//        uiSettings?.isLocationButtonEnabled = true
+//
+//        mapListCall.enqueue(object : Callback<List<ShopList>> {
+//            override fun onResponse(
+//                call: Call<List<ShopList>>,
+//                response: Response<List<ShopList>>
+//
+//            ) {
+//                var shopModel = response.body()
 
                 // 마커 객체 생성
                 val marker = Marker()
@@ -235,14 +235,14 @@ class ShopDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 naverMap.cameraPosition = cameraPosition
 
 
-            }
-
-            override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
-                call.cancel()
-            }
-
-
-        })
+//            }
+//
+//            override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
+//                call.cancel()
+//            }
+//
+//
+//        })
 
 
     }

@@ -191,21 +191,21 @@ class FesDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(naverMap: NaverMap) {
-        val networkService = (applicationContext as MyApplication).networkService
-        val fesId : Long = intent.getLongExtra("festivalId",Long.MIN_VALUE)
-        Log.d("ljs", "intent로 받아온 fesId 값 확인 : ${fesId}")
-        val mapListCall = networkService.getFesDtl(fesId)
-        val uiSettings = Companion.naverMap?.uiSettings
-        uiSettings?.isCompassEnabled = true
-        uiSettings?.isLocationButtonEnabled = true
-
-        mapListCall.enqueue(object : Callback<List<FesList>> {
-            override fun onResponse(
-                call: Call<List<FesList>>,
-                response: Response<List<FesList>>
-
-            ) {
-                var fesModel = response.body()
+//        val networkService = (applicationContext as MyApplication).networkService
+//        val fesId : Long = intent.getLongExtra("festivalId",Long.MIN_VALUE)
+//        Log.d("ljs", "intent로 받아온 fesId 값 확인 : ${fesId}")
+//        val mapListCall = networkService.getFesDtl(fesId)
+//        val uiSettings = Companion.naverMap?.uiSettings
+//        uiSettings?.isCompassEnabled = true
+//        uiSettings?.isLocationButtonEnabled = true
+//
+//        mapListCall.enqueue(object : Callback<List<FesList>> {
+//            override fun onResponse(
+//                call: Call<List<FesList>>,
+//                response: Response<List<FesList>>
+//
+//            ) {
+//                var fesModel = response.body()
 
                 // 마커 객체 생성
                 val marker = Marker()
@@ -233,14 +233,14 @@ class FesDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 naverMap.cameraPosition = cameraPosition
 
 
-            }
-
-            override fun onFailure(call: Call<List<FesList>>, t: Throwable) {
-                call.cancel()
-            }
-
-
-        })
+//            }
+//
+//            override fun onFailure(call: Call<List<FesList>>, t: Throwable) {
+//                call.cancel()
+//            }
+//
+//
+//        })
 
 
     }
