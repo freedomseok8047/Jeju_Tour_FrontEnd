@@ -424,22 +424,68 @@ class MainActivity : AppCompatActivity() {
 
     } //Todo onCreate 끝
 
-    // 위치 좌표 변경되었을 때, 호출되는 데이터가 새로 반영되도록 하는 코드
-//    override fun onNewIntent(intent: Intent?) {
-//        super.onNewIntent(intent)
-//        setIntent(intent) // 새 인텐트 설정
-//
-//        // 예시: 로그를 찍는 것으로 시작합니다.
-//        Log.d("lsy", "onNewIntent 호출됨")
-//
-//        // 예를 들어, 사용자의 위치 데이터를 새로고침하는 메서드 호출
-//        getLocation("Tour")
-//        getLocation("Accom")
-//        getLocation("Res")
-//        getLocation("Fes")
-//        getLocation("Shop")
-//
-//    }
+    // 뷰 페이저에 들어갈 아이템
+    private fun getMainvisual(): ArrayList<Int> {
+        return arrayListOf<Int>(
+                R.drawable.jeju_apec02,
+                R.drawable.jeju_apec03,
+                R.drawable.jeju_apec04,
+                R.drawable.jeju_apec01,)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu,menu)
+
+        // 검색 뷰에, 이벤트 추가하기.
+        val menuItem = menu?.findItem(R.id.menu_toolbar_search)
+        // menuItem 의 형을 SearchView 타입으로 변환, 형변환
+        val searchView = menuItem?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                //검색어가 변경시 마다, 실행될 로직을 추가.
+                Log.d("kmk","텍스트 변경시 마다 호출 : ${newText} ")
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                // 검색어가 제출이 되었을 경우, 연결할 로직.
+                // 사용자 디비, 검색을하고, 그 결과 뷰를 출력하는 형태.
+                Toast.makeText(this@MainActivity,"검색어가 전송됨 : ${query}", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        })
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun scrollToSection(sectionId: Int) {
+        val sectionView = findViewById<View>(sectionId)
+        binding.scroll.smoothScrollTo(0, sectionView.top)
+    }
+
+    override fun onBackPressed() {
+        // 여기에 뒤로가기 버튼을 눌렀을 때의 로직을 구현합니다.
+        if (isTaskRoot) {
+            AlertDialog.Builder(this)
+                    .setMessage("앱을 종료하시겠습니까?")
+                    .setCancelable(false)
+                    .setPositiveButton("예") { _, _ ->
+                        super.onBackPressed() // '예'를 선택한 경우, 앱 종료
+                    }
+                    .setNegativeButton("아니요", null) // '아니요'를 선택한 경우, 아무것도 하지 않음
+                    .show()
+        } else {
+            super.onBackPressed() // 다른 액티비티가 스택에 있으면, 이전 화면으로 이동
+        }
+    }
+
 
     // 위치 데이터 획득 추가 ---------------------------------------------------------
     private fun createLocationRequest() {
@@ -881,52 +927,7 @@ class MainActivity : AppCompatActivity() {
     //-------------------------------------------------------------------------------------------
 
 
-    // 뷰 페이저에 들어갈 아이템
-    private fun getMainvisual(): ArrayList<Int> {
-        return arrayListOf<Int>(
-            R.drawable.jeju_apec02,
-            R.drawable.jeju_apec03,
-            R.drawable.jeju_apec04,
-            R.drawable.jeju_apec01,)
-    }
 
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu,menu)
-
-        // 검색 뷰에, 이벤트 추가하기.
-        val menuItem = menu?.findItem(R.id.menu_toolbar_search)
-        // menuItem 의 형을 SearchView 타입으로 변환, 형변환
-        val searchView = menuItem?.actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String?): Boolean {
-                //검색어가 변경시 마다, 실행될 로직을 추가.
-                Log.d("kmk","텍스트 변경시 마다 호출 : ${newText} ")
-                return true
-            }
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                // 검색어가 제출이 되었을 경우, 연결할 로직.
-                // 사용자 디비, 검색을하고, 그 결과 뷰를 출력하는 형태.
-                Toast.makeText(this@MainActivity,"검색어가 전송됨 : ${query}", Toast.LENGTH_SHORT).show()
-                return true
-            }
-        })
-
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    private fun scrollToSection(sectionId: Int) {
-        val sectionView = findViewById<View>(sectionId)
-        binding.scroll.smoothScrollTo(0, sectionView.top)
-    }
 
 
     private fun checkPermissionForLocation(context: Context): Boolean {
@@ -967,22 +968,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null) // 핸들러 메시지 제거
-    }
-
-    override fun onBackPressed() {
-        // 여기에 뒤로가기 버튼을 눌렀을 때의 로직을 구현합니다.
-        if (isTaskRoot) {
-            AlertDialog.Builder(this)
-                .setMessage("앱을 종료하시겠습니까?")
-                .setCancelable(false)
-                .setPositiveButton("예") { _, _ ->
-                    super.onBackPressed() // '예'를 선택한 경우, 앱 종료
-                }
-                .setNegativeButton("아니요", null) // '아니요'를 선택한 경우, 아무것도 하지 않음
-                .show()
-        } else {
-            super.onBackPressed() // 다른 액티비티가 스택에 있으면, 이전 화면으로 이동
-        }
     }
 
     // 네트워크 호출과 응답 처리 부분을 별도의 제네릭 함수로 분리
