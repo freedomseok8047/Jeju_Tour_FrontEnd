@@ -33,9 +33,12 @@
                 <!--툴바 뷰 생성 -->
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
+                    style="@style/ToolBarCss"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin" />
+                    app:navigationIconTint="@color/white"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="scroll|enterAlways" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 

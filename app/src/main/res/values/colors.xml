@@ -14,5 +14,9 @@
     <color name="com_facebook_button_background_color_focused">#3C5A99</color>
     <color name="com_facebook_button_border_color_focused">#3C5A99</color>
     <color name="jejutourBase">#242c63</color>
+    <color name="jejutourBaseSub">#A1AAE5</color>
     <color name="jejutourPoint">#f15e4a</color>
+    <color name="jejutourPointSub">#F5BEB7</color>
+
+
 </resources>
