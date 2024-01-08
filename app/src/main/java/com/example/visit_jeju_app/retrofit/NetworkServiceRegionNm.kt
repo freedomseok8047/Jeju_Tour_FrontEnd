@@ -159,7 +159,10 @@ data class UserInfo(
 fun addUserToMysql(name: String, email: String, firebaseUid: String) {
     // Retrofit을 사용하여 서버 API 호출
     val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.100.104.32:8083/") // 서버 URL
+        // 학원 pc 서버 주소
+//            .baseUrl("http://10.100.104.32:8083/") // 서버 URL
+        // aws 외부서버 주소
+        .baseUrl("http://43.201.149.182:8083/") // 서버 URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
