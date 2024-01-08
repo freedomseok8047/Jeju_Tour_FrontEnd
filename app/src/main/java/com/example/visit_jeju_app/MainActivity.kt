@@ -506,23 +506,6 @@ class MainActivity : AppCompatActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onBackPressed() {
-        // 여기에 뒤로가기 버튼을 눌렀을 때의 로직을 구현합니다.
-        if (isTaskRoot) {
-            AlertDialog.Builder(this)
-                    .setMessage("앱을 종료하시겠습니까?")
-                    .setCancelable(false)
-                    .setPositiveButton("예") { _, _ ->
-                        super.onBackPressed() // '예'를 선택한 경우, 앱 종료
-                    }
-                    .setNegativeButton("아니요", null) // '아니요'를 선택한 경우, 아무것도 하지 않음
-                    .show()
-        } else {
-            super.onBackPressed() // 다른 액티비티가 스택에 있으면, 이전 화면으로 이동
-        }
-    }
-
-
     // 위치 데이터 획득 추가 ---------------------------------------------------------
     private fun createLocationRequest() {
         locationRequest = LocationRequest.create()?.apply {
@@ -982,6 +965,22 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacksAndMessages(null) // 핸들러 메시지 제거
+    }
+
+    override fun onBackPressed() {
+        // 여기에 뒤로가기 버튼을 눌렀을 때의 로직을 구현합니다.
+        if (isTaskRoot) {
+            AlertDialog.Builder(this)
+                .setMessage("앱을 종료하시겠습니까?")
+                .setCancelable(false)
+                .setPositiveButton("예") { _, _ ->
+                    super.onBackPressed() // '예'를 선택한 경우, 앱 종료
+                }
+                .setNegativeButton("아니요", null) // '아니요'를 선택한 경우, 아무것도 하지 않음
+                .show()
+        } else {
+            super.onBackPressed() // 다른 액티비티가 스택에 있으면, 이전 화면으로 이동
+        }
     }
 
     // 네트워크 호출과 응답 처리 부분을 별도의 제네릭 함수로 분리

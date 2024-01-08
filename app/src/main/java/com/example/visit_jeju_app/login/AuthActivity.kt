@@ -37,12 +37,14 @@ class AuthActivity : AppCompatActivity() {
         binding.signInBtn.setOnClickListener {
             val signInIntent = Intent(this, SignInActivity::class.java)
             startActivity(signInIntent)
+            finish()
         }
 
         // signUpBtn 클릭 이벤트 처리
         binding.signUpBtn.setOnClickListener {
             val signUpIntent = Intent(this, PhoneAuthActivity::class.java)
             startActivity(signUpIntent)
+            finish()
         }
 
 
