@@ -46,6 +46,12 @@ class SignInActivity : AppCompatActivity() {
             //이메일, 비밀번호 로그인.......................
             val email = binding.authEmailEditView.text.toString()
             val password = binding.authPasswordEditView.text.toString()
+
+            if (email.isBlank() || password.isBlank()) {
+                Toast.makeText(baseContext, "이메일과 비밀번호를 모두 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             MyApplication.auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this){ task ->
                     binding.authEmailEditView.text.clear()

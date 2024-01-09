@@ -162,7 +162,7 @@ fun addUserToMysql(name: String, email: String, firebaseUid: String) {
         // 학원 pc 서버 주소
 //            .baseUrl("http://10.100.104.32:8083/") // 서버 URL
         // aws 외부서버 주소
-        .baseUrl("http://43.201.149.182:8083/") // 서버 URL
+        .baseUrl("http://3.38.106.235:8083/") // 서버 URL
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
