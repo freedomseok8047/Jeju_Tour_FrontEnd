@@ -44,9 +44,17 @@
 
     <style name="signUpSubTitle">
         <item name="android:textSize">20sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/sans_medium</item>
         <item name="android:layout_marginTop">16dp</item>
         <item name="android:layout_marginBottom">8dp</item>
     </style>
+
+    <style name="signUpSubTitle2">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/sans_medium</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+    </style>
+
 
 </resources>
