@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.example.visit_jeju_app.MainActivity
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.MyApplication.Companion.auth
+import com.example.visit_jeju_app.MyApplication.Companion.email
 import com.example.visit_jeju_app.MyApplication.Companion.rdb
 import com.example.visit_jeju_app.databinding.ActivityPhoneAuthBinding
 import com.google.firebase.FirebaseException
@@ -54,27 +55,29 @@ class PhoneAuthActivity : AppCompatActivity() {
         }
 
 
-        // 인증번호 확인 버튼 눌렀을 때
-        binding.checkAuth.setOnClickListener {
-            val userCode = binding.inputAuthNum.text.toString()
-            val credential = PhoneAuthProvider.getCredential(messageAuthCode, userCode)
-            auth.signInWithCredential(credential)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        val intent = Intent(this@PhoneAuthActivity, SignUpActivity::class.java)
-                        intent.putExtra("USER_EMAIL", MyApplication.email)
-                        startActivity(intent)
-                        Toast.makeText(this@PhoneAuthActivity, "인증이 확인 되었습니다.", Toast.LENGTH_SHORT).show()
-                        finish()
-                    } else {
-                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                            Toast.makeText(this@PhoneAuthActivity, "인증 코드를 다시 확인해주세요.", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Log.e("lsy", "인증 실패: ${task.exception}")
-                        }
-                    }
-                }
-        }
+//        // 인증번호 확인 버튼 눌렀을 때
+//        binding.checkAuth.setOnClickListener {
+//
+//            val userCode = binding.inputAuthNum.text.toString()
+//            val credential = PhoneAuthProvider.getCredential(messageAuthCode, userCode)
+//
+//            auth.signInWithCredential(credential)
+//                .addOnCompleteListener(this) { task ->
+//                    if (task.isSuccessful) {
+//                        val intent = Intent(this@PhoneAuthActivity, SignUpActivity::class.java)
+//                        intent.putExtra("USER_EMAIL", MyApplication.email)
+//                        startActivity(intent)
+//                        Toast.makeText(this@PhoneAuthActivity, "인증이 확인 되었습니다.", Toast.LENGTH_SHORT).show()
+//                        finish()
+//                    } else {
+//                        if (task.exception is FirebaseAuthInvalidCredentialsException) {
+//                            Toast.makeText(this@PhoneAuthActivity, "인증 코드를 다시 확인해주세요.", Toast.LENGTH_SHORT).show()
+//                        } else {
+//                            Log.e("lsy", "인증 실패: ${task.exception}")
+//                        }
+//                    }
+//                }
+//        }
     }
 
     private fun formatToInternational(phoneNumber: String): String {
