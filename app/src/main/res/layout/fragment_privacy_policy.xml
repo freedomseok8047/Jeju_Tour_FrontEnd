@@ -495,7 +495,7 @@
                             android:padding="8dp"
                             android:layout_margin="1dp"
                             android:background="#fff"
-                            android:text="1) 성 명 : 이현석 \n2) 직 책 : 팀장 \n3) E-mail : 0000"/>
+                            android:text="1) 성 명 : 이현석 \n2) 직 책 : 팀장 \n3) E-mail : gustjr5059@naver.com"/>
 
                         <TextView
                             android:layout_width="160dp"
@@ -504,7 +504,7 @@
                             android:padding="8dp"
                             android:layout_margin="1dp"
                             android:background="#fff"
-                            android:text="1) 부 서 명 : 여행사업팀 \n2) E – mail : 0000"/>
+                            android:text="1) 부 서 명 : 여행사업팀 \n2) E – mail : gustjr5059@naver.com"/>
 
                     </GridLayout>
                 </HorizontalScrollView>
