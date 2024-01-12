@@ -49,185 +49,182 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="16dp"
                 android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/itemCategoryView"
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:background="#FF9800"
-                android:textColor="@color/white"
-                android:textAlignment="center"
-                />
-
-            <TextView
-                android:id="@+id/CommunityWriter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                android:fontFamily="@font/sans_medium"
-                android:textSize="11sp"/>
-
-            <TextView
-                android:id="@+id/CommunityDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                android:fontFamily="@font/sans_medium"
-                android:textSize="11sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/sans_medium"
-                    android:text="📔 제목" />
-
-                <TextView
-                    android:id="@+id/CommunityTitle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:background="#eeeeee"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/sans_medium"
-                     />
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/itemCategoryView"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:background="#FF9800"
+                            android:textAlignment="center"
+                            android:textColor="@color/white" />
+
+                        <TextView
+                            android:id="@+id/CommunityWriter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/sans_medium"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:id="@+id/CommunityDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/sans_medium"
+                            android:textSize="11sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/sans_medium"
+                            android:text="📔 제목"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/CommunityTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            android:background="#eeeeee"
+                            android:fontFamily="@font/sans_medium"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sans_medium"
+                        android:text="📖 내용"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/CommunityContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="#eeeeee"
+                        android:fontFamily="@font/sans_medium"
+                        android:padding="16dp"
+                        android:scrollbars="vertical" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sans_medium"
+                        android:text="🖼️ 사진"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/ImageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_marginTop="10dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/imageupload1" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/CommunityModify"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="#FF9800"
+                            android:padding="16dp"
+                            android:text="수정"
+                            android:textColor="@color/white" />
+
+                        <Button
+                            android:id="@+id/CommunityDelete"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="#FF9800"
+                            android:padding="16dp"
+                            android:text="삭제"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/sans_medium"
+                        android:text="📝 댓글"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/commentRecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <LinearLayout
+                        android:id="@+id/comment_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <EditText
+                            android:id="@+id/CommunityComment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="#eeeeee"
+                            android:hint="댓글 내용을 입력하세요"
+                            android:padding="8dp" />
+
+                        <Button
+                            android:id="@+id/CommentWrite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="#FF9800"
+                            android:padding="8dp"
+                            android:text="댓글 등록"
+                            android:textColor="@color/white" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:fontFamily="@font/sans_medium"
-                android:text="📖 내용" />
-
-            <TextView
-                android:id="@+id/CommunityContent"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:background="#eeeeee"
-                android:padding="16dp"
-                android:fontFamily="@font/sans_medium"
-                android:scrollbars="vertical" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:fontFamily="@font/sans_medium"
-                android:text="🖼️ 사진" />
-
-            <ImageView
-                android:id="@+id/ImageView"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/imageupload1" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/CommunityModify"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:padding="16dp"
-                    android:background="#FF9800"
-                    android:text="수정"
-                    android:textColor="@color/white"/>
-
-                <Button
-                    android:id="@+id/CommunityDelete"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:padding="16dp"
-                    android:background="#FF9800"
-                    android:text="삭제"
-                    android:textColor="@color/white"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textStyle="bold"
-                android:fontFamily="@font/sans_medium"
-                android:text="📝 댓글" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/commentRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <LinearLayout
-                android:id="@+id/comment_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                android:padding="8dp">
-
-                <EditText
-                    android:id="@+id/CommunityComment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#eeeeee"
-                    android:hint="댓글 내용을 입력하세요"
-                    android:padding="8dp" />
-
-                <Button
-                    android:id="@+id/CommentWrite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="8dp"
-                    android:background="#FF9800"
-                    android:text="댓글 등록"
-                    android:textColor="@color/white"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 

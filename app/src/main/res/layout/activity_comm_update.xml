@@ -82,23 +82,23 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/regImageUpdateBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="16dp"
-                android:background="#FF9800"
-                android:textColor="@color/white"
-                android:text="사진 변경"/>
+<!--            <Button-->
+<!--                android:id="@+id/regImageUpdateBtn"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:padding="16dp"-->
+<!--                android:background="#FF9800"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:text="사진 변경"/>-->
 
-            <ImageView
-                android:id="@+id/regImageUpdateView"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/imageupload1" />
+<!--            <ImageView-->
+<!--                android:id="@+id/regImageUpdateView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="300dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/imageupload1" />-->
 
             <TextView
                 android:layout_width="60dp"
