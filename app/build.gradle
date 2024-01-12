@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.visit_jeju_app'
+    namespace 'com.jeju_tour.visit_jeju_app'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.visit_jeju_app"
+        applicationId "com.jeju_tour.visit_jeju_app"
         minSdk 24
         targetSdk 33
         versionCode 1
