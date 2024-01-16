@@ -212,8 +212,8 @@ class AccomDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 //            ) {
 //                var accomModel = accomponse.body()
 
-                // 마커 객체 생성
-                val marker = Marker()
+        // 마커 객체 생성
+        val marker = Marker()
 
 //                // o9 "itemsLatitude": 33.4840605,
 //                @SerializedName("itemsLatitude")
@@ -223,21 +223,21 @@ class AccomDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 //                @SerializedName("itemsLongitude")
 //                var itemsLongitude : String,
 
-                val lat: Double = intent.getDoubleExtra("itemsLatitude", Double.MAX_VALUE)
-                val lnt: Double = intent.getDoubleExtra("itemsLongitude", Double.MAX_VALUE)
+        val lat: Double = intent.getDoubleExtra("itemsLatitude", Double.MAX_VALUE)
+        val lnt: Double = intent.getDoubleExtra("itemsLongitude", Double.MAX_VALUE)
 
-                Log.d("ljs", "intent로 받아온 lat 값 확인 : ${lat}")
-                Log.d("ljs", "intent로 받아온 lnt 값 확인 : ${lnt}")
+        Log.d("ljs", "intent로 받아온 lat 값 확인 : ${lat}")
+        Log.d("ljs", "intent로 받아온 lnt 값 확인 : ${lnt}")
 
-                // 가져온 위도, 경도 값으로 position 세팅
-                marker.setPosition(LatLng(lat, lnt))
-                marker.setMap(naverMap)
+        // 가져온 위도, 경도 값으로 position 세팅
+        marker.setPosition(LatLng(lat, lnt))
+        marker.setMap(naverMap)
 
-                val cameraPosition = CameraPosition( // 카메라 위치 변경
-                    LatLng(lat,lnt),  // 위치 지정
-                    10.0 // 줌 레벨
-                )
-                naverMap.cameraPosition = cameraPosition
+        val cameraPosition = CameraPosition( // 카메라 위치 변경
+            LatLng(lat,lnt),  // 위치 지정
+            10.0 // 줌 레벨
+        )
+        naverMap.cameraPosition = cameraPosition
 
 
 //            }

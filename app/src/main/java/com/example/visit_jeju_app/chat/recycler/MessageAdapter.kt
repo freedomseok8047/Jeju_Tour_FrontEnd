@@ -62,4 +62,4 @@ class MessageAdapter(private val context: Context, private val messageList: Arra
     //받는 쪽
     class ReceiveViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val receiveMessage: TextView = itemView.findViewById(R.id.receive_message_text)
-}}
+    }}

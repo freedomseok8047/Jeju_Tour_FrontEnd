@@ -215,22 +215,22 @@ class regionNmDetailAccomActivity : AppCompatActivity(), OnMapReadyCallback {
 //            ) {
 //                var AccomList = accomponse.body()
 
-                // 마커 객체 생성
-                val marker = Marker()
+        // 마커 객체 생성
+        val marker = Marker()
 
-                // DB의 첫번째 행 식당의 위도, 경도 값 가져와 변수에 넣기
-                val lat: Double = intent.getDoubleExtra("itemsLatitude", Double.MAX_VALUE)
-                val lnt: Double = intent.getDoubleExtra("itemsLongitude", Double.MAX_VALUE)
+        // DB의 첫번째 행 식당의 위도, 경도 값 가져와 변수에 넣기
+        val lat: Double = intent.getDoubleExtra("itemsLatitude", Double.MAX_VALUE)
+        val lnt: Double = intent.getDoubleExtra("itemsLongitude", Double.MAX_VALUE)
 
-                // 가져온 위도, 경도 값으로 position 세팅
-                marker.setPosition(LatLng(lat, lnt))
-                marker.setMap(naverMap)
+        // 가져온 위도, 경도 값으로 position 세팅
+        marker.setPosition(LatLng(lat, lnt))
+        marker.setMap(naverMap)
 
-                val cameraPosition = CameraPosition( // 카메라 위치 변경
-                    LatLng(lat, lnt),  // 위치 지정
-                    10.0 // 줌 레벨
-                )
-                naverMap.cameraPosition = cameraPosition
+        val cameraPosition = CameraPosition( // 카메라 위치 변경
+            LatLng(lat, lnt),  // 위치 지정
+            10.0 // 줌 레벨
+        )
+        naverMap.cameraPosition = cameraPosition
 
 
 //            }

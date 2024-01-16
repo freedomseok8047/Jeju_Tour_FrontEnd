@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.Toast
 import com.example.visit_jeju_app.MainActivity
 import com.example.visit_jeju_app.MyApplication
-import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.databinding.ActivitySignInBinding
 import com.example.visit_jeju_app.login.model.User
 import com.example.visit_jeju_app.retrofit.addUserToMysql

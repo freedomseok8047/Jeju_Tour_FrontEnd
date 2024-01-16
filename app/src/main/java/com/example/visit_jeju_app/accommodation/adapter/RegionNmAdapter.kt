@@ -75,18 +75,3 @@ class RegionNmAdapter(val context: AccomRegionNmActivity, val datas: List<AccomL
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -28,4 +28,3 @@ data class ReverseGeocodeArea(
 
     // 다른 정보들도 필요하면 추가
 )
-

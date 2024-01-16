@@ -12,9 +12,8 @@ import com.example.visit_jeju_app.MainActivity
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.MyApplication.Companion.auth
 import com.example.visit_jeju_app.MyApplication.Companion.rdb
-import com.example.visit_jeju_app.R
-import com.example.visit_jeju_app.login.model.User
 import com.example.visit_jeju_app.databinding.ActivityAuthBinding
+import com.example.visit_jeju_app.login.model.User
 import com.example.visit_jeju_app.retrofit.addUserToMysql
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException

@@ -12,7 +12,6 @@ import androidx.fragment.app.DialogFragment
 import com.example.visit_jeju_app.R
 
 
-
 class UserAgreementFragment : DialogFragment() {
     private var useragreementChangeListener: UserAgreementChangeListener? = null
 

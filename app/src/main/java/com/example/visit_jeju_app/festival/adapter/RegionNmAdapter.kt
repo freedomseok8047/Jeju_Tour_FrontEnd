@@ -75,18 +75,3 @@ class RegionNmAdapter(val context: FesRegionNmActivity, val datas: List<FesList>
 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

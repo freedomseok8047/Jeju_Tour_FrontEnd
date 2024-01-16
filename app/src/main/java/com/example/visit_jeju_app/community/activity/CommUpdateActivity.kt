@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.community.dateToString
+
 import com.example.visit_jeju_app.databinding.ActivityCommUpdateBinding
 import java.util.Date
 import java.util.UUID
@@ -26,7 +27,7 @@ class CommUpdateActivity : AppCompatActivity() {
     // 내용만 변경할 때, 파이어베이스에 반영이 안되는 문제 해결 코드
     // filePath가 초기화가 되지않아서 안된 문제
     // 기존 코드: lateinit var filePath: String
-     var filePath: String=""
+    var filePath: String=""
 
     // 이미지와 내용이 모두 변경되는 경우, 이미지만 변경되는 경우, 내용만 변경되는 경우인 총 3가지 경우로
     // 나누어서 파이어베이스의 스토어와 스토리지에 변경된 내용으로 저장되도록 하는 코드
@@ -181,4 +182,3 @@ class CommUpdateActivity : AppCompatActivity() {
         }
     }
 }
-

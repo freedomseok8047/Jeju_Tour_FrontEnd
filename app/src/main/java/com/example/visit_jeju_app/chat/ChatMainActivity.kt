@@ -169,26 +169,26 @@ class ChatMainActivity : AppCompatActivity() {
         }else{
             // 전체 유저가 나오게 함
             rdb.child("user").addListenerForSingleValueEvent(object : ValueEventListener {
-                    @SuppressLint("RestrictedApi")
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        userList.clear()
+                @SuppressLint("RestrictedApi")
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    userList.clear()
 
-                        for (userSnapshot in snapshot.children) {
-                            // 특정 username에 해당하는 사용자 정보를 가져옵니다.
-                            val user = userSnapshot.getValue(User::class.java)
+                    for (userSnapshot in snapshot.children) {
+                        // 특정 username에 해당하는 사용자 정보를 가져옵니다.
+                        val user = userSnapshot.getValue(User::class.java)
 
-                            if (user != null) {
-                                userList.add(user)
-                            }
+                        if (user != null) {
+                            userList.add(user)
                         }
-
-                        adapter.notifyDataSetChanged()
                     }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        // 에러 처리를 수행합니다.
-                    }
-                })
+                    adapter.notifyDataSetChanged()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // 에러 처리를 수행합니다.
+                }
+            })
         }
 
     } //onCreate

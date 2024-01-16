@@ -26,7 +26,7 @@ class AccomAdapter_Main(val context: Context, val datas:List<AccomList>?): Recyc
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder
-  = AccomViewHolder2(MainItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            = AccomViewHolder2(MainItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as AccomViewHolder2).binding

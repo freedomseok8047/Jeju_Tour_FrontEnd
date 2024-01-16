@@ -7,4 +7,3 @@ data class NaverReverseGeocodeResponseList(
     val results: List<ReverseGeocodeResult>
 )
 
-
