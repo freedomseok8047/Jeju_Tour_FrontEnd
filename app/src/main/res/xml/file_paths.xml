@@ -2,6 +2,6 @@
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
     <external-path
         name="myfiles"
-        path="Android/data/com.example.visit_jeju_app/files/Pictures"/>
+        path="Android/data/com.jeju_tour.visit_jeju_app/files/Pictures"/>
 
 </paths>

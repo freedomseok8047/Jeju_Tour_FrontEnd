@@ -67,14 +67,14 @@
             android:layout_weight="1"
             android:inputType="phone"
             android:layout_marginEnd="20dp"/>
-        <Button
-            android:id="@+id/checkAuth"
-            android:layout_width="136dp"
-            android:layout_height="wrap_content"
-            style="@style/buttonStyle"
-            android:textColor="@color/white"
-            android:text="인증번호 확인"
-            />
+<!--        <Button-->
+<!--            android:id="@+id/checkAuth"-->
+<!--            android:layout_width="136dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            style="@style/buttonStyle"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:text="인증번호 확인"-->
+<!--            />-->
     </LinearLayout>
 
 </LinearLayout>

@@ -152,7 +152,7 @@
             android:exported="true"
             android:launchMode="singleTop"/>
         <activity
-            android:name=".IntroActivity"
+            android:name="com.jeju_tour.visit_jeju_app.IntroActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
@@ -172,7 +172,7 @@
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="vbc859zh6w" />
+            android:value="88qnixeina" />
     </application>
 
 </manifest>
