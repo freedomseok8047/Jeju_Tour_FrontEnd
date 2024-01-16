@@ -51,7 +51,7 @@ interface NetworkServiceRegionNm {
 
     // 지역별 -----------------------------------------------------
     @GET("tour/tourList/{itemsRegion2CdValue}")
-    fun getList(
+    fun getTourList(
         @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
     ): Call<List<TourList>>
 
