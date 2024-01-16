@@ -25,8 +25,8 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.constraintlayout.motion.widget.Debug.getLocation2
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -78,8 +78,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private lateinit var handler: Handler
-    private var lastUpdateTimestamp = 0L
-    private val updateDelayMillis = 40000
+    //    private var lastUpdateTimestamp = 0L
+//    private val updateDelayMillis = 40000
     private val REQUEST_PERMISSION_LOCATION = 10
     // -----------------------------------------------------------
 
@@ -136,29 +136,28 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 카테고리 버튼 참조 및 OnClickListener 설정
+        handler = Handler(Looper.getMainLooper())
+        Log.d("lsy","Handler   Looper.getMainLooper() =====================================")
+
         findViewById<Button>(R.id.accommodationCategoryButton).setOnClickListener {
-            scrollToSection(R.id.viewRecyclerAccom)
+            scrollToSection(R.id.mainItemTitle1)
         }
 
         findViewById<Button>(R.id.restaurantCategoryButton).setOnClickListener {
-            scrollToSection(R.id.viewRecyclerRestaurant)
+            scrollToSection(R.id.mainItemTitle2)
         }
 
         findViewById<Button>(R.id.tourCategoryButton).setOnClickListener {
-            scrollToSection(R.id.viewRecyclerTour)
+            scrollToSection(R.id.mainItemTitle3)
         }
 
         findViewById<Button>(R.id.shoppingCategoryButton).setOnClickListener {
-            scrollToSection(R.id.viewRecyclerShopping)
+            scrollToSection(R.id.mainItemTitle5)
         }
 
         findViewById<Button>(R.id.festivalCategoryButton).setOnClickListener {
-            scrollToSection(R.id.viewRecyclerFestival)
+            scrollToSection(R.id.mainItemTitle4)
         }
-
-        handler = Handler(Looper.getMainLooper())
-        Log.d("lsy","Handler   Looper.getMainLooper() =====================================")
 
         // 투어 어댑터 초기화 및 설정
         tourAdapter_Main = TourAdapter_Main(this, mutableListOf())
@@ -265,8 +264,15 @@ class MainActivity : AppCompatActivity() {
 
         //---------------------------------------------------------
 
+        // SharedPreferences에서 이메일 주소 불러오기
+        val sharedPref = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
+        val userEmail = sharedPref.getString("USER_EMAIL", "No Email") // 기본값 "No Email"
+
+        // 네비게이션 드로어 헤더의 이메일 TextView 업데이트
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
+        headerUserEmail.text = userEmail
+
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
 
         headerLogoutBtn.setOnClickListener {
@@ -279,20 +285,16 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        val userEmail = intent.getStringExtra("USER_EMAIL") ?: "No Email"
-        headerUserEmail.text = userEmail
-
-
         setSupportActionBar(binding.toolbar)
 
         //드로워화면 액션버튼 클릭 시 드로워 화면 나오게 하기
         toggle =
-            ActionBarDrawerToggle(
-                this@MainActivity,
-                binding.drawerLayout,
-                R.string.open,
-                R.string.close
-            )
+                ActionBarDrawerToggle(
+                        this@MainActivity,
+                        binding.drawerLayout,
+                        R.string.open,
+                        R.string.close
+                )
 
         binding.drawerLayout.addDrawerListener(toggle)
         //화면 적용하기
@@ -463,21 +465,45 @@ class MainActivity : AppCompatActivity() {
 
     } //Todo onCreate 끝
 
-    // 싱글탑으로 메인 액티비티 재사용 시, 호출되는 데이터가 새로 반영되도록 하는 코드
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        setIntent(intent) // 새 인텐트 설정
+    // 뷰 페이저에 들어갈 아이템
+    private fun getMainvisual(): ArrayList<Int> {
+        return arrayListOf<Int>(
+                R.drawable.jeju_apec02,
+                R.drawable.jeju_apec03,
+                R.drawable.jeju_apec04,
+                R.drawable.jeju_apec01,)
+    }
 
-        // 예시: 로그를 찍는 것으로 시작합니다.
-        Log.d("lsy", "onNewIntent 호출됨")
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
-        // 예를 들어, 사용자의 위치 데이터를 새로고침하는 메서드 호출
-        getLocation("Tour")
-        getLocation("Accom")
-        getLocation("Res")
-        getLocation("Fes")
-        getLocation("Shop")
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu,menu)
 
+        // 검색 뷰에, 이벤트 추가하기.
+        val menuItem = menu?.findItem(R.id.menu_toolbar_search)
+        // menuItem 의 형을 SearchView 타입으로 변환, 형변환
+        val searchView = menuItem?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                //검색어가 변경시 마다, 실행될 로직을 추가.
+                Log.d("kmk","텍스트 변경시 마다 호출 : ${newText} ")
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                // 검색어가 제출이 되었을 경우, 연결할 로직.
+                // 사용자 디비, 검색을하고, 그 결과 뷰를 출력하는 형태.
+                Toast.makeText(this@MainActivity,"검색어가 전송됨 : ${query}", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        })
+
+        return super.onCreateOptionsMenu(menu)
     }
 
     // 위치 데이터 획득 추가 ---------------------------------------------------------
@@ -493,37 +519,37 @@ class MainActivity : AppCompatActivity() {
     private fun getLocation(dataType: String) {
         Log.d("ljs", "getLocation: Fetching location for $dataType")
         val fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(this)
+                LocationServices.getFusedLocationProviderClient(this)
 
         fusedLocationProviderClient.lastLocation
-            .addOnSuccessListener { location ->
-                location?.let {
-                    lat = it.latitude
-                    lnt = it.longitude
-                    Log.d("ljs", "현재위치 ${lat}, ${lnt}")
-                    // 위치 정보를 SharedPreferences에 저장
-                    saveLocationToSharedPreferences(lat, lnt)
+                .addOnSuccessListener { location ->
+                    location?.let {
+                        lat = it.latitude
+                        lnt = it.longitude
+                        Log.d("ljs", "현재위치 ${lat}, ${lnt}")
+                        // 위치 정보를 SharedPreferences에 저장
+                        saveLocationToSharedPreferences(lat, lnt)
 
-                    val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
-                    val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
-                    val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
-                    Log.d("ljs", "SharedPreferences에 현재위치 불러오기 ${lat}, ${lnt}")
+                        val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+                        val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+                        val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+                        Log.d("ljs", "SharedPreferences에 현재위치 불러오기 ${lat}, ${lnt}")
 
-                    // 서버에 데이터 요청
-                    when (dataType) {
+                        // 서버에 데이터 요청
+                        when (dataType) {
 
-                        "Tour" -> fetchTourData(lat, lnt, tourPage)
-                        "Accom" -> fetchAccomData(lat, lnt, accomPage)
-                        "Res" -> fetchResData(lat, lnt, resPage)
-                        "Fes" -> fetchFesData(lat, lnt, fesPage)
-                        "Shop" -> fetchShopData(lat, lnt, shopPage)
-                        // 기타 데이터 유형에 대한 처리를 추가할 수 있음
+                            "Tour" -> fetchTourData(lat, lnt, tourPage)
+                            "Accom" -> fetchAccomData(lat, lnt, accomPage)
+                            "Res" -> fetchResData(lat, lnt, resPage)
+                            "Fes" -> fetchFesData(lat, lnt, fesPage)
+                            "Shop" -> fetchShopData(lat, lnt, shopPage)
+                            // 기타 데이터 유형에 대한 처리를 추가할 수 있음
+                        }
                     }
                 }
-            }
-            .addOnFailureListener {
-                Log.d("ljs", "현재 위치 조회 실패")
-            }
+                .addOnFailureListener {
+                    Log.d("ljs", "현재 위치 조회 실패")
+                }
     }
 
     private fun saveLocationToSharedPreferences(lat: Double?, lnt: Double?) {
@@ -546,12 +572,11 @@ class MainActivity : AppCompatActivity() {
         val tourListCall = (applicationContext as MyApplication).networkService.getTourGPS(lat, lnt, 4.5, tourPage)
         tourListCall.enqueue(object : Callback<MutableList<TourList>> {
             override fun onResponse(
-                call: Call<MutableList<TourList>>,
-                response: Response<MutableList<TourList>>
+                    call: Call<MutableList<TourList>>,
+                    response: Response<MutableList<TourList>>
 
             )
             {
-
                 // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
                 val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
                 val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
@@ -577,6 +602,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
 
+
             }
 
             override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
@@ -594,12 +620,11 @@ class MainActivity : AppCompatActivity() {
         val accomListCall = (applicationContext as MyApplication).networkService.getAccomGPS(lat, lnt, 4.5, accomPage)
         accomListCall.enqueue(object : Callback<MutableList<AccomList>> {
             override fun onResponse(
-                call: Call<MutableList<AccomList>>,
-                response: Response<MutableList<AccomList>>
+                    call: Call<MutableList<AccomList>>,
+                    response: Response<MutableList<AccomList>>
 
             )
             {
-
                 // [변경 사항][공통] 현재 위치 위도, 경도 받아오기 == 카테고리끼리 공유 => 수정 필요없음
                 val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
                 val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
@@ -623,6 +648,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
 
+
             }
 
             override fun onFailure(call: Call<MutableList<AccomList>>, t: Throwable) {
@@ -640,8 +666,8 @@ class MainActivity : AppCompatActivity() {
         val resListCall = (applicationContext as MyApplication).networkService.getResGPS(lat, lnt, 4.5, resPage)
         resListCall.enqueue(object : Callback<MutableList<ResList>> {
             override fun onResponse(
-                call: Call<MutableList<ResList>>,
-                response: Response<MutableList<ResList>>
+                    call: Call<MutableList<ResList>>,
+                    response: Response<MutableList<ResList>>
 
             )
             {
@@ -688,8 +714,8 @@ class MainActivity : AppCompatActivity() {
         val fesListCall = (applicationContext as MyApplication).networkService.getFesGPS(lat, lnt, 4.5, fesPage)
         fesListCall.enqueue(object : Callback<MutableList<FesList>> {
             override fun onResponse(
-                call: Call<MutableList<FesList>>,
-                response: Response<MutableList<FesList>>
+                    call: Call<MutableList<FesList>>,
+                    response: Response<MutableList<FesList>>
 
             )
             {
@@ -736,8 +762,8 @@ class MainActivity : AppCompatActivity() {
         val shopListCall = (applicationContext as MyApplication).networkService.getShopGPS(lat, lnt, 4.5, shopPage)
         shopListCall.enqueue(object : Callback<MutableList<ShopList>> {
             override fun onResponse(
-                call: Call<MutableList<ShopList>>,
-                response: Response<MutableList<ShopList>>
+                    call: Call<MutableList<ShopList>>,
+                    response: Response<MutableList<ShopList>>
 
             )
             {
@@ -842,14 +868,7 @@ class MainActivity : AppCompatActivity() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult ?: return
                 for (location in locationResult.locations){
-                    // 여기서 위치 정보를 사용하세요.
-                    val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
-                    val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
-                    val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
                     Log.d("lsy","createLocationCallback =2====================================")
-                    // Todo 확인 포인트
-                    // 백에서 데이터 중복으로 불러오는 부분 주석 처리
-//                        sendLocationTourToServer(lat, lnt, page)
                     Log.d("lsy","createLocationCallback ==3===================================")
                 }
             }
@@ -867,19 +886,19 @@ class MainActivity : AppCompatActivity() {
     private fun startLocationUpdates() {
         Log.d("lsy","startLocationUpdates =====================================")
         if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
         ) {
             return
         }
         fusedLocationClient?.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
-            Looper.myLooper()
+                locationRequest,
+                locationCallback,
+                Looper.myLooper()
 
 //            null
         )
@@ -892,11 +911,11 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         stopLocationUpdates()
-        getLocation("Tour")
-        getLocation("Accom")
-        getLocation("Res")
-        getLocation("Fes")
-        getLocation("Shop")
+//        getLocation("Tour")
+//        getLocation("Accom")
+//        getLocation("Res")
+//        getLocation("Fes")
+//        getLocation("Shop")
     }
 
     private fun stopLocationUpdates() {
@@ -905,47 +924,8 @@ class MainActivity : AppCompatActivity() {
     //-------------------------------------------------------------------------------------------
 
 
-    // 뷰 페이저에 들어갈 아이템
-    private fun getMainvisual(): ArrayList<Int> {
-        return arrayListOf<Int>(
-            R.drawable.jeju_apec02,
-            R.drawable.jeju_apec03,
-            R.drawable.jeju_apec04,
-            R.drawable.jeju_apec01,)
-    }
 
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu,menu)
-
-        // 검색 뷰에, 이벤트 추가하기.
-        val menuItem = menu?.findItem(R.id.menu_toolbar_search)
-        // menuItem 의 형을 SearchView 타입으로 변환, 형변환
-        val searchView = menuItem?.actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String?): Boolean {
-                //검색어가 변경시 마다, 실행될 로직을 추가.
-                Log.d("kmk","텍스트 변경시 마다 호출 : ${newText} ")
-                return true
-            }
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                // 검색어가 제출이 되었을 경우, 연결할 로직.
-                // 사용자 디비, 검색을하고, 그 결과 뷰를 출력하는 형태.
-                Toast.makeText(this@MainActivity,"검색어가 전송됨 : ${query}", Toast.LENGTH_SHORT).show()
-                return true
-            }
-        })
-
-        return super.onCreateOptionsMenu(menu)
-    }
 
     private fun checkPermissionForLocation(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -954,9 +934,9 @@ class MainActivity : AppCompatActivity() {
 
             } else {
                 ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                    REQUEST_PERMISSION_LOCATION
+                        this,
+                        arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                        REQUEST_PERMISSION_LOCATION
                 )
                 false
 //                Log.d("ljs","위치 권한 허용이 필요합니다. ")
@@ -967,9 +947,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_PERMISSION_LOCATION) {
@@ -1005,14 +985,14 @@ class MainActivity : AppCompatActivity() {
 
     // 네트워크 호출과 응답 처리 부분을 별도의 제네릭 함수로 분리
     private fun <T> fetchAndProcessData(
-        call: Call<MutableList<T>>,
-        processData: (MutableList<T>) -> Unit,
-        onFailure: (Throwable) -> Unit
+            call: Call<MutableList<T>>,
+            processData: (MutableList<T>) -> Unit,
+            onFailure: (Throwable) -> Unit
     ) {
         call.enqueue(object : Callback<MutableList<T>> {
             override fun onResponse(
-                call: Call<MutableList<T>>,
-                response: Response<MutableList<T>>
+                    call: Call<MutableList<T>>,
+                    response: Response<MutableList<T>>
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let { processData(it) }
@@ -1043,7 +1023,7 @@ class MainActivity : AppCompatActivity() {
                         Log.d("lsy", "Requesting tourPage 확인2: $page")
 
                         val tourLayoutManager =
-                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                                LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                         binding.viewRecyclerTour.layoutManager = tourLayoutManager
                         binding.viewRecyclerTour.adapter = TourAdapter_Main(this@MainActivity, TourData)
                     }
@@ -1060,7 +1040,7 @@ class MainActivity : AppCompatActivity() {
                         Log.d("lsy", "Requesting accomPage 확인2: $page")
 
                         val accomLayoutManager =
-                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                                LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                         binding.viewRecyclerAccom.layoutManager = accomLayoutManager
                         binding.viewRecyclerAccom.adapter = AccomAdapter_Main(this@MainActivity, AccomData)
                     }
@@ -1077,7 +1057,7 @@ class MainActivity : AppCompatActivity() {
                         Log.d("lsy", "Requesting resPage 확인2: $page")
 
                         val resLayoutManager =
-                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                                LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                         binding.viewRecyclerRestaurant.layoutManager = resLayoutManager
                         binding.viewRecyclerRestaurant.adapter = ResAdapter_Main(this@MainActivity, ResData)
                     }
@@ -1094,7 +1074,7 @@ class MainActivity : AppCompatActivity() {
                         Log.d("lsy", "Requesting fesPage 확인2: $page")
 
                         val fesLayoutManager =
-                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                                LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                         binding.viewRecyclerFestival.layoutManager = fesLayoutManager
                         binding.viewRecyclerFestival.adapter = FesAdapter_Main(this@MainActivity, FesData)
                     }
@@ -1111,7 +1091,7 @@ class MainActivity : AppCompatActivity() {
                         Log.d("lsy", "Requesting shopPage 확인2: $page")
 
                         val shopLayoutManager =
-                            LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+                                LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
                         binding.viewRecyclerShopping.layoutManager = shopLayoutManager
                         binding.viewRecyclerShopping.adapter = ShopAdapter_Main(this@MainActivity, ShopData)
                     }
@@ -1150,13 +1130,13 @@ class MainActivity : AppCompatActivity() {
 
     // 네트워크 호출과 응답 처리 부분을 별도의 제네릭 함수로 분리
     private fun <T> fetchAndProcessLocationData(
-        call: Call<MutableList<T>>,
-        onSuccess: (MutableList<T>) -> Unit
+            call: Call<MutableList<T>>,
+            onSuccess: (MutableList<T>) -> Unit
     ) {
         call.enqueue(object : Callback<MutableList<T>> {
             override fun onResponse(
-                call: Call<MutableList<T>>,
-                response: Response<MutableList<T>>
+                    call: Call<MutableList<T>>,
+                    response: Response<MutableList<T>>
             ) {
                 if (response.isSuccessful) {
                     response.body()?.let { onSuccess(it) }
@@ -1209,9 +1189,9 @@ class MainActivity : AppCompatActivity() {
     // it : 새로 불러온 데이터
     // TourData : 기존 데이터 리스트
     fun <T> updateData(
-        newData: MutableList<T>?,
-        existingData: MutableList<T>?,
-        recycler: RecyclerView
+            newData: MutableList<T>?,
+            existingData: MutableList<T>?,
+            recycler: RecyclerView
     ) {
         Log.d("lsy","updateData 함수 호출 시작.")
         Log.d("lsy","updateData 함수 호출 시작2.datasSpring size 값 : ${existingData?.size} ")
@@ -1227,10 +1207,22 @@ class MainActivity : AppCompatActivity() {
         recycler.adapter?.notifyDataSetChanged()
     }
 
-
     private fun scrollToSection(sectionId: Int) {
         val sectionView = findViewById<View>(sectionId)
-        binding.scroll.smoothScrollTo(0, sectionView.top)
+        val location = IntArray(2)
+        // 섹션 뷰와 ScrollView의 위치를 가져옵니다.
+        sectionView.getLocationOnScreen(location)
+        val sectionViewY = location[1]
+
+        binding.scroll.getLocationOnScreen(location)
+        val scrollViewY = location[1]
+
+        // ScrollView 내에서의 상대적 위치를 계산합니다.
+        val scrollTo = sectionViewY - scrollViewY
+
+        // ScrollView를 계산된 위치로 스크롤합니다.
+        binding.scroll.smoothScrollTo(0, scrollTo)
     }
+
 
 }

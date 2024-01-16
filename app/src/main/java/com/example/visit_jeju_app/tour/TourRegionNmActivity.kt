@@ -115,8 +115,15 @@ class TourRegionNmActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // SharedPreferences에서 이메일 주소 불러오기
+        val sharedPref = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
+        val userEmail = sharedPref.getString("USER_EMAIL", "No Email") // 기본값 "No Email"
+
+        // 네비게이션 드로어 헤더의 이메일 TextView 업데이트
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
+        headerUserEmail.text = userEmail
+
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
 
         headerLogoutBtn.setOnClickListener {
@@ -128,9 +135,6 @@ class TourRegionNmActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-        val userEmail = intent.getStringExtra("USER_EMAIL") ?: "No Email"
-        headerUserEmail.text = userEmail
 
         // 액션바
         setSupportActionBar(binding.toolbar)
@@ -150,32 +154,51 @@ class TourRegionNmActivity : AppCompatActivity() {
         binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.accommodation -> {
-                    startActivity(Intent(this, AccomActivity::class.java))
+                    val intent = Intent(this, AccomActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.restaurant -> {
-                    startActivity(Intent(this, ResActivity::class.java))
+                    val intent = Intent(this, ResActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.tour -> {
-                    startActivity(Intent(this, TourActivity::class.java))
+                    val intent = Intent(this, TourActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.festival -> {
-                    startActivity(Intent(this, FesActivity::class.java))
+                    val intent = Intent(this, FesActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.shopping -> {
-                    startActivity(Intent(this, ShopActivity::class.java))
+                    val intent = Intent(this, ShopActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.community -> {
-                    // '커뮤니티' 메뉴 아이템 클릭 시 CommReadActivity로 이동
-                    startActivity(Intent(this, CommReadActivity::class.java))
+                    val intent = Intent(this, CommReadActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.chatting -> {
-                    startActivity(Intent(this, ChatMainActivity::class.java))
+                    val intent = Intent(this, ChatMainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
 
@@ -191,7 +214,7 @@ class TourRegionNmActivity : AppCompatActivity() {
         var jejuRegionCode: Int = itemsRegion2CdValue
         val networkService = (applicationContext as MyApplication).networkService
         val userListCall =
-            networkService.getList(jejuRegionCode)
+            networkService.getTourList(jejuRegionCode)
 
         userListCall.enqueue(object : retrofit2.Callback<List<TourList>> {
             override fun onResponse(

@@ -19,7 +19,7 @@ import com.example.visit_jeju_app.tour.model.TourList
 import com.example.visit_jeju_app.tour.model.TourModel
 
 class TourViewHolder2(val binding: MainItem2Binding): RecyclerView.ViewHolder(binding.root)
-class TourAdapter_Main(val context: Context, val datas:List<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class TourAdapter_Main(val context: Context, val datas:MutableList<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -53,6 +53,7 @@ class TourAdapter_Main(val context: Context, val datas:List<TourList>?): Recycle
         //클릭시 관광지 상세정보 페이지에 정보넘기기
         holder.binding.root.setOnClickListener {
             val intent = Intent(holder.binding.root?.context, TourDetailActivity::class.java)
+            intent.putExtra("tourId", model?.tourId)
             intent.putExtra("itemsLatitude", model?.itemsLatitude)
             intent.putExtra("itemsLongitude", model?.itemsLongitude)
             intent.putExtra("itemsTitle", model?.itemsTitle)
@@ -71,5 +72,6 @@ class TourAdapter_Main(val context: Context, val datas:List<TourList>?): Recycle
         }
 
     }
+
 
 }

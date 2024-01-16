@@ -23,6 +23,7 @@ import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.accommodation.AccomActivity
 import com.example.visit_jeju_app.chat.ChatActivity
+import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.community.activity.CommReadActivity
 import com.example.visit_jeju_app.databinding.ActivityRegionNmDetailBinding
 import com.example.visit_jeju_app.festival.FesActivity
@@ -57,8 +58,15 @@ class regionNmDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         setSupportActionBar(binding.toolbar)
 
         //(공통 레이아웃 코드)
+        // SharedPreferences에서 이메일 주소 불러오기
+        val sharedPref = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
+        val userEmail = sharedPref.getString("USER_EMAIL", "No Email") // 기본값 "No Email"
+
+        // 네비게이션 드로어 헤더의 이메일 TextView 업데이트
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
+        headerUserEmail.text = userEmail
+
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
 
         headerLogoutBtn.setOnClickListener {
@@ -70,9 +78,6 @@ class regionNmDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
             finish()
         }
-
-        val userEmail = intent.getStringExtra("USER_EMAIL") ?: "No Email"
-        headerUserEmail.text = userEmail
 
 
         setSupportActionBar(binding.toolbar)
@@ -89,36 +94,55 @@ class regionNmDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         //버튼 클릭스 동기화 : 드로워 열어주기(공통 레이아웃 코드)
         toggle.syncState()
 
-        // NavigationView 메뉴 아이템 클릭 리스너 설정(공통 레이아웃 코드)
+        // NavigationView 메뉴 아이템 클릭 리스너 설정
         binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.accommodation -> {
-                    startActivity(Intent(this, AccomActivity::class.java))
+                    val intent = Intent(this, AccomActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.restaurant -> {
-                    startActivity(Intent(this, ResActivity::class.java))
+                    val intent = Intent(this, ResActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.tour -> {
-                    startActivity(Intent(this, TourActivity::class.java))
+                    val intent = Intent(this, TourActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.festival -> {
-                    startActivity(Intent(this, FesActivity::class.java))
+                    val intent = Intent(this, FesActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.shopping -> {
-                    startActivity(Intent(this, ShopActivity::class.java))
+                    val intent = Intent(this, ShopActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.community -> {
-                    // '커뮤니티' 메뉴 아이템 클릭 시 CommReadActivity로 이동
-                    startActivity(Intent(this, CommReadActivity::class.java))
+                    val intent = Intent(this, CommReadActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.chatting -> {
-                    startActivity(Intent(this, ChatActivity::class.java))
+                    val intent = Intent(this, ChatMainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
 
@@ -126,27 +150,35 @@ class regionNmDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        // Bottom Navigation link(공통 레이아웃 코드)
+        // Bottom Navigation link
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNavigationView.setOnNavigationItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.home -> {
                     // 홈 아이템 클릭 처리
                     val intent = Intent(this@regionNmDetailActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
                     startActivity(intent)
                     true
                 }
                 R.id.chat -> {
                     val intent = Intent(this@regionNmDetailActivity, GptActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
                     startActivity(intent)
                     true
                 }
                 R.id.youtube -> {
-                    openWebPage("https://www.youtube.com/c/visitjeju")
+                    val webpageUrl = "https://www.youtube.com/c/visitjeju" // 웹 페이지 링크
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
+                    startActivity(intent)
                     true
                 }
                 R.id.instagram -> {
-                    openWebPage("https://www.instagram.com/visitjeju.kr")
+                    val webpageUrl = "https://www.instagram.com/visitjeju.kr" // 웹 페이지 링크
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
+                    startActivity(intent)
                     true
                 }
                 else -> false
@@ -243,17 +275,17 @@ class regionNmDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
 
-        val networkService = (applicationContext as MyApplication).networkService
-        var jejuRegionCode = intent.getIntExtra("itemsRegion2CdValue",11)
-        val mapListCall = jejuRegionCode?.let { networkService.getList(it) }
-
-
-        mapListCall?.enqueue(object : retrofit2.Callback<List<TourList>> {
-            override fun onResponse(
-                call: Call<List<TourList>>,
-                response: Response<List<TourList>>
-            ) {
-                var TourList = response.body()
+//        val networkService = (applicationContext as MyApplication).networkService
+//        val tourId : Long = intent.getLongExtra("tourId",Long.MIN_VALUE)
+//        Log.d("ljs", "intent로 받아온 tourId 값 확인 : ${tourId}")
+//        val mapListCall = networkService.getTourDtl(tourId)
+//
+//        mapListCall?.enqueue(object : retrofit2.Callback<List<TourList>> {
+//            override fun onResponse(
+//                call: Call<List<TourList>>,
+//                response: Response<List<TourList>>
+//            ) {
+//                var TourList = response.body()
 
                 // 마커 객체 생성
                 val marker = Marker()
@@ -273,13 +305,13 @@ class regionNmDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 naverMap.cameraPosition = cameraPosition
 
 
-            }
-
-            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
-                call.cancel()
-            }
-
-        })
+//            }
+//
+//            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
+//                call.cancel()
+//            }
+//
+//        })
 
     }
 

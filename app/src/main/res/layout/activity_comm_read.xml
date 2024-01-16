@@ -41,94 +41,96 @@
         <!-- //Bottom Navigation View -->
 
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- 앱바 구성 (툴바 포함) -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <!-- 앱바 구성 (툴바 포함) -->
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appBar"
+            <!-- tool bar -->
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/jejutourPoint"
+                >
 
-                <!-- tool bar -->
-                <com.google.android.material.appbar.CollapsingToolbarLayout
+                <!--툴바 뷰 생성 -->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    style="@style/ToolBarCss"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/jejutourPoint"
-                    >
-
-                    <!--툴바 뷰 생성 -->
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        style="@style/ToolBarCss"
-                        android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
-                        app:layout_collapseMode="pin" />
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
-            </com.google.android.material.appbar.AppBarLayout>
+                    android:layout_height="?attr/actionBarSize"
+                    app:navigationIconTint="@color/white"
+                    app:layout_collapseMode="pin"
+                    app:layout_scrollFlags="scroll|enterAlways" />
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
 
-            <!-- ScrollView로 감싼 LinearLayout -->
-            <!--    앱바에 LinearLayout 태그 내 내용이 가려지는 부분 해결-->
-            <androidx.core.widget.NestedScrollView
+        <!-- ScrollView로 감싼 LinearLayout -->
+        <!--    앱바에 LinearLayout 태그 내 내용이 가려지는 부분 해결-->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:orientation="vertical">
 
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                <!-- 메인 비쥬얼 슬라이더 -->
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/viewPager_communityVisual"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:background="#ddd" />
+                <!-- //메인 비쥬얼 슬라이더 -->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/sans_medium"
+                    android:text="🍊 VISIT_JEJU Community 🍊"
+                    />
+
+                <!-- FloatingActionButton으로 변경 -->
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/add"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    app:backgroundTint="#FF9800"
+                    app:srcCompat="@drawable/memo_icon"
+                    app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+                    app:useCompatPadding="true"/>
+                <!-- //FloatingActionButton -->
+
+            </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/communityRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_weight="1" />
 
-                    <!-- 메인 비쥬얼 슬라이더 -->
-                    <androidx.viewpager2.widget.ViewPager2
-                        android:id="@+id/viewPager_communityVisual"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:background="#ddd" />
-                    <!-- //메인 비쥬얼 슬라이더 -->
+            </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+        </androidx.core.widget.NestedScrollView>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:textStyle="bold"
-                            android:textSize="20sp"
-                            android:fontFamily="@font/sans_medium"
-                            android:text="🍊 VISIT_JEJU Community 🍊"
-                            />
-
-                        <!-- FloatingActionButton으로 변경 -->
-                        <com.google.android.material.floatingactionbutton.FloatingActionButton
-                            android:id="@+id/add"
-                            android:layout_width="100dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom|end"
-                            app:backgroundTint="#FF9800"
-                            app:srcCompat="@drawable/memo_icon"
-                            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
-                            app:useCompatPadding="true"/>
-                        <!-- //FloatingActionButton -->
-
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/communityRecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                </LinearLayout>
-
-            </androidx.core.widget.NestedScrollView>
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </RelativeLayout>
 

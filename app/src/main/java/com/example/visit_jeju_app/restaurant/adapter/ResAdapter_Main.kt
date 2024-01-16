@@ -17,7 +17,7 @@ import com.example.visit_jeju_app.restaurant.ResDetailActivity
 import com.example.visit_jeju_app.restaurant.model.ResList
 
 class ResViewHolder2(val binding: MainItemBinding): RecyclerView.ViewHolder(binding.root)
-class ResAdapter_Main(val context: Context, val datas:List<ResList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ResAdapter_Main(val context: Context, val datas:MutableList<ResList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -29,8 +29,9 @@ class ResAdapter_Main(val context: Context, val datas:List<ResList>?): RecyclerV
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as ResViewHolder2).binding
-//        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
-//        holder.binding.root.animation = animation
+        /*val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
+        holder.binding.root.animation = animation*/
+
 
         //add......................................
         val model = datas?.get(position)
@@ -51,6 +52,7 @@ class ResAdapter_Main(val context: Context, val datas:List<ResList>?): RecyclerV
         //클릭시 관광지 상세정보 페이지에 정보넘기기
         holder.binding.root.setOnClickListener {
             val intent = Intent(holder.binding.root?.context, ResDetailActivity::class.java)
+            intent.putExtra("fndId", model?.fndId)
             intent.putExtra("itemsLatitude", model?.itemsLatitude)
             intent.putExtra("itemsLongitude", model?.itemsLongitude)
             intent.putExtra("itemsTitle", model?.itemsTitle)

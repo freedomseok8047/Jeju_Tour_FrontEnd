@@ -5,17 +5,23 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.example.visit_jeju_app.login.AuthActivity
+import com.example.visit_jeju_app.login.SignInActivity
 
 class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
 
-        // Handler를 사용하여 3초 후에 AuthActivity로 이동
-        Handler().postDelayed({
-            val intent = Intent(this, AuthActivity::class.java)
-            startActivity(intent)
-            finish() // IntroActivity를 종료하여 뒤로 가기 버튼을 눌러 이전 화면으로 돌아갈 수 없도록 함
-        }, 3000) // 3초(3000 밀리초) 후에 실행
+        if (MyApplication.checkAuth()) {
+            // 로그인 상태인 경우 MainActivity로 이동
+            val mainIntent = Intent(this, MainActivity::class.java)
+            startActivity(mainIntent)
+        } else {
+            // 로그인 상태가 아닌 경우 SignInActivity로 이동
+            val signInIntent = Intent(this, AuthActivity::class.java)
+            startActivity(signInIntent)
+        }
+        finish() // 현재 액티비티 종료
+
     }
 }

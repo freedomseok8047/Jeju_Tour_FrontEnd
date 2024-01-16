@@ -99,8 +99,15 @@ class regionNmDetailShopActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView!!.onCreate(savedInstanceState)
         mapView!!.getMapAsync(this@regionNmDetailShopActivity)
 
+        // SharedPreferences에서 이메일 주소 불러오기
+        val sharedPref = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
+        val userEmail = sharedPref.getString("USER_EMAIL", "No Email") // 기본값 "No Email"
+
+        // 네비게이션 드로어 헤더의 이메일 TextView 업데이트
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
+        headerUserEmail.text = userEmail
+
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
 
         headerLogoutBtn.setOnClickListener {
@@ -112,9 +119,6 @@ class regionNmDetailShopActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
             finish()
         }
-
-        val userEmail = intent.getStringExtra("USER_EMAIL") ?: "No Email"
-        headerUserEmail.text = userEmail
 
         // 액션바
         setSupportActionBar(binding.toolbar)
@@ -198,17 +202,18 @@ class regionNmDetailShopActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
 
-        val networkService = (applicationContext as MyApplication).networkService
-        var jejuRegionCode = intent.getIntExtra("itemsRegion2CdValue",11)
-        val mapListCall = jejuRegionCode?.let { networkService.getShopList(it) }
-
-
-        mapListCall?.enqueue(object : retrofit2.Callback<List<ShopList>> {
-            override fun onResponse(
-                call: Call<List<ShopList>>,
-                response: Response<List<ShopList>>
-            ) {
-                var ShopList = response.body()
+//        val networkService = (applicationContext as MyApplication).networkService
+//        val shopId : Long = intent.getLongExtra("shopId",Long.MIN_VALUE)
+//        Log.d("ljs", "intent로 받아온 shopId 값 확인 : ${shopId}")
+//        val mapListCall = networkService.getShopDtl(shopId)
+//
+//
+//        mapListCall?.enqueue(object : retrofit2.Callback<List<ShopList>> {
+//            override fun onResponse(
+//                call: Call<List<ShopList>>,
+//                response: Response<List<ShopList>>
+//            ) {
+//                var ShopList = response.body()
 
                 // 마커 객체 생성
                 val marker = Marker()
@@ -228,13 +233,13 @@ class regionNmDetailShopActivity : AppCompatActivity(), OnMapReadyCallback {
                 naverMap.cameraPosition = cameraPosition
 
 
-            }
-
-            override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
-                call.cancel()
-            }
-
-        })
+//            }
+//
+//            override fun onFailure(call: Call<List<ShopList>>, t: Throwable) {
+//                call.cancel()
+//            }
+//
+//        })
 
     }
     // menu 기능

@@ -18,7 +18,7 @@ import com.example.visit_jeju_app.festival.FesDetailActivity
 import com.example.visit_jeju_app.festival.model.FesList
 
 class FesViewHolder2(val binding: MainItem2Binding): RecyclerView.ViewHolder(binding.root)
-class FesAdapter_Main(val context: Context, val datas:List<FesList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class FesAdapter_Main(val context: Context, val datas:MutableList<FesList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -30,8 +30,8 @@ class FesAdapter_Main(val context: Context, val datas:List<FesList>?): RecyclerV
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as FesViewHolder2).binding
-//        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
-//        holder.binding.root.animation = animation
+        /*val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
+        holder.binding.root.animation = animation*/
 
         //add......................................
         val model = datas?.get(position)
@@ -52,6 +52,7 @@ class FesAdapter_Main(val context: Context, val datas:List<FesList>?): RecyclerV
         //클릭시 관광지 상세정보 페이지에 정보넘기기
         holder.binding.root.setOnClickListener {
             val intent = Intent(holder.binding.root?.context, FesDetailActivity::class.java)
+            intent.putExtra("festivalId", model?.festivalId)
             intent.putExtra("itemsLatitude", model?.itemsLatitude)
             intent.putExtra("itemsLongitude", model?.itemsLongitude)
             intent.putExtra("itemsTitle", model?.itemsTitle)

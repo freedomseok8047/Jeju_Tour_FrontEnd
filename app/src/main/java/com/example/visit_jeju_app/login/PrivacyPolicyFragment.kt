@@ -18,11 +18,7 @@ class PrivacyPolicyFragment : DialogFragment() {
         privacyChangeListener = listener
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_privacy_policy, container, false)
 
         val checkBox = view.findViewById<CheckBox>(R.id.checkboxUserAgreement3)

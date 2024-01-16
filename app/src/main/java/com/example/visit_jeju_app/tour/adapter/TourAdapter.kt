@@ -15,7 +15,7 @@ import com.example.visit_jeju_app.tour.TourDetailActivity
 import com.example.visit_jeju_app.tour.model.TourList
 
 class TourViewHolder(val binding: ItemTourBinding): RecyclerView.ViewHolder(binding.root)
-class TourAdapter(val context: TourActivity, val datas:List<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class TourAdapter(val context: TourActivity, val datas:MutableList<TourList>?): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     override fun getItemCount(): Int{
         return datas?.size ?: 0
@@ -27,8 +27,8 @@ class TourAdapter(val context: TourActivity, val datas:List<TourList>?): Recycle
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val binding=(holder as TourViewHolder).binding
-        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
-        holder.binding.root.animation = animation
+//        val animation = AnimationUtils.loadAnimation(holder.binding.root.context, R.anim.list_item_ani)
+//        holder.binding.root.animation = animation
 
         //add......................................
         val model = datas?.get(position)
@@ -50,6 +50,7 @@ class TourAdapter(val context: TourActivity, val datas:List<TourList>?): Recycle
         //클릭시 관광지 상세정보 페이지에 정보넘기기
         holder.binding.root.setOnClickListener {
             val intent = Intent(holder.binding.root?.context, TourDetailActivity::class.java)
+            intent.putExtra("tourId", model?.tourId)
             intent.putExtra("itemsLatitude", model?.itemsLatitude)
             intent.putExtra("itemsLongitude", model?.itemsLongitude)
             intent.putExtra("itemsTitle", model?.itemsTitle)

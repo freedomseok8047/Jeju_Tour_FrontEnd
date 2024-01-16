@@ -119,8 +119,15 @@ class ResRegionNmActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // SharedPreferences에서 이메일 주소 불러오기
+        val sharedPref = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
+        val userEmail = sharedPref.getString("USER_EMAIL", "No Email") // 기본값 "No Email"
+
+        // 네비게이션 드로어 헤더의 이메일 TextView 업데이트
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
+        headerUserEmail.text = userEmail
+
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
 
         headerLogoutBtn.setOnClickListener {
@@ -132,9 +139,6 @@ class ResRegionNmActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-        val userEmail = intent.getStringExtra("USER_EMAIL") ?: "No Email"
-        headerUserEmail.text = userEmail
 
         // 액션바
         setSupportActionBar(binding.toolbar)
@@ -204,6 +208,8 @@ class ResRegionNmActivity : AppCompatActivity() {
                 response: Response<List<ResList>>
             ) {
                 val ResList = response.body()
+
+                Log.d("ljs","resModel 값 : ${ResList}")
 
                 binding.recyclerView.adapter =
                     RegionNmAdapter(this@ResRegionNmActivity, ResList)

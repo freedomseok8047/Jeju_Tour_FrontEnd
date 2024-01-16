@@ -94,8 +94,15 @@ class AccomDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView!!.getMapAsync(this@AccomDetailActivity)
 
 
+        // SharedPreferences에서 이메일 주소 불러오기
+        val sharedPref = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
+        val userEmail = sharedPref.getString("USER_EMAIL", "No Email") // 기본값 "No Email"
+
+        // 네비게이션 드로어 헤더의 이메일 TextView 업데이트
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
+        headerUserEmail.text = userEmail
+
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
 
         headerLogoutBtn.setOnClickListener {
@@ -107,9 +114,6 @@ class AccomDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
             finish()
         }
-
-        val userEmail = intent.getStringExtra("USER_EMAIL") ?: "No Email"
-        headerUserEmail.text = userEmail
 
         // 액션바
         setSupportActionBar(binding.toolbar)
@@ -192,20 +196,21 @@ class AccomDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(naverMap: NaverMap) {
-        val networkService = (applicationContext as MyApplication).networkService
-        val mapListCall = networkService.GetAccomList()
-
-        val uiSettings = Companion.naverMap?.uiSettings
-        uiSettings?.isCompassEnabled = true
-        uiSettings?.isLocationButtonEnabled = true
-
-        mapListCall.enqueue(object : Callback<List<AccomList>> {
-            override fun onResponse(
-                call: Call<List<AccomList>>,
-                accomponse: Response<List<AccomList>>
-
-            ) {
-                var accomModel = accomponse.body()
+//        val networkService = (applicationContext as MyApplication).networkService
+//        val accomId : Long = intent.getLongExtra("accomId",Long.MIN_VALUE)
+//        Log.d("ljs", "intent로 받아온 accomId 값 확인 : ${accomId}")
+//        val mapListCall = networkService.getAccomDtl(accomId)
+//        val uiSettings = Companion.naverMap?.uiSettings
+//        uiSettings?.isCompassEnabled = true
+//        uiSettings?.isLocationButtonEnabled = true
+//
+//        mapListCall.enqueue(object : Callback<List<AccomList>> {
+//            override fun onResponse(
+//                call: Call<List<AccomList>>,
+//                accomponse: Response<List<AccomList>>
+//
+//            ) {
+//                var accomModel = accomponse.body()
 
                 // 마커 객체 생성
                 val marker = Marker()
@@ -221,6 +226,8 @@ class AccomDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 val lat: Double = intent.getDoubleExtra("itemsLatitude", Double.MAX_VALUE)
                 val lnt: Double = intent.getDoubleExtra("itemsLongitude", Double.MAX_VALUE)
 
+                Log.d("ljs", "intent로 받아온 lat 값 확인 : ${lat}")
+                Log.d("ljs", "intent로 받아온 lnt 값 확인 : ${lnt}")
 
                 // 가져온 위도, 경도 값으로 position 세팅
                 marker.setPosition(LatLng(lat, lnt))
@@ -233,14 +240,14 @@ class AccomDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 naverMap.cameraPosition = cameraPosition
 
 
-            }
-
-            override fun onFailure(call: Call<List<AccomList>>, t: Throwable) {
-                call.cancel()
-            }
-
-
-        })
+//            }
+//
+//            override fun onFailure(call: Call<List<AccomList>>, t: Throwable) {
+//                call.cancel()
+//            }
+//
+//
+//        })
 
 
     }

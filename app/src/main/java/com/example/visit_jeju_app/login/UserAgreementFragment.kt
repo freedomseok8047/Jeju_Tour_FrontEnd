@@ -11,6 +11,8 @@ import android.widget.ImageButton
 import androidx.fragment.app.DialogFragment
 import com.example.visit_jeju_app.R
 
+
+
 class UserAgreementFragment : DialogFragment() {
     private var useragreementChangeListener: UserAgreementChangeListener? = null
 
@@ -18,11 +20,7 @@ class UserAgreementFragment : DialogFragment() {
         useragreementChangeListener = listener
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_user_agreement, container, false)
 
         val checkBox = view.findViewById<CheckBox>(R.id.checkboxUserAgreement2)
@@ -56,6 +54,5 @@ class UserAgreementFragment : DialogFragment() {
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
-
     }
 }

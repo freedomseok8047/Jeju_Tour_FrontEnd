@@ -1,4 +1,5 @@
 package com.example.visit_jeju_app.login
+
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
@@ -9,17 +10,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.visit_jeju_app.MyApplication
-import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.databinding.ActivitySignUpBinding
 import com.example.visit_jeju_app.login.model.User
 import com.example.visit_jeju_app.retrofit.addUserToMysql
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 
 
 class SignUpActivity : AppCompatActivity() {
@@ -40,6 +36,7 @@ class SignUpActivity : AppCompatActivity() {
             // 이용약관 및 개인정보 처리방침 체크 여부 확인
             val isUserAgreementChecked = binding.checkboxUserAgreement.isChecked
             val isPrivacyPolicyChecked = binding.checkboxPrivacyPolicy.isChecked
+
             //이메일,비밀번호 회원가입
             val username = binding.authUsernameEditView.text.toString()
             val email = binding.authEmailEditView.text.toString()
@@ -99,41 +96,6 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            MyApplication.auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Firebase 회원가입 성공
-                        val userId = MyApplication.auth.currentUser?.uid ?: ""
-
-                        // 이메일 인증 보내기
-                        MyApplication.auth.currentUser?.sendEmailVerification()
-                            ?.addOnCompleteListener { sendTask ->
-                                if (sendTask.isSuccessful) {
-                                    addUserToDatabase(username, email, auth.currentUser?.uid!!)
-                                    // 이메일 인증 성공, MySQL에 사용자 정보 저장
-                                    addUserToMysql(username, email, userId)
-                                    Log.d("lsy","1차 확인")
-                                    Toast.makeText(
-                                        baseContext,
-                                        "회원가입에서 성공, 전송된 메일을 확인해 주세요",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    changeVisibility("logout")
-                                } else {
-                                    // 이메일 인증 실패
-                                    Toast.makeText(baseContext, "메일 발송 실패", Toast.LENGTH_SHORT)
-                                        .show()
-                                    changeVisibility("logout")
-                                    Log.d("lsy","1차 확인 실패")
-                                }
-                            }
-                    } else {
-                        // Firebase 회원가입 실패
-                        Toast.makeText(baseContext, "회원가입 실패", Toast.LENGTH_SHORT).show()
-                        changeVisibility("logout")
-                        Log.d("lsy","1차 확인실패 2")
-                    }
-                }
         }
 
         // 이용약관 및 개인정보처리방침 동의
@@ -160,29 +122,11 @@ class SignUpActivity : AppCompatActivity() {
         val fragment = when (view.id) {
             com.example.visit_jeju_app.R.id.btnPrivacyPolicy -> PrivacyPolicyFragment()
             com.example.visit_jeju_app.R.id.btnUserAgreement -> UserAgreementFragment()
-                Toast.makeText(this@SignUpActivity, "개인정보처리방침 동의", Toast.LENGTH_SHORT).show()
-        }
-        // 첫 번째 TextView에 밑줄 추가
-        val btnUserAgreement = findViewById<TextView>(R.id.btnUserAgreement)
-        btnUserAgreement.paintFlags = btnUserAgreement.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-
-        // 두 번째 TextView에 밑줄 추가
-        val btnPrivacyPolicy = findViewById<TextView>(R.id.btnPrivacyPolicy)
-        btnPrivacyPolicy.paintFlags = btnPrivacyPolicy.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-
-
-
-
-    } //onCreate
-
-    fun openFragment(view: View) {
-        val fragment = when (view.id) {
-            R.id.btnPrivacyPolicy -> PrivacyPolicyFragment()
-            R.id.btnUserAgreement -> UserAgreementFragment()
             else -> return
         }
 
         fragment.show(supportFragmentManager, "dialog_fragment_tag")
+
         // UserAgreementFragment의 CheckBox와 SignUpActivity의 CheckBox 동기화
         if (fragment is UserAgreementFragment) {
             fragment.setUserAgreementChangeListener(object : UserAgreementFragment.UserAgreementChangeListener {
@@ -197,6 +141,8 @@ class SignUpActivity : AppCompatActivity() {
                 }
             })
         }
+
+
     }
 
     private fun saveUser(){
@@ -222,12 +168,18 @@ class SignUpActivity : AppCompatActivity() {
         if(mode === "signin"){
             binding.run {
                 //authMainTextView.text = "아직 회원이 아니라면 회원가입 해 주세요."
+                //logoutBtn.visibility = View.GONE
+                //goSignInBtn.visibility = View.GONE
+                //authNotEmail.visibility= View.GONE
                 authUsernameEditView.visibility = View.VISIBLE
                 authEmailEditView.visibility = View.VISIBLE
                 authPasswordEditView.visibility = View.VISIBLE
                 authUsernameEditView.visibility= View.VISIBLE
                 signBtn.visibility = View.VISIBLE
 
+                //hostSignBtn.visibility= View.GONE
+                //loginBtn.visibility = View.GONE
+                //googleSignBtn.visibility= View.GONE
             }
         }
     }

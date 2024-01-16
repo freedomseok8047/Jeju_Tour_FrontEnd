@@ -2,51 +2,50 @@
 <LinearLayout
     android:id="@+id/item_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="240dp"
+    android:layout_width="220dp"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
     android:paddingTop="12dp"
     android:layout_marginBottom="30dp">
 
     <ImageView
         android:id="@+id/thumbNailPhoto"
-        android:layout_width="220dp"
-        android:layout_height="164dp"
+        android:layout_width="200dp"
+        android:layout_height="148dp"
         android:src="@drawable/noimg"
         android:scaleType="centerCrop"/>
 
     <LinearLayout
-        android:layout_width="220dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="10dp">
 
         <TextView
             android:id="@+id/name"
+            style="@style/subTitleStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="title"
-            android:layout_marginBottom="6dp"
-            style="@style/subTitleStyle"/>
+            android:text="title" />
+
         <TextView
             android:id="@+id/addr2"
+            style=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:drawableStart="@drawable/map_pin"
+            android:drawablePadding="4dp"
             android:text="주소"
-            android:drawableStart="@drawable/baseline_home_work_24"
-            android:drawablePadding="8dp"
-            android:layout_marginBottom="3dp"
-            style=""/>
+            android:textSize="16sp" />
         <TextView
             android:id="@+id/tel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:text="전화번호"
-            android:drawableLeft="@drawable/baseline_phonelink_ring_24"
-            android:drawablePadding="8dp"
+            android:drawableLeft="@drawable/smartphone_device"
+            android:drawablePadding="4dp"
             style=""/>
 
 

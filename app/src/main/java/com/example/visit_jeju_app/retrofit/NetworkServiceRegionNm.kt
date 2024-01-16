@@ -50,7 +50,7 @@ interface NetworkServiceRegionNm {
 
     // 지역별 -----------------------------------------------------
     @GET("tour/tourList/{itemsRegion2CdValue}")
-    fun getList(
+    fun getTourList(
         @Path("itemsRegion2CdValue") itemsRegion2CdValue: Int
     ): Call<List<TourList>>
 
@@ -104,7 +104,7 @@ interface NetworkServiceRegionNm {
         @Query("page") page : Int?
     ): Call<MutableList<TourList>>
 
-    //http://10.100.104.32:8083/tour/tourList/tourByGPS/?lat=33.4&lnt=126.2?page=1
+            //http://10.100.104.32:8083/tour/tourList/tourByGPS/?lat=33.4&lnt=126.2?page=1
 
     @GET("accom/accomList/accomByGPS")
     fun getAccomGPS(
@@ -139,8 +139,6 @@ interface NetworkServiceRegionNm {
     ): Call<MutableList<ShopList>>
 
 
-    @POST("users/register")
-    fun registerUser(@Body userInfo: UserInfo): Call<ResponseBody>
 
     // ByGPS----------------------------------------------------- 끝
 
@@ -151,16 +149,9 @@ interface NetworkServiceRegionNm {
 
 // 사용자 정보 모델
 data class UserInfo(
-    val name: String,
-    val email: String,
-    val firebaseUid: String // 필드 이름과 타입 변경
-}
-
-// 사용자 정보 모델
-data class UserInfo(
-    val name: String,
-    val email: String,
-    val firebaseUid: String // 필드 이름과 타입 변경
+        val name: String,
+        val email: String,
+        val firebaseUid: String // 필드 이름과 타입 변경
 )
 
 
@@ -168,12 +159,12 @@ data class UserInfo(
 fun addUserToMysql(name: String, email: String, firebaseUid: String) {
     // Retrofit을 사용하여 서버 API 호출
     val retrofit = Retrofit.Builder()
-    .baseUrl("http://10.0.2.2:8083/") // 서버 URL
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    .baseUrl("http://10.0.2.2:8083/") // 서버 URL
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+        // 학원 pc 서버 주소
+//            .baseUrl("http://10.100.104.32:8083/") // 서버 URL
+        // aws 외부서버 주소
+        .baseUrl("http://3.38.106.235:8083/") // 서버 URL
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
     val userService = retrofit.create(NetworkServiceRegionNm::class.java)
     val userInfo = UserInfo(name, email, firebaseUid) // 수정된 UserInfo 객체 생성
@@ -192,7 +183,6 @@ fun addUserToMysql(name: String, email: String, firebaseUid: String) {
         }
     })
 }
-
 
 
 

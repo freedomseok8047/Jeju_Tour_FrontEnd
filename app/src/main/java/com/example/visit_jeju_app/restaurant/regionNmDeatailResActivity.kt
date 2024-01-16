@@ -100,8 +100,15 @@ class regionNmDetailResActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView!!.onCreate(savedInstanceState)
         mapView!!.getMapAsync(this@regionNmDetailResActivity)
 
+        // SharedPreferences에서 이메일 주소 불러오기
+        val sharedPref = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
+        val userEmail = sharedPref.getString("USER_EMAIL", "No Email") // 기본값 "No Email"
+
+        // 네비게이션 드로어 헤더의 이메일 TextView 업데이트
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
+        headerUserEmail.text = userEmail
+
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
 
         headerLogoutBtn.setOnClickListener {
@@ -113,9 +120,6 @@ class regionNmDetailResActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
             finish()
         }
-
-        val userEmail = intent.getStringExtra("USER_EMAIL") ?: "No Email"
-        headerUserEmail.text = userEmail
 
         // 액션바
         setSupportActionBar(binding.toolbar)
@@ -199,17 +203,18 @@ class regionNmDetailResActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(naverMap: NaverMap) {
 
-        val networkService = (applicationContext as MyApplication).networkService
-        var jejuRegionCode = intent.getIntExtra("itemsRegion2CdValue",11)
-        val mapListCall = jejuRegionCode?.let { networkService.getResList(it) }
-
-
-        mapListCall?.enqueue(object : retrofit2.Callback<List<ResList>> {
-            override fun onResponse(
-                call: Call<List<ResList>>,
-                response: Response<List<ResList>>
-            ) {
-                var ResList = response.body()
+//        val networkService = (applicationContext as MyApplication).networkService
+//        val fndId : Long = intent.getLongExtra("fndId",Long.MIN_VALUE)
+//        Log.d("ljs", "intent로 받아온 fndId 값 확인 : ${fndId}")
+//        val mapListCall = networkService.getResDtl(fndId)
+//
+//
+//        mapListCall?.enqueue(object : retrofit2.Callback<List<ResList>> {
+//            override fun onResponse(
+//                call: Call<List<ResList>>,
+//                response: Response<List<ResList>>
+//            ) {
+//                var ResList = response.body()
 
                 // 마커 객체 생성
                 val marker = Marker()
@@ -229,13 +234,13 @@ class regionNmDetailResActivity : AppCompatActivity(), OnMapReadyCallback {
                 naverMap.cameraPosition = cameraPosition
 
 
-            }
-
-            override fun onFailure(call: Call<List<ResList>>, t: Throwable) {
-                call.cancel()
-            }
-
-        })
+//            }
+//
+//            override fun onFailure(call: Call<List<ResList>>, t: Throwable) {
+//                call.cancel()
+//            }
+//
+//        })
 
     }
     // menu 기능

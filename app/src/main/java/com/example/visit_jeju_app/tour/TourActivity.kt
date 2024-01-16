@@ -17,39 +17,31 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.camp.campingapp.model.NaverReverseGeocodeResponse
+import androidx.recyclerview.widget.RecyclerView
 import com.example.visit_jeju_app.MainActivity
 import com.example.visit_jeju_app.MyApplication
 import com.example.visit_jeju_app.R
 import com.example.visit_jeju_app.accommodation.AccomActivity
-import com.example.visit_jeju_app.chat.ChatActivity
+import com.example.visit_jeju_app.chat.ChatMainActivity
 import com.example.visit_jeju_app.community.activity.CommReadActivity
 import com.example.visit_jeju_app.databinding.ActivityTourBinding
 import com.example.visit_jeju_app.festival.FesActivity
 import com.example.visit_jeju_app.gpt.GptActivity
 import com.example.visit_jeju_app.login.AuthActivity
 import com.example.visit_jeju_app.restaurant.ResActivity
-import com.example.visit_jeju_app.retrofit.NaverNetworkService
 import com.example.visit_jeju_app.shopping.ShopActivity
 import com.example.visit_jeju_app.tour.adapter.TourAdapter
 import com.example.visit_jeju_app.tour.model.TourList
-import com.example.visit_jeju_app.tour.model.TourModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
-import com.google.android.gms.location.Priority
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class TourActivity : AppCompatActivity() {
@@ -58,34 +50,61 @@ class TourActivity : AppCompatActivity() {
     lateinit var mLastLocation: Location // 위치 값을 가지고 있는 객체
     private lateinit var handler: Handler
     private var lastUpdateTimestamp = 0L
-    private val updateDelayMillis = 40000
+    private val updateDelayMillis = 60000
     //리사이클러 뷰 업데이트 딜레이 업데이트 주기 생성
 
-    lateinit var mLocationRequest: com.google.android.gms.location.LocationRequest // 위치 정보 요청의 매개변수를 저장하는
+    lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
 
-//    private var mapX : String = ""
-//    private var mapY : String= ""
-//    private var coords: String = ""
+    // 페이징 설정 순서0 lsy
+    // page 변수 생성
+    var tourPage : Int = 0
 
+    // 페이징 설정 순서1 lsy
+    // 페이징, 레스트로 부터 전달 받을 데이터 저장할 임시 리스트
+    lateinit var TourListData : MutableList<TourList>
+
+    val recycler: RecyclerView by lazy {
+        binding.recyclerView
+    }
 
     lateinit var binding: ActivityTourBinding
 
     //액션버튼 토글(공통 레이아웃 코드)
     lateinit var toggle: ActionBarDrawerToggle
+
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+    private var lastKnownLocation: Location? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTourBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 페이징 설정 순서2 lsy
+        TourListData = mutableListOf<TourList>()
+
+        val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+        val lat : Double? = pref.getString("lat", "Default값")?.toDoubleOrNull()
+        val lnt : Double? = pref.getString("lnt", "Default값")?.toDoubleOrNull()
+        Log.d("ljs", "SharedPreferences에 현재위치 불러오기 ${lat}, ${lnt}")
 
 
         // 공통 레이아웃 시작 -------------------------------------------------------------
         setSupportActionBar(binding.toolbar)
 
         //(공통 레이아웃 코드)
+        // SharedPreferences에서 이메일 주소 불러오기
+        val sharedPref = getSharedPreferences("MyAppPreferences", MODE_PRIVATE)
+        val userEmail = sharedPref.getString("USER_EMAIL", "No Email") // 기본값 "No Email"
+
+        // 네비게이션 드로어 헤더의 이메일 TextView 업데이트
         val headerView = binding.mainDrawerView.getHeaderView(0)
         val headerUserEmail = headerView.findViewById<TextView>(R.id.headerUserEmail)
+        headerUserEmail.text = userEmail
+
         val headerLogoutBtn = headerView.findViewById<Button>(R.id.headerLogoutBtn)
+
 
         headerLogoutBtn.setOnClickListener {
             // 로그아웃 로직
@@ -96,9 +115,6 @@ class TourActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
-        val userEmail = intent.getStringExtra("USER_EMAIL") ?: "No Email"
-        headerUserEmail.text = userEmail
 
 
         setSupportActionBar(binding.toolbar)
@@ -115,36 +131,55 @@ class TourActivity : AppCompatActivity() {
         //버튼 클릭스 동기화 : 드로워 열어주기(공통 레이아웃 코드)
         toggle.syncState()
 
-        // NavigationView 메뉴 아이템 클릭 리스너 설정(공통 레이아웃 코드)
+        // NavigationView 메뉴 아이템 클릭 리스너 설정
         binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.accommodation -> {
-                    startActivity(Intent(this, AccomActivity::class.java))
+                    val intent = Intent(this, AccomActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.restaurant -> {
-                    startActivity(Intent(this, ResActivity::class.java))
+                    val intent = Intent(this, ResActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.tour -> {
-                    startActivity(Intent(this, TourActivity::class.java))
+                    val intent = Intent(this, TourActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.festival -> {
-                    startActivity(Intent(this, FesActivity::class.java))
+                    val intent = Intent(this, FesActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.shopping -> {
-                    startActivity(Intent(this, ShopActivity::class.java))
+                    val intent = Intent(this, ShopActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.community -> {
-                    // '커뮤니티' 메뉴 아이템 클릭 시 CommReadActivity로 이동
-                    startActivity(Intent(this, CommReadActivity::class.java))
+                    val intent = Intent(this, CommReadActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
+
                 R.id.chatting -> {
-                    startActivity(Intent(this, ChatActivity::class.java))
+                    val intent = Intent(this, ChatMainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    startActivity(intent)
                     true
                 }
 
@@ -199,7 +234,21 @@ class TourActivity : AppCompatActivity() {
             val intent = Intent(this@TourActivity, TourRegionNmActivity::class.java)
             startActivity(intent)
         }
-    }//oncreate
+
+        // 페이징 설정 순서5
+        // RecyclerView에 스크롤 리스너 추가(맨 아래에 닿았을 때, page 1씩 증가)
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1)) { // 목록의 끝에 도달했는지 확인
+                    tourPage++ // 페이지 번호 증가
+                    getTourListWithinRadius2(lat, lnt, 7.0, tourPage) // 서버에 새 페이지 데이터 요청
+                    Log.d("lsy", "Requesting page 확인1: $tourPage")
+                }
+            }
+        })
+
+    }//onCreate
 
     // 함수 구현 ---------------------------------------------------------------------------
 
@@ -245,89 +294,151 @@ class TourActivity : AppCompatActivity() {
             locationResult.lastLocation?.let { onLocationChanged(it) }
         }
     }
+
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
     private fun onLocationChanged(location: Location) {
+        if (lastKnownLocation == null || isLocationChanged(location, lastKnownLocation!!)) {
         mLastLocation = location
-        val coords = "${mLastLocation.longitude},${mLastLocation.latitude}"
-        getTourListWithinRadius()
+        lastKnownLocation = location
+            // 페이징 설정 순서6
+            val pref = getSharedPreferences("latlnt", MODE_PRIVATE)
+            val lat: Double? = pref.getString("lat", null)?.toDoubleOrNull()
+            val lnt: Double? = pref.getString("lnt", null)?.toDoubleOrNull()
+
+        getTourListWithinRadius(lat, lnt, 7.0, tourPage)
+    }
+   }
+
+    // 서브메인에서 위치변경 없을 시, 백엔드에 데이터 요청 방지
+    private fun isLocationChanged(newLocation: Location, lastLocation: Location): Boolean {
+        return newLocation.latitude != lastLocation.latitude || newLocation.longitude != lastLocation.longitude
     }
 
-    private fun haversineDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        // 반경 필터링
-        val R = 6371.0 // 지구의 반지름 (단위: km)
-
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-
-        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                Math.sin(dLon / 2) * Math.sin(dLon / 2)
-        val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-        return R * c
-    }
-
-    private fun getTourListWithinRadius() {
+    private fun getTourListWithinRadius(lat: Double?, lnt: Double?, radius : Double, tourPage : Int) {
 
         val networkService = (applicationContext as MyApplication).networkService
-        val tourListCall = networkService.GetTourList()
+        val tourListCall = networkService.getTourGPS(lat, lnt, radius , tourPage)
 
-        tourListCall.enqueue(object : Callback<List<TourList>> {
+        tourListCall.enqueue(object : Callback<MutableList<TourList>> {
             override fun onResponse(
-                call: Call<List<TourList>>,
-                response: Response<List<TourList>>
+                call: Call<MutableList<TourList>>,
+                response: Response<MutableList<TourList>>
 
             ) {
-                val tourList = response.body()
+                // 페이징 설정 순서3 lsy
+                if (response.isSuccessful) {
+                    val tourList = response.body()
+                    tourList?.let {
+                        Log.d("lsy", "getTourListWithinRadius1으로 불러온 tourList 값 : ${tourList}")
+                        Log.d("lsy", "getTourListWithinRadius1으로 불러온 tourList 사이즈 : ${tourList.size}")
+                        Log.d("lsy", "통신 후 받아온 tourList 길이 값 : ${tourList.size}")
+                        Log.d("lsy", "Requesting tourPage 확인2: $tourPage")
+                        // 받아온 데이터를 임시로 저장할 리스트를 전역 하나 만들고,
+                        // 최초로 5개를 받아와서, 전역에 넣고,
+                        // 페이징 되서, 2번째 페이지의 데이터 5개를 받아오면, 그 데이터를
+                        // 다시, 전역에 선언한 리스트에 다시 담고
+                        // 어댑터에 연결하기, 어댑터 객체에 다시 리스트를 인자로 넣고
+                        // 데이터 변경 , 데이터를 추가 했을 때, ->
 
-                Log.d("ljs","tourModel 값 : ${tourList}")
+                        TourListData.addAll(it)
 
-                val centerLatitude = mLastLocation.latitude
-                val centerLongitude = mLastLocation.longitude
-                val radius = 5.0 // 5km 반경
+                        val currentTime = System.currentTimeMillis()
 
+                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+                            return
+                        }
 
-                val touristSpotsWithinRadius = tourList?.mapNotNull { spot ->
-                    val distance = haversineDistance(
-                        centerLatitude, centerLongitude,
-                        spot.itemsLatitude, spot.itemsLongitude
-                    )
-                    if (distance <= radius) {
-                        spot // 관광지 데이터 객체 자체를 반환
-                    } else {
-                        null
+                        lastUpdateTimestamp = currentTime
+
+                        val layoutManager = LinearLayoutManager(this@TourActivity)
+
+                        binding.recyclerView.layoutManager = layoutManager
+
+                        binding.recyclerView.adapter =
+                            TourAdapter(this@TourActivity, TourListData)
+
+//                        binding.recyclerView1234.addItemDecoration(
+//                            DividerItemDecoration(this@TourActivity, LinearLayoutManager.VERTICAL)
+//                        )
+
                     }
                 }
-
-                val currentTime = System.currentTimeMillis()
-
-                // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
-                if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
-                    return
-                }
-
-                lastUpdateTimestamp = currentTime
-
-                val layoutManager = LinearLayoutManager(this@TourActivity)
-
-                binding.recyclerView.layoutManager = layoutManager
-
-                binding.recyclerView.adapter =
-                    TourAdapter(this@TourActivity,touristSpotsWithinRadius)
-
-
-                binding.recyclerView.addItemDecoration(
-                    DividerItemDecoration(this@TourActivity, LinearLayoutManager.VERTICAL)
-                )
-
             }
-
-
-            override fun onFailure(call: Call<List<TourList>>, t: Throwable) {
-                Log.d("lsy", "fail")
+            override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
+                Log.d("ljs", "fail")
                 call.cancel()
             }
         })
     }
+
+    // 페이징 설정 순서4 lsy
+    private fun getTourListWithinRadius2(lat: Double?, lnt: Double?, radius : Double, tourPage : Int) {
+        Log.d("lsy", "getTourListWithinRadius2 실행")
+        val networkService = (applicationContext as MyApplication).networkService
+        val tourListCall = networkService.getTourGPS(lat, lnt, radius , tourPage)
+
+        tourListCall.enqueue(object : Callback<MutableList<TourList>> {
+            override fun onResponse(
+                call: Call<MutableList<TourList>>,
+                response: Response<MutableList<TourList>>
+
+            ) {
+                if (response.isSuccessful) {
+                    val tourList = response.body()
+                    tourList?.let {
+                        Log.d("lsy", "getTourListWithinRadius2로 불러온 새 tourList 값 : ${tourList}")
+                        Log.d("lsy", "getTourListWithinRadius2로 불러온 새 tourList 사이즈 : ${tourList.size}")
+                        Log.d("lsy", "통신 후 받아온 tourList 길이 값 : ${tourList.size}")
+                        Log.d("lsy", "Requesting tourPage 확인2: $tourPage")
+
+                        getData2(it)
+
+                        val currentTime = System.currentTimeMillis()
+
+                        // 일정 시간이 지나지 않았으면 업데이트를 건너뜁니다.
+                        if (currentTime - lastUpdateTimestamp < updateDelayMillis) {
+                            return
+                        }
+                        lastUpdateTimestamp = currentTime
+
+
+                        val layoutManager = LinearLayoutManager(this@TourActivity)
+
+                        binding.recyclerView.layoutManager = layoutManager
+
+                        binding.recyclerView.adapter =
+                            TourAdapter(this@TourActivity, TourListData)
+
+//                        binding.recyclerView1234.addItemDecoration(
+//                            DividerItemDecoration(this@TourActivity, LinearLayoutManager.VERTICAL)
+//                        )
+
+                    }
+                }
+            }
+            override fun onFailure(call: Call<MutableList<TourList>>, t: Throwable) {
+                Log.d("ljs", "fail")
+                call.cancel()
+            }
+        })
+    }
+
+    fun getData2(datas2: MutableList<TourList>?) {
+        Log.d("lsy","getData2 함수 호출 시작.")
+        Log.d("lsy","getData2 함수 호출 시작2.datasSpring size 값 : ${TourListData?.size} ")
+        TourListData?.size?.let {
+            recycler.adapter?.notifyItemInserted(
+                it.minus(1)
+            )
+        }
+        if (TourListData?.size != null){
+            TourListData?.addAll(datas2 as Collection<TourList>)
+        }
+        recycler.adapter?.notifyDataSetChanged()
+
+    }
+
 
     private fun checkPermissionForLocation(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

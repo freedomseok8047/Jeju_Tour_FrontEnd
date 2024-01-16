@@ -74,7 +74,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="left"
         android:orientation="vertical"
-        android:paddingBottom="100dp">
+        android:paddingBottom="80dp">
 
         <ImageView
             android:id="@+id/avatarView"
@@ -212,7 +212,7 @@
             android:layout_marginLeft="35dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/sans_medium"
-            android:text="✨ 캠핑장 소개"
+            android:text="✨소개"
             android:textSize="17dp" />
 
         <androidx.cardview.widget.CardView

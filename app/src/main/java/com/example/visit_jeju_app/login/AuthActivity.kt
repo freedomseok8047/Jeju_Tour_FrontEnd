@@ -27,6 +27,7 @@ import com.google.firebase.ktx.Firebase
 class AuthActivity : AppCompatActivity() {
     lateinit var binding: ActivityAuthBinding
 
+    //    private lateinit var database: DatabaseReference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= ActivityAuthBinding.inflate(layoutInflater)
@@ -36,12 +37,14 @@ class AuthActivity : AppCompatActivity() {
         binding.signInBtn.setOnClickListener {
             val signInIntent = Intent(this, SignInActivity::class.java)
             startActivity(signInIntent)
+            finish()
         }
 
         // signUpBtn 클릭 이벤트 처리
         binding.signUpBtn.setOnClickListener {
             val signUpIntent = Intent(this, PhoneAuthActivity::class.java)
             startActivity(signUpIntent)
+            finish()
         }
 
 
