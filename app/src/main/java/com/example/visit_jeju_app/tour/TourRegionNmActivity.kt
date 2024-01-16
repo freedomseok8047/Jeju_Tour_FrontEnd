@@ -214,7 +214,7 @@ class TourRegionNmActivity : AppCompatActivity() {
         var jejuRegionCode: Int = itemsRegion2CdValue
         val networkService = (applicationContext as MyApplication).networkService
         val userListCall =
-            networkService.getList(jejuRegionCode)
+            networkService.getTourList(jejuRegionCode)
 
         userListCall.enqueue(object : retrofit2.Callback<List<TourList>> {
             override fun onResponse(
