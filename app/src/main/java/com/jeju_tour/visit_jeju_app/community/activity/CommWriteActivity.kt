@@ -148,32 +148,32 @@ class CommWriteActivity : AppCompatActivity() {
         userEmail = currentUser?.email ?: "unknown"
 
         // 게시물 작성 버튼에 클릭 리스너 추가
-        binding.postbtn.setOnClickListener {
-            val radioButtonUsed = findViewById<RadioButton>(R.id.radioUsed)
-            val radioButtonNotUsed = findViewById<RadioButton>(R.id.radioNotused)
+//        binding.postbtn.setOnClickListener {
+//            val radioButtonUsed = findViewById<RadioButton>(R.id.radioUsed)
+//            val radioButtonNotUsed = findViewById<RadioButton>(R.id.radioNotused)
 
             // 카테고리를 파이어베이스에 저장하는 코드
             // 카테고리 라디오 그룹 가져오기
-            val categoryRadioGroup = findViewById<RadioGroup>(R.id.categoryRadioGroup) // 추가된 라인
-
-            val status = if (radioButtonUsed.isChecked) {
-                "사용"
-            } else if (radioButtonNotUsed.isChecked) {
-                "비사용"
-            } else {
-                // 카테고리를 파이어베이스에 저장하는 코드
-                Toast.makeText(this, "라디오 버튼을 선택하세요", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val selectedCategoryId = categoryRadioGroup.checkedRadioButtonId
-            val selectedCategory =
-                if (selectedCategoryId != -1) findViewById<RadioButton>(selectedCategoryId).text.toString()
-                else ""
-
-            // 게시물 저장 및 이미지 업로드
-            saveStore(status, selectedCategory)
-        }
+//            val categoryRadioGroup = findViewById<RadioGroup>(R.id.categoryRadioGroup) // 추가된 라인
+//
+//            val status = if (radioButtonUsed.isChecked) {
+//                "사용"
+//            } else if (radioButtonNotUsed.isChecked) {
+//                "비사용"
+//            } else {
+//                // 카테고리를 파이어베이스에 저장하는 코드
+//                Toast.makeText(this, "라디오 버튼을 선택하세요", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
+//
+//            val selectedCategoryId = categoryRadioGroup.checkedRadioButtonId
+//            val selectedCategory =
+//                if (selectedCategoryId != -1) findViewById<RadioButton>(selectedCategoryId).text.toString()
+//                else ""
+//
+//            // 게시물 저장 및 이미지 업로드
+//            saveStore(status, selectedCategory)
+//        }
 
 //        // 이미지 업로드 버튼에 클릭 리스너 추가
 //        binding.upload.setOnClickListener {

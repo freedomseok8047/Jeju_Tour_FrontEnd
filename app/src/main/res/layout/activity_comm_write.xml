@@ -7,8 +7,8 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:fitsSystemWindows="true">
+<!--    tools:openDrawer="start">-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -228,16 +228,16 @@
 
     </RadioGroup>
 
-    <Button
-        android:id="@+id/postbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center"
-        android:fontFamily="@font/sans_medium"
-        android:text="작성 완료"
-        android:textColor="@color/white"
-        android:background="#FF9800"/>
+<!--    <Button-->
+<!--        android:id="@+id/postbtn"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_marginTop="5dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:fontFamily="@font/sans_medium"-->
+<!--        android:text="작성 완료"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:background="#FF9800"/>-->
 
 </LinearLayout>
 
