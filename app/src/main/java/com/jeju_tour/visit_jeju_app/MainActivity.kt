@@ -285,79 +285,82 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
 
-        setSupportActionBar(binding.toolbar)
+//        setSupportActionBar(binding.toolbar)
 
-        //드로워화면 액션버튼 클릭 시 드로워 화면 나오게 하기
-        toggle =
-                ActionBarDrawerToggle(
-                        this@MainActivity,
-                        binding.drawerLayout,
-                        R.string.open,
-                        R.string.close
-                )
-
-        binding.drawerLayout.addDrawerListener(toggle)
-        //화면 적용하기
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        //버튼 클릭스 동기화 : 드로워 열어주기
-        toggle.syncState()
-
-        // NavigationView 메뉴 아이템 클릭 리스너 설정
-        binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.accommodation -> {
-                    val intent = Intent(this, AccomActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    true
-                }
-
-                R.id.restaurant -> {
-                    val intent = Intent(this, ResActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    true
-                }
-
-                R.id.tour -> {
-                    val intent = Intent(this, TourActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    true
-                }
-
-                R.id.festival -> {
-                    val intent = Intent(this, FesActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    true
-                }
-
-                R.id.shopping -> {
-                    val intent = Intent(this, ShopActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    true
-                }
-
-                R.id.community -> {
-                    val intent = Intent(this, CommReadActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    true
-                }
-
-                R.id.chatting -> {
-                    val intent = Intent(this, ChatMainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    startActivity(intent)
-                    true
-                }
-
-                else -> false
-            }
-        }
+//        //드로워화면 액션버튼 클릭 시 드로워 화면 나오게 하기
+//        toggle =
+//                ActionBarDrawerToggle(
+//                        this@MainActivity,
+//                        binding.drawerLayout,
+//                        R.string.open,
+//                        R.string.close
+//                )
+//
+//        binding.drawerLayout.addDrawerListener(toggle)
+//        //화면 적용하기
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//
+//        //버튼 클릭스 동기화 : 드로워 열어주기
+//        toggle.syncState()
+//
+//        // NavigationView 메뉴 아이템 클릭 리스너 설정
+//        binding.mainDrawerView.setNavigationItemSelectedListener { menuItem ->
+//            when (menuItem.itemId) {
+//                R.id.accommodation -> {
+//                    val intent = Intent(this, AccomActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+//                    startActivity(intent)
+//                    true
+//                }
+//
+//                R.id.restaurant -> {
+//                    val intent = Intent(this, ResActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+//                    startActivity(intent)
+//                    true
+//                }
+//
+//                R.id.tour -> {
+//                    val intent = Intent(this, TourActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+//                    startActivity(intent)
+//                    true
+//                }
+//
+//                R.id.festival -> {
+//                    val intent = Intent(this, FesActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+//                    startActivity(intent)
+//                    true
+//                }
+//
+//                R.id.shopping -> {
+//                    val intent = Intent(this, ShopActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+//                    startActivity(intent)
+//                    true
+//                }
+//
+//                R.id.community -> {
+//
+////                    val intent = Intent(this, CommReadActivity::class.java)
+////                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+////                    startActivity(intent)
+//                    Toast.makeText(this@MainActivity,"커뮤니티", Toast.LENGTH_SHORT).show()
+//                    true
+//                }
+//
+//                R.id.chatting -> {
+////                    val intent = Intent(this, ChatMainActivity::class.java)
+////                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+////                    startActivity(intent)
+//                    Toast.makeText(this@MainActivity,"채팅", Toast.LENGTH_SHORT).show()
+//                    true
+//                }
+//
+//                else -> false
+//            }
+//        }
 
         // Bottom Navigation link
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
@@ -365,81 +368,85 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.home -> {
                     // 홈 아이템 클릭 처리
-                    val intent = Intent(this@MainActivity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
-                    startActivity(intent)
+//                    val intent = Intent(this@MainActivity, MainActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
+//                    startActivity(intent)
+                    Toast.makeText(this@MainActivity,"MainActivity", Toast.LENGTH_SHORT).show()
                     true
                 }
                 R.id.chat -> {
-                    val intent = Intent(this@MainActivity, GptActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
-                    startActivity(intent)
+//                    val intent = Intent(this@MainActivity, GptActivity::class.java)
+//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
+//                    startActivity(intent)
+                    Toast.makeText(this@MainActivity,"GptActivity", Toast.LENGTH_SHORT).show()
                     true
                 }
                 R.id.youtube -> {
-                    val webpageUrl = "https://www.youtube.com/c/visitjeju" // 웹 페이지 링크
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
-                    startActivity(intent)
+//                    val webpageUrl = "https://www.youtube.com/c/visitjeju" // 웹 페이지 링크
+//                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
+//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
+//                    startActivity(intent)
+                    Toast.makeText(this@MainActivity,"Youtube", Toast.LENGTH_SHORT).show()
                     true
                 }
                 R.id.instagram -> {
-                    val webpageUrl = "https://www.instagram.com/visitjeju.kr" // 웹 페이지 링크
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
-                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
-                    startActivity(intent)
+//                    val webpageUrl = "https://www.instagram.com/visitjeju.kr" // 웹 페이지 링크
+//                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpageUrl))
+//                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
+//                    startActivity(intent)
+                    Toast.makeText(this@MainActivity,"Instagram", Toast.LENGTH_SHORT).show()
                     true
                 }
                 else -> false
             }
         }
 
-        val communityBanner = findViewById<ImageView>(R.id.communityBanner)
-
-        // ImageView를 클릭했을 때 동작하는 이벤트 리스너 추가
-        communityBanner.setOnClickListener {
-            val intent = Intent(this@MainActivity, CommReadActivity::class.java)
-            this@MainActivity.startActivity(intent)
-        }
-
-        // 메인 카테고리 더보기 링크
-        val moreAccomTextView: TextView = findViewById(R.id.mainItemMoreBtn1)
-        val moreRestaurantTextView: TextView = findViewById(R.id.mainItemMoreBtn2)
-        val moreTourTextView: TextView = findViewById(R.id.mainItemMoreBtn3)
-        val moreFestivalTextView: TextView = findViewById(R.id.mainItemMoreBtn4)
-        val moreShoppingTextView: TextView = findViewById(R.id.mainItemMoreBtn5)
-
-        // 각 "더보기" 텍스트 뷰에 클릭 리스너를 추가
-        moreAccomTextView.setOnClickListener {
-            // 제주 숙박 더보기 클릭 시 수행할 동작
-            val intent = Intent(this, AccomActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
-            startActivity(intent)
-        }
-
-        moreRestaurantTextView.setOnClickListener {
-            val intent = Intent(this, ResActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
-            startActivity(intent)
-        }
-
-        moreTourTextView.setOnClickListener {
-            val intent = Intent(this, TourActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
-            startActivity(intent)
-        }
-
-        moreFestivalTextView.setOnClickListener {
-            val intent = Intent(this, FesActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
-            startActivity(intent)
-        }
-
-        moreShoppingTextView.setOnClickListener {
-            val intent = Intent(this, ShopActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
-            startActivity(intent)
-        }
+//        val communityBanner = findViewById<ImageView>(R.id.communityBanner)
+//
+//        // ImageView를 클릭했을 때 동작하는 이벤트 리스너 추가
+//        communityBanner.setOnClickListener {
+//            val intent = Intent(this@MainActivity, CommReadActivity::class.java)
+//            this@MainActivity.startActivity(intent)
+//        }
+//
+//        // 메인 카테고리 더보기 링크
+//        val moreAccomTextView: TextView = findViewById(R.id.mainItemMoreBtn1)
+//        val moreRestaurantTextView: TextView = findViewById(R.id.mainItemMoreBtn2)
+//        val moreTourTextView: TextView = findViewById(R.id.mainItemMoreBtn3)
+//        val moreFestivalTextView: TextView = findViewById(R.id.mainItemMoreBtn4)
+//        val moreShoppingTextView: TextView = findViewById(R.id.mainItemMoreBtn5)
+//
+//        // 각 "더보기" 텍스트 뷰에 클릭 리스너를 추가
+//        moreAccomTextView.setOnClickListener {
+//            // 제주 숙박 더보기 클릭 시 수행할 동작
+//            val intent = Intent(this, AccomActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
+//            startActivity(intent)
+//        }
+//
+//        moreRestaurantTextView.setOnClickListener {
+//            val intent = Intent(this, ResActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
+//            startActivity(intent)
+//        }
+//
+//        moreTourTextView.setOnClickListener {
+//            val intent = Intent(this, TourActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
+//            startActivity(intent)
+//        }
+//
+//        moreFestivalTextView.setOnClickListener {
+//            val intent = Intent(this, FesActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
+//            startActivity(intent)
+//        }
+//
+//        moreShoppingTextView.setOnClickListener {
+//            val intent = Intent(this, ShopActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP // 액티비티 새로 생성 방지
+//            startActivity(intent)
+//        }
 
         // 메인 비주얼
         viewPager_mainVisual = findViewById(R.id.viewPager_mainVisual)
