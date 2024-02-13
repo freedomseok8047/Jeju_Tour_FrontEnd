@@ -68,6 +68,7 @@ class MyApplication : MultiDexApplication() {
 //            .baseUrl("http://10.100.104.32:8083/")
             // aws 외부서버 주소
 //            .baseUrl("http://3.38.106.235:8083/")
+            // 변경된 aws 외부서버 주소
             .baseUrl("http://13.124.132.143:8083/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
